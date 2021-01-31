@@ -3,11 +3,14 @@
 import { app, protocol, BrowserWindow } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
+import mediaService from './media'
 const isDevelopment = process.env.NODE_ENV !== 'production'
+
+mediaService.setUrl()
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
-  { scheme: 'app', privileges: { secure: true, standard: true } }
+  { scheme: 'app', privileges: { secure: true, standard: true, stream: true } }
 ])
 
 async function createWindow() {

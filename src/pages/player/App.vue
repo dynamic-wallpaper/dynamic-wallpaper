@@ -1,11 +1,24 @@
 <template>
-  <div id="app"></div>
+  <div id="app">
+    <video id="videoElement"></video>
+  </div>
 </template>
 
 <script>
+import flvjs from "flv.js";
 export default {
   name: "App",
-  components: {}
+  components: {},
+  mounted() {
+    var videoElement = document.getElementById("videoElement");
+    var flvPlayer = flvjs.createPlayer({
+      type: "flv",
+      url: "http://example.com/flv/video.flv"
+    });
+    flvPlayer.attachMediaElement(videoElement);
+    flvPlayer.load();
+    flvPlayer.play();
+  }
 };
 </script>
 
