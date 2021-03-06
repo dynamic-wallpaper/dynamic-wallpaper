@@ -1,25 +1,26 @@
 <template>
   <div id="app">
-    <video id="videoElement"></video>
+    <!-- <video id="videoElement"></video> -->
+    播放器！
   </div>
 </template>
 
 <script>
-import flvjs from "flv.js";
+// import flvjs from 'flv.js'
 export default {
-  name: "App",
-  components: {},
-  mounted() {
-    var videoElement = document.getElementById("videoElement");
-    var flvPlayer = flvjs.createPlayer({
-      type: "flv",
-      url: "http://example.com/flv/video.flv"
-    });
-    flvPlayer.attachMediaElement(videoElement);
-    flvPlayer.load();
-    flvPlayer.play();
-  }
-};
+  name: 'App',
+  components: {}
+  // mounted() {
+  //   const videoElement = document.getElementById('videoElement')
+  //   const flvPlayer = flvjs.createPlayer({
+  //     type: 'flv',
+  //     url: 'http://example.com/flv/video.flv'
+  //   })
+  //   flvPlayer.attachMediaElement(videoElement)
+  //   flvPlayer.load()
+  //   flvPlayer.play()
+  // }
+}
 </script>
 
 <style>

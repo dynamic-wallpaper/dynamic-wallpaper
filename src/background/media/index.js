@@ -1,16 +1,20 @@
 /**
  * 视频服务，播放服务器
  */
+import initPlayers, { players } from './players'
 // import NodeMediaServer from 'node-media-server'
 // import ffmpegStatic from 'ffmpeg-static'
 // import FFMPEG from 'fluent-ffmpeg'
-const defaultVideo = `app://big_buck_bunny.mp4`
+const defaultVideo = 'app://big_buck_bunny.mp4'
 
 export const RTMP_PORT = 1983
 export const PORT = 9031
 
 // FFMPEG.setFfmpegPath(ffmpegStatic)
 
+/**
+ * node-rtmp服务器
+ */
 // const config = {
 //   rtmp: {
 //     port: RTMP_PORT,
@@ -31,13 +35,18 @@ export const PORT = 9031
 export default {
   PORT,
   RTMP_PORT,
-  play() {},
-  pause() {},
-  setUrl(url = defaultVideo, players = []) {
-    console.log(url)
-    players.forEach(player => {
-      console.log(player)
-    })
+  play () {},
+  pause () {},
+  setUrl (url = defaultVideo) {
+    // 初始化，需要在app.ready做
+    if (players.size === 0) {
+      initPlayers()
+    }
+
+    for (const win of players.values()) {
+      const { webContents } = win
+      console.log(webContents)
+    }
     // const command = FFMPEG(url)
     // .videoCodec('copy')
     // .audioCodec('copy')

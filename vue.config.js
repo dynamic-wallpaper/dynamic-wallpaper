@@ -6,6 +6,7 @@ module.exports = {
   pluginOptions: {
     electronBuilder: {
       mainProcessFile: 'src/background/index.js',
+      mainProcessWatch: ['src/background/**/*'],
       chainWebpackMainProcess: (config) => {
         config.plugin('define').tap(definitions => {
           definitions[0] = {
@@ -16,6 +17,7 @@ module.exports = {
         })
       },
       builderOptions: {
+        // eslint-disable-next-line no-template-curly-in-string
         artifactName: '${productName}-${version}-${os}-${arch}.${ext}',
         // extraFiles: [
         //   './node_modules/ffmpeg-static/ffmpeg*'
@@ -26,8 +28,8 @@ module.exports = {
             target: 'dmg'
           }
         }
-      },
+      }
     }
-  },
-  
+  }
+
 }
