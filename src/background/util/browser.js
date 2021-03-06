@@ -6,9 +6,9 @@ export default async function (path = '', options = {}) {
 
   const { webPreferences = {} } = options
   const win = new BrowserWindow({
-    ...options,
     width: 800,
     height: 600,
+    ...options,
     webPreferences: {
       ...webPreferences,
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
@@ -16,6 +16,6 @@ export default async function (path = '', options = {}) {
   })
 
   await win.loadURL(url)
-  if (!process.env.IS_TEST) win.webContents.openDevTools()
+  if (!process.env.IS_TEST && path === '') win.webContents.openDevTools()
   return win
 }
