@@ -1,4 +1,5 @@
 import { BrowserWindow } from 'electron'
+import nodePath from 'path'
 
 export default async function (path = '', options = {}) {
   const baseURL = process.env.WEBPACK_DEV_SERVER_URL || 'app://./index.html/'
@@ -11,7 +12,8 @@ export default async function (path = '', options = {}) {
     ...options,
     webPreferences: {
       ...webPreferences,
-      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
+      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
+      preload: nodePath.join(__dirname, 'preload.js')
     }
   })
 

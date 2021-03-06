@@ -5,6 +5,7 @@ module.exports = {
   },
   pluginOptions: {
     electronBuilder: {
+      preload: 'src/pages/preload.js',
       mainProcessFile: 'src/background/index.js',
       mainProcessWatch: ['src/background/**/*'],
       chainWebpackMainProcess: (config) => {

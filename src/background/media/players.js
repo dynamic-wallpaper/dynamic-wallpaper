@@ -69,7 +69,7 @@ export default class Players {
       this.destoryPlayer(display)
     })
 
-    screen.on('display-metrics-changed', event, display => {
+    screen.on('display-metrics-changed', (event, display) => {
       this.destoryPlayer(display)
       this.createPlayer(display)
     })
