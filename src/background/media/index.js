@@ -33,8 +33,11 @@ export default {
   RTMP_PORT,
   play() {},
   pause() {},
-  setUrl(url = defaultVideo) {
+  setUrl(url = defaultVideo, players = []) {
     console.log(url)
+    players.forEach(player => {
+      console.log(player)
+    })
     // const command = FFMPEG(url)
     // .videoCodec('copy')
     // .audioCodec('copy')
