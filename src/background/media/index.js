@@ -2,16 +2,16 @@
  * 视频服务，播放服务器
  */
 import NodeMediaServer from 'node-media-server'
-import ffmpegStatic from '@ffmpeg-installer/ffmpeg'
+import ffmpegStatic from 'ffmpeg-static'
 import FFMPEG from 'fluent-ffmpeg'
 const defaultVideo = `app://big_buck_bunny.mp4`
 
-console.log(ffmpegStatic)
+console.log('ffmpegPath', ffmpegStatic)
 
 export const RTMP_PORT = 1983
 export const PORT = 9031
 
-FFMPEG.setFfmpegPath(ffmpegStatic)
+// FFMPEG.setFfmpegPath(ffmpegStatic)
 
 const config = {
   rtmp: {
@@ -36,12 +36,11 @@ export default {
   play() {},
   pause() {},
   setUrl(url = defaultVideo) {
-    console.log(url)
-    const command = FFMPEG(url)
-    .videoCodec('copy')
-    .audioCodec('copy')
-    .output(`rtmp://127.0.0.1:${RTMP_PORT}/live/a`)
-    .run()
-    console.log(command)
+    // const command = FFMPEG(url)
+    // .videoCodec('copy')
+    // .audioCodec('copy')
+    // .output(`rtmp://127.0.0.1:${RTMP_PORT}/live/a`)
+    // .run()
+    // console.log(command)
   }
 }
