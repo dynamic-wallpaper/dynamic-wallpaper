@@ -17,9 +17,9 @@ module.exports = {
       },
       builderOptions: {
         artifactName: '${productName}-${version}-${os}-${arch}.${ext}',
-        extraFiles: [
-          'node_modules/ffmpeg-static/ffmpeg'
-        ],
+        // extraFiles: [
+        //   './node_modules/ffmpeg-static/ffmpeg*'
+        // ],
         mac: {
           target: {
             arch: 'universal',
