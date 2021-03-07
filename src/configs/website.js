@@ -8,8 +8,9 @@ export default {
       value: 'https://tidwall.com/digitalrain/'
     },
     {
-    //   label: '数字雨',
-      value: 'https://tidwall.com/digitalrain/'
+      label: '元素周期表',
+      description: 'https://threejs.org/examples/css3d_periodictable.html',
+      value: 'https://threejs.org/examples/css3d_periodictable.html'
     }
   ]
 }

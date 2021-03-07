@@ -20,7 +20,7 @@
       <el-main :key="targetCategory">
         <div class="option-container">
           <el-card
-            :class="{option: true, isSelected: selected.key === option.value}"
+            :class="{option: true, selected: selected.key === option.value}"
             body-style="padding: 0;height: 100%;"
             shadow="hover"
             v-for="(option, index) of options"
@@ -120,6 +120,17 @@ body,
   width: 200px;
   flex-grow: 0;
   height: 220px;
+  position: relative;
+}
+
+.option.selected::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  box-shadow: 0px 0px 3px #6a6da9 inset;
 }
 
 .option + .option {
