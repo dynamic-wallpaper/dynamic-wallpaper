@@ -19,7 +19,13 @@
       <!-- <el-header></el-header> -->
       <el-main :key="targetCategory">
         <div class="option-container">
-          <el-card class="option" shadow="hover" v-for="(option, index) of options" :key="index">
+          <el-card
+            class="option"
+            body-style="padding: 0;height: 100%;"
+            shadow="hover"
+            v-for="(option, index) of options"
+            :key="index"
+          >
             <component :is="renderer" :value="option" />
           </el-card>
         </div>
@@ -97,7 +103,7 @@ body,
 .option {
   width: 200px;
   flex-grow: 0;
-  height: 200px;
+  height: 220px;
 }
 
 .option + .option {

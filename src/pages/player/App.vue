@@ -1,7 +1,16 @@
 <template>
   <div id="app">
     <div class="empty" v-if="!renderer">出错啦</div>
-    <component :is="renderer" muted :src="url" autoplay loop />
+    <component
+      :is="renderer"
+      muted
+      :src="url"
+      autoplay
+      loop
+      frameborder="no"
+      border="0"
+      scrolling="no"
+    />
   </div>
 </template>
 
