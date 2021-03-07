@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <!-- <video id="videoElement"></video> -->
-    播放器！{{ url }}
+    <video muted :src="url" />
+    <!-- <iframe :src="url" /> -->
   </div>
 </template>
 
@@ -44,5 +44,11 @@ body,
   width: 100%;
   height: 100%;
   margin: 0;
+}
+
+#app > iframe,
+#app > video {
+  width: 100%;
+  height: 100%;
 }
 </style>
