@@ -1,9 +1,10 @@
 /**
  * 控制器页面
  */
-import { ipcMain } from 'electron'
+import { ipcMain, Menu } from 'electron'
 import createBrowser from '@/background/util/browser'
 import mediaService from '../media/index'
+import initTray from './tray'
 
 /**
  * @type {Electron.BrowserWindow}
@@ -14,10 +15,14 @@ let win = null
  * @param {import('electron-store')} store
  */
 async function createControlBrowser (store) {
-  win = await createBrowser()
-  win.setAlwaysOnTop(true)
-  const selected = store.get('selected')
-  win.webContents.send('selected', selected.key, selected.url)
+  if (!win || win.isDestroyed()) {
+    win = await createBrowser()
+    win.setAlwaysOnTop(true)
+    const selected = store.get('selected')
+    win.webContents.send('selected', selected.key, selected.url)
+  } else {
+    win.show()
+  }
 }
 
 /**
@@ -27,13 +32,13 @@ async function createControlBrowser (store) {
  * @returns
  */
 function initApp (app, store) {
+  // 隐藏dock和菜单
+  Menu.setApplicationMenu(null)
+  app.dock.hide()
+
   // 控制窗口
   app.on('activate', async () => {
-    if (win.isDestroyed()) {
-      createControlBrowser(store)
-    } else {
-      win.show()
-    }
+    createBrowser(store)
   })
 }
 
@@ -64,6 +69,7 @@ export async function initControl (app, store) {
 
   initApp(app, store)
   initIpc(store)
+  initTray(store, createControlBrowser)
 }
 
 export default initControl
