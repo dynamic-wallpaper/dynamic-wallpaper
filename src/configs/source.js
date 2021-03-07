@@ -3,18 +3,18 @@
  */
 
 export const SOURCE = {
-    /**
+  /**
      * 官方
      */
-    OFFICLE: 'dynamic-wallpaper',
-    /**
+  OFFICLE: 'dynamic-wallpaper',
+  /**
      * GITHUB
      */
-    GITHUB: 'gh',
-    /**
+  GITHUB: 'gh',
+  /**
      * JSDELIVR
      */
-    JSDELIVR: 'jsdelivr'
+  JSDELIVR: 'jsdelivr'
 }
 
 export const DEFAULT_SOURCE = SOURCE.JSDELIVR

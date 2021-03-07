@@ -6,13 +6,24 @@
 </template>
 
 <script>
-// import flvjs from 'flv.js'
+import { MEDIA_PROTOCOL } from '../../configs/protocol'
 const ipcRenderer = window.ipcRenderer
+
+const RENDER = {
+  [MEDIA_PROTOCOL]: 'video'
+}
+
 export default {
   name: 'App',
   data () {
     return {
       url: ''
+    }
+  },
+  computed: {
+    type ({ url }) {
+      const protocol = url.replace(/:\/\/.*/, '')
+      return RENDER[protocol]
     }
   },
   components: {},
@@ -21,16 +32,6 @@ export default {
       this.url = url
     })
   }
-  // mounted() {
-  //   const videoElement = document.getElementById('videoElement')
-  //   const flvPlayer = flvjs.createPlayer({
-  //     type: 'flv',
-  //     url: 'http://example.com/flv/video.flv'
-  //   })
-  //   flvPlayer.attachMediaElement(videoElement)
-  //   flvPlayer.load()
-  //   flvPlayer.play()
-  // }
 }
 </script>
 

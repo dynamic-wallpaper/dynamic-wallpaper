@@ -1,6 +1,7 @@
 import { protocol } from 'electron'
+import { MEDIA_PROTOCOL } from '../../configs/protocol'
 
-export const PROTOCOL = 'video-wallpaper'
+export const PROTOCOL = MEDIA_PROTOCOL
 // eslint-disable-next-line
 const regexp = new RegExp(`^${PROTOCOL}:\/\/`)
 
