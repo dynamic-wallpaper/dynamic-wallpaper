@@ -5,7 +5,8 @@ import Players from './players'
 // import NodeMediaServer from 'node-media-server'
 // import ffmpegStatic from 'ffmpeg-static'
 // import FFMPEG from 'fluent-ffmpeg'
-const defaultVideo = 'app://big_buck_bunny.mp4'
+import { PROTOCOL } from './protocol'
+const defaultVideo = `${PROTOCOL}://${__static}/big_buck_bunny.mp4`
 
 export const RTMP_PORT = 1983
 export const PORT = 9031

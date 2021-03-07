@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <video muted :src="url" />
+    <video muted :src="url" autoplay />
     <!-- <iframe :src="url" /> -->
   </div>
 </template>
@@ -17,9 +17,7 @@ export default {
   },
   components: {},
   created () {
-    console.log(ipcRenderer)
     ipcRenderer.on('setUrl', (e, url) => {
-      console.log(url)
       this.url = url
     })
   }
@@ -44,11 +42,22 @@ body,
   width: 100%;
   height: 100%;
   margin: 0;
+  overflow: hidden;
+}
+
+#app {
+  position: relative;
 }
 
 #app > iframe,
 #app > video {
-  width: 100%;
-  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
 }
 </style>

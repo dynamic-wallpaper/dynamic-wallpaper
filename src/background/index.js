@@ -3,6 +3,7 @@
 import { app, protocol, BrowserWindow } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
+import createMediaProtocol from './media/protocol'
 import mediaService from './media'
 import createBrowser from './util/browser'
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -34,6 +35,7 @@ app.on('activate', () => {
 // Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
   createProtocol('app')
+  createMediaProtocol()
   if (isDevelopment && !process.env.IS_TEST) {
     // Install Vue Devtools
     try {

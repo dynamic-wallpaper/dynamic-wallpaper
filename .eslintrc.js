@@ -16,5 +16,9 @@ module.exports = {
     'vue'
   ],
   rules: {
+  },
+  globals: {
+    __static: true
   }
+
 }
