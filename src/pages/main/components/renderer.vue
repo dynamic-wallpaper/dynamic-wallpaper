@@ -4,7 +4,7 @@
     <div class="control-container">
       <el-popover
         class="control-description"
-        placement="bottom"
+        placement="top"
         :title="value.label"
         width="300"
         trigger="hover"
@@ -16,7 +16,7 @@
         <p>{{ value.description }}</p>
       </el-popover>
       <div class="control-button">
-        <el-button type="text" size="mini" @click="select">设为壁纸</el-button>
+        <el-button :disabled="isSelected" type="text" size="mini" @click="select">设为壁纸</el-button>
       </div>
     </div>
   </div>
@@ -26,12 +26,22 @@
 export default {
   name: 'renderer',
   props: {
+    selected: {
+      type: Object,
+      required: true
+    },
     value: {
-      type: Object
+      type: Object,
+      required: true
     }
   },
   data () {
     return {}
+  },
+  computed: {
+    isSelected ({ selected, value }) {
+      return selected.key === value.value
+    }
   },
   methods: {
     select () {

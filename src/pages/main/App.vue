@@ -26,7 +26,7 @@
             v-for="(option, index) of options"
             :key="index"
           >
-            <component @select="selectOption" :is="renderer" :value="option" />
+            <component :selected="selected" @select="selectOption" :is="renderer" :value="option" />
           </el-card>
         </div>
       </el-main>
