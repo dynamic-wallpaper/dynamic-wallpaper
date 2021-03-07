@@ -3,7 +3,7 @@ const { Menu, Tray } = require('electron')
 let tray = null
 
 export default function (store, openControlBrowser) {
-  tray = new Tray('/path/to/my/icon')
+  tray = new Tray(`${__static}/icons/png/16x16.png`)
   const contextMenu = Menu.buildFromTemplate([
     {
       label: '打开菜单',
