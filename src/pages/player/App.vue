@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <video muted :src="url" autoplay loop />
-    <!-- <iframe :src="url" /> -->
+    <div class="empty" v-if="!renderer">出错啦</div>
+    <component :is="renderer" muted :src="url" autoplay loop />
   </div>
 </template>
 
@@ -21,7 +21,7 @@ export default {
     }
   },
   computed: {
-    type ({ url }) {
+    renderer ({ url }) {
       const protocol = url.replace(/:\/\/.*/, '')
       return RENDER[protocol]
     }
@@ -60,5 +60,13 @@ body,
   top: 0;
   bottom: 0;
   margin: auto;
+}
+
+#app .empty {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
