@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <video muted :src="url" autoplay />
+    <video muted :src="url" autoplay loop />
     <!-- <iframe :src="url" /> -->
   </div>
 </template>
