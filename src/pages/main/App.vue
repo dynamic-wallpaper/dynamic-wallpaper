@@ -20,13 +20,13 @@
       <el-main :key="targetCategory">
         <div class="option-container">
           <el-card
-            class="option"
+            :class="{option: true, isSelected: selected.key === option.value}"
             body-style="padding: 0;height: 100%;"
             shadow="hover"
             v-for="(option, index) of options"
             :key="index"
           >
-            <component :is="renderer" :value="option" />
+            <component @select="selectOption" :is="renderer" :value="option" />
           </el-card>
         </div>
       </el-main>
@@ -37,6 +37,7 @@
 <script>
 import websiteConfig from '@/configs/website'
 const renderers = require.context('./components', false, /\.vue/)
+const ipcRenderer = window.ipcRenderer
 
 export default {
   name: 'App',
@@ -56,7 +57,11 @@ export default {
       categories: [
         websiteConfig
       ],
-      targetCategory: websiteConfig.key
+      targetCategory: websiteConfig.key,
+      selected: {
+        url: '',
+        key: ''
+      }
     }
   },
   computed: {
@@ -68,6 +73,13 @@ export default {
     },
     renderer ({ category }) {
       return category.renderer || 'renderer'
+    }
+  },
+  methods: {
+    selectOption (key, url) {
+      this.selected.key = key
+      this.selected.url = url
+      ipcRenderer.send('select', url)
     }
   }
 }
@@ -90,6 +102,10 @@ body,
 
 .side-bar .el-menu-item.is-active {
   background: #ffffff !important;
+}
+
+.el-main {
+  background: #ffffff;
 }
 
 .option-container {

@@ -16,7 +16,7 @@
         <p>{{ value.description }}</p>
       </el-popover>
       <div class="control-button">
-        <el-button type="text" size="mini">设为壁纸</el-button>
+        <el-button type="text" size="mini" @click="select">设为壁纸</el-button>
       </div>
     </div>
   </div>
@@ -33,7 +33,11 @@ export default {
   data () {
     return {}
   },
-  methods: {}
+  methods: {
+    select () {
+      this.$emit('select', this.value.value, this.value.value)
+    }
+  }
 }
 </script>
 
