@@ -24,6 +24,7 @@ module.exports = {
         //   './node_modules/ffmpeg-static/ffmpeg*'
         // ],
         mac: {
+          icon: './public/icons/mac/icon.icns',
           target: {
             arch: 'universal',
             target: 'dmg'
