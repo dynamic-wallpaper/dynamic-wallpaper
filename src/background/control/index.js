@@ -11,41 +11,59 @@ import mediaService from '../media/index'
 let win = null
 
 /**
+ * @param {import('electron-store')} store
+ */
+async function createControlBrowser (store) {
+  win = await createBrowser()
+  win.setAlwaysOnTop(true)
+  const selected = store.get('selected')
+  win.webContents.send('selected', selected.key, selected.url)
+}
+
+/**
  *
  * @param {Electron.App} app
+ * @param {import('electron-store')} store
  * @returns
  */
-function initApp (app) {
+function initApp (app, store) {
   // 控制窗口
   app.on('activate', async () => {
     if (win.isDestroyed()) {
-      win = await createBrowser()
+      createControlBrowser(store)
     } else {
       win.show()
     }
   })
 }
 
-function initIpc () {
-  ipcMain.on('select', (e, url) => {
+/**
+ * @param {import('electron-store')} store
+ */
+function initIpc (store) {
+  ipcMain.on('select', (e, key, url) => {
     mediaService.setUrl(url)
+    store.set('selected', {
+      key,
+      url
+    })
   })
 }
 
 /**
  *
  * @param {Electron.App} app
+ * @param {import('electron-store')} store
  * @returns
  */
-export async function initControl (app) {
+export async function initControl (app, store) {
   if (win) {
     return
   }
-  win = await createBrowser()
-  win.setAlwaysOnTop(true)
+  createControlBrowser(store)
 
-  initApp(app)
-  initIpc()
+  initApp(app, store)
+  initIpc(store)
 }
 
 export default initControl

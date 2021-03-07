@@ -79,8 +79,16 @@ export default {
     selectOption (key, url) {
       this.selected.key = key
       this.selected.url = url
-      ipcRenderer.send('select', url)
+      ipcRenderer.send('select', key, url)
     }
+  },
+  mounted () {
+    ipcRenderer.on('selected', (e, key, url) => {
+      this.selected = {
+        key,
+        url
+      }
+    })
   }
 }
 </script>

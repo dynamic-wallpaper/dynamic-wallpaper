@@ -3,10 +3,29 @@
 import { app, protocol, BrowserWindow } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
+import Store from 'electron-store'
 import createMediaProtocol from './media/protocol'
 import mediaService from './media'
 import createControlBrowser from './control'
 const isDevelopment = process.env.NODE_ENV !== 'production'
+
+const store = new Store({
+  schema: {
+    selected: {
+      type: 'object',
+      properties: {
+        key: {
+          type: 'string',
+          default: ''
+        },
+        url: {
+          type: 'string',
+          default: ''
+        }
+      }
+    }
+  }
+})
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -47,11 +66,11 @@ app.on('ready', async () => {
   /**
    * 桌面背景
    */
-  mediaService.setUrl()
+  mediaService.setUrl(store.get('selected').url)
   /**
    * 控制器
    */
-  createControlBrowser(app)
+  createControlBrowser(app, store)
 })
 
 // Exit cleanly on request from parent process in development mode.
