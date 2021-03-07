@@ -1,6 +1,4 @@
 /**
- * 控制控制
+ * 控制器页面
  */
-import vm from 'vm'
-console.log(vm)
- export const playList = []
+import createBrowser from '@/background/util/browser'

@@ -1,5 +1,5 @@
 import { screen } from 'electron'
-import createBrowser from '../util/browser'
+import createBrowser from '@/background/util/browser'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 /**

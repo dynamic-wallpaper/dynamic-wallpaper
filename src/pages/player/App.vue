@@ -10,7 +10,9 @@ import { MEDIA_PROTOCOL } from '../../configs/protocol'
 const ipcRenderer = window.ipcRenderer
 
 const RENDER = {
-  [MEDIA_PROTOCOL]: 'video'
+  [MEDIA_PROTOCOL]: 'video',
+  http: 'iframe',
+  https: 'iframe'
 }
 
 export default {
