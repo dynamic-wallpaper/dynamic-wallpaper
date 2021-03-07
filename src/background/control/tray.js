@@ -7,7 +7,6 @@ export default function (store, openControlBrowser) {
   const contextMenu = Menu.buildFromTemplate([
     {
       label: '打开菜单',
-      type: 'radio',
       click () {
         openControlBrowser(store)
       }
