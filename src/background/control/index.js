@@ -69,7 +69,7 @@ export async function initControl (app, store) {
 
   initApp(app, store)
   initIpc(store)
-  initTray(store, createControlBrowser)
+  initTray(app, store, createControlBrowser)
 }
 
 export default initControl

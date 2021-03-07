@@ -48,7 +48,7 @@ export default class Players {
       delete winConfig.transparent
     }
 
-    const win = await createBrowser('player', winConfig)
+    const win = await createBrowser('player.html', winConfig)
     win.setIgnoreMouseEvents(!isDevelopment)
     this.playerMap.set(id, win)
     return win
@@ -76,11 +76,11 @@ export default class Players {
     })
     this.inited = true
 
-    let displays = screen.getAllDisplays()
+    const displays = screen.getAllDisplays()
 
-    if (isDevelopment) {
-      displays = [screen.getPrimaryDisplay()]
-    }
+    // if (isDevelopment) {
+    //   displays = [screen.getPrimaryDisplay()]
+    // }
 
     return Promise.all(displays.map(display => this.createPlayer(display)))
   }

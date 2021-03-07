@@ -1,8 +1,8 @@
 import { BrowserWindow } from 'electron'
 import nodePath from 'path'
 
-export default async function (path = '', options = {}) {
-  const baseURL = process.env.WEBPACK_DEV_SERVER_URL || 'app://./index.html/'
+export default async function (path = 'index.html', options = {}) {
+  const baseURL = process.env.WEBPACK_DEV_SERVER_URL || 'app://./'
   const url = `${baseURL}${path}`
 
   const { webPreferences = {} } = options
@@ -18,6 +18,9 @@ export default async function (path = '', options = {}) {
   })
 
   await win.loadURL(url)
-  if (!process.env.IS_TEST && path === '') win.webContents.openDevTools()
+  // eslint-disable-next-line no-constant-condition
+  if (process.env.NODE_ENV === 'development') {
+    win.webContents.openDevTools()
+  }
   return win
 }

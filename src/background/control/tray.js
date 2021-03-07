@@ -2,13 +2,25 @@ const { Menu, Tray } = require('electron')
 
 let tray = null
 
-export default function (store, openControlBrowser) {
+/**
+ *
+ * @param {Electron.App} app
+ * @param {import('electron-store')} store
+ * @param {*} openControlBrowser
+ */
+export default function (app, store, openControlBrowser) {
   tray = new Tray(`${__static}/icons/png/16x16.png`)
   const contextMenu = Menu.buildFromTemplate([
     {
       label: '打开菜单',
       click () {
         openControlBrowser(store)
+      }
+    },
+    {
+      label: '退出',
+      click () {
+        app.exit()
       }
     }
   ])
