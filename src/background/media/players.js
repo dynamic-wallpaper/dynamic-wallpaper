@@ -39,6 +39,7 @@ export default class Players {
       frame: false,
       transparent: true,
       resizable: false,
+      z: 0,
       type: 'desktop'
     }
 
@@ -75,7 +76,12 @@ export default class Players {
     })
     this.inited = true
 
-    const displays = screen.getAllDisplays()
+    let displays = screen.getAllDisplays()
+
+    if (isDevelopment) {
+      displays = [screen.getPrimaryDisplay()]
+    }
+
     return Promise.all(displays.map(display => this.createPlayer(display)))
   }
 
