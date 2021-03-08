@@ -49,8 +49,8 @@ export default class Players {
       y,
       frame: false,
       transparent: true,
+      enableLargerThanScreen: true,
       resizable: false,
-      z: 0,
       type: 'desktop'
     }
 
