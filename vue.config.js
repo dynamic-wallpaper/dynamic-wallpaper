@@ -5,6 +5,7 @@ module.exports = {
   },
   pluginOptions: {
     electronBuilder: {
+      appId: 'top.mizuka.dynamicWallpaper',
       preload: 'src/pages/preload.js',
       mainProcessFile: 'src/background/index.js',
       mainProcessWatch: ['src/background/**/*'],

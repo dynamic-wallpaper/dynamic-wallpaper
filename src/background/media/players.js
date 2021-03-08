@@ -89,6 +89,7 @@ export default class Players {
     this.isInit = true
 
     const displays = screen.getAllDisplays()
+    console.log(displays)
 
     // if (isDevelopment) {
     //   displays = [screen.getPrimaryDisplay()]

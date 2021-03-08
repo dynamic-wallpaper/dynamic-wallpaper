@@ -23,6 +23,12 @@ const store = new Store({
         }
       }
     }
+  },
+  defaults: {
+    selected: {
+      url: '',
+      key: ''
+    }
   }
 })
 
