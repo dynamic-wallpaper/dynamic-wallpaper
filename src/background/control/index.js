@@ -3,7 +3,6 @@
  */
 import { ipcMain, Menu } from 'electron'
 import createBrowser from '@/background/util/browser'
-import mediaService from '../media/index'
 import initTray from './tray'
 
 /**
@@ -45,7 +44,7 @@ function initApp (app, store) {
 /**
  * @param {import('electron-store')} store
  */
-function initIpc (store) {
+function initIpc (store, mediaService) {
   ipcMain.on('select', (e, key, url) => {
     mediaService.setUrl(url)
     store.set('selected', {
@@ -61,14 +60,14 @@ function initIpc (store) {
  * @param {import('electron-store')} store
  * @returns
  */
-export async function initControl (app, store) {
+export async function initControl (app, store, mediaService) {
   if (win) {
     return
   }
   createControlBrowser(store)
 
   initApp(app, store)
-  initIpc(store)
+  initIpc(store, mediaService)
   initTray(app, store, createControlBrowser)
 }
 

@@ -5,14 +5,12 @@ import Players from './players'
 // import NodeMediaServer from 'node-media-server'
 // import ffmpegStatic from 'ffmpeg-static'
 // import FFMPEG from 'fluent-ffmpeg'
-// import { PROTOCOL } from './protocol'
+import createMediaProtocol from './protocol'
 // const defaultVideo = `${PROTOCOL}://${__static}/big_buck_bunny.mp4`
-const defaultVideo = 'https://www.baidu.com'
+let players = null
 
 export const RTMP_PORT = 1983
 export const PORT = 9031
-
-let players = new Players()
 
 // FFMPEG.setFfmpegPath(ffmpegStatic)
 
@@ -36,23 +34,26 @@ let players = new Players()
 // var nms = new NodeMediaServer(config)
 // nms.run();
 
-export default {
-  PORT,
-  RTMP_PORT,
-  play () {},
-  pause () {},
-  setUrl (url = defaultVideo) {
-    // 初始化，需要在app.ready做
-    if (!players) {
-      players = new Players()
-    }
+export function setUrl (url) {
+  players.setUrl(url)
+}
 
-    players.setUrl(url)
-    // const command = FFMPEG(url)
-    // .videoCodec('copy')
-    // .audioCodec('copy')
-    // .output(`rtmp://127.0.0.1:${RTMP_PORT}/live/a`)
-    // .run()
-    // console.log(command)
+export const service = {
+  setUrl
+}
+
+/**
+ * @param {Electron.App} app
+ * @param {import('electron-store')} store
+ */
+export default function (app, store) {
+  if (players) {
+    return false
   }
+  const defaultUrl = store.get('selected').url
+  createMediaProtocol()
+  players = new Players()
+  service.setUrl(defaultUrl)
+
+  return service
 }

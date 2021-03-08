@@ -4,8 +4,7 @@ import { app, protocol, BrowserWindow } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 import Store from 'electron-store'
-import createMediaProtocol from './media/protocol'
-import mediaService from './media'
+import createMediaService from './media'
 import createControlBrowser from './control'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -53,8 +52,6 @@ app.on('activate', () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
-  createProtocol('app')
-  createMediaProtocol()
   if (isDevelopment && !process.env.IS_TEST) {
     // Install Vue Devtools
     try {
@@ -63,14 +60,16 @@ app.on('ready', async () => {
       console.error('Vue Devtools failed to install:', e.toString())
     }
   }
+  createProtocol('app')
+
   /**
    * 桌面背景
    */
-  mediaService.setUrl(store.get('selected').url)
+  const mediaService = createMediaService(app, store)
   /**
    * 控制器
    */
-  createControlBrowser(app, store)
+  createControlBrowser(app, store, mediaService)
 })
 
 // Exit cleanly on request from parent process in development mode.

@@ -15,7 +15,7 @@ export default class Players {
      * @type {Map<number, Electron.BrowserWindow>} playerMap
      */
     this.playerMap = new Map()
-    this.inited = false
+    this.isInit = false
     this.url = ''
   }
 
@@ -67,7 +67,7 @@ export default class Players {
   }
 
   async createPlayers () {
-    if (this.inited) {
+    if (this.isInit) {
       return Promise.resolve()
     }
 
@@ -86,7 +86,7 @@ export default class Players {
       this.destoryPlayer(display)
       this.createPlayer(display)
     })
-    this.inited = true
+    this.isInit = true
 
     const displays = screen.getAllDisplays()
 
