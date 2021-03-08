@@ -40,7 +40,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.3.1",
     "eslint-plugin-vue": "^7.7.0",
-    "vue-cli-plugin-electron-builder": "~2.0.0-rc.5",
+    "vue-cli-plugin-electron-builder": "^2.0.0-rc.6",
     "vue-template-compiler": "^2.6.11"
   },
   "browserslist": [

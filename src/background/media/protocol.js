@@ -14,7 +14,7 @@ export function registerProtocol () {
       /**
          * 从保存的地方获取
          */
-      return callback(decodedUrl)
+      callback(decodedUrl)
     } catch (error) {
       console.error('ERROR: registerLocalResourceProtocol: Could not get file path:', error)
     }

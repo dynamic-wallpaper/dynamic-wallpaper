@@ -13,6 +13,7 @@ export default async function (path = 'index.html', options = {}) {
     webPreferences: {
       ...webPreferences,
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
+      contextIsolation: false,
       preload: nodePath.join(__dirname, 'preload.js')
     }
   })
