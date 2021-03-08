@@ -105,5 +105,6 @@ export default class Players {
     for (const win of playerMap.values()) {
       setUrl(win, url)
     }
+    this.url = url
   }
 }
