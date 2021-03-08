@@ -38,8 +38,9 @@ export default class Players {
    * @returns
    */
   async createPlayer (display) {
-    const { id, workAreaSize, bounds } = display
-    const { x, y } = bounds
+    // eslint-disable-next-line no-unused-vars
+    const { id, workAreaSize, workArea } = display
+    const { x, y } = workArea
     const { width, height } = workAreaSize
 
     const winConfig = {
@@ -89,7 +90,6 @@ export default class Players {
     this.isInit = true
 
     const displays = screen.getAllDisplays()
-    console.log(displays)
 
     // if (isDevelopment) {
     //   displays = [screen.getPrimaryDisplay()]
