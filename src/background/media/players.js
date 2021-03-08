@@ -2,6 +2,10 @@ import { screen } from 'electron'
 import createBrowser from '@/background/util/browser'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
+function setUrl (win, url) {
+  return win.webContents.send('setUrl', url)
+}
+
 /**
  * 播放器列表
  */
@@ -12,6 +16,7 @@ export default class Players {
      */
     this.playerMap = new Map()
     this.inited = false
+    this.url = ''
   }
 
   /**
@@ -27,9 +32,15 @@ export default class Players {
     }
   }
 
+  /**
+   *
+   * @param {Electron.Display} display
+   * @returns
+   */
   async createPlayer (display) {
-    const { bounds, id } = display
-    const { x, y, width, height } = bounds
+    const { id, workAreaSize, bounds } = display
+    const { x, y } = bounds
+    const { width, height } = workAreaSize
 
     const winConfig = {
       width,
@@ -51,6 +62,7 @@ export default class Players {
     const win = await createBrowser('player.html', winConfig)
     win.setIgnoreMouseEvents(!isDevelopment)
     this.playerMap.set(id, win)
+    setUrl(win, this.url)
     return win
   }
 
@@ -91,7 +103,7 @@ export default class Players {
       await this.createPlayers()
     }
     for (const win of playerMap.values()) {
-      win.webContents.send('setUrl', url)
+      setUrl(win, url)
     }
   }
 }
