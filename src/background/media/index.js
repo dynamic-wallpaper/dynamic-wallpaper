@@ -35,6 +35,9 @@ export const PORT = 9031
 // nms.run();
 
 export function setUrl (url) {
+  if (!players) {
+    return
+  }
   players.setUrl(url)
 }
 
