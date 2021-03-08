@@ -1,2 +1,5 @@
 import log from 'electron-log'
-Object.assign(console, log.functions)
+
+if (process.env.NODE_ENV === 'production') {
+  Object.assign(console, log.functions)
+}
