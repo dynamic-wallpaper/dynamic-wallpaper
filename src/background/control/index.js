@@ -16,7 +16,7 @@ let win = null
 async function createControlBrowser (store) {
   if (!win || win.isDestroyed()) {
     win = await createBrowser()
-    win.setAlwaysOnTop(true)
+    win.moveTop()
     const selected = store.get('selected')
     win.webContents.send('selected', selected.key, selected.url)
   } else {
