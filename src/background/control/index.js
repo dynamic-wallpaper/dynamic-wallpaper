@@ -14,6 +14,7 @@ let win = null
  * @param {import('electron-store')} store
  */
 async function createControlBrowser (store) {
+  console.log('createContorlBrowser:', win, !win, !win || win.isDestroyed())
   if (!win || win.isDestroyed()) {
     win = await createBrowser()
     win.moveTop()
@@ -37,7 +38,7 @@ function initApp (app, store) {
 
   // 控制窗口
   app.on('activate', async () => {
-    createBrowser(store)
+    await createControlBrowser(store)
   })
 }
 
@@ -45,12 +46,14 @@ function initApp (app, store) {
  * @param {import('electron-store')} store
  */
 function initIpc (store, mediaService) {
-  ipcMain.on('select', (e, key, url) => {
+  ipcMain.on('selectResource', (e, key, url) => {
     mediaService.setUrl(url)
-    store.set('selected', {
-      key,
-      url
-    })
+    store.set('selected.key', key)
+    store.set('selected.url', url)
+  })
+
+  ipcMain.on('selectCategory', (e, cateogry) => {
+    store.set('selected.category', cateogry)
   })
 }
 
@@ -64,11 +67,10 @@ export async function initControl (app, store, mediaService) {
   if (win) {
     return
   }
-  createControlBrowser(store)
-
   initApp(app, store)
   initIpc(store, mediaService)
   initTray(app, store, createControlBrowser)
+  await createControlBrowser(store)
 }
 
 export default initControl

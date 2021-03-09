@@ -13,8 +13,8 @@ export default function (app, store, openControlBrowser) {
   const contextMenu = Menu.buildFromTemplate([
     {
       label: '打开菜单',
-      click () {
-        openControlBrowser(store)
+      async click () {
+        await openControlBrowser(store)
       }
     },
     {

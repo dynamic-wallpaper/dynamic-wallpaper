@@ -20,6 +20,10 @@ const store = new Store({
         url: {
           type: 'string',
           default: ''
+        },
+        category: {
+          type: 'string',
+          default: ''
         }
       }
     }
@@ -27,7 +31,8 @@ const store = new Store({
   defaults: {
     selected: {
       url: '',
-      key: ''
+      key: '',
+      category: ''
     }
   }
 })

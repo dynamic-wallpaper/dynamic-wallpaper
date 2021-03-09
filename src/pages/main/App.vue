@@ -2,7 +2,7 @@
   <el-container id="app">
     <el-aside class="side-bar">
       <el-menu
-        @select="key => targetCategory = key"
+        @select="selectCategory"
         v-bind="sidebar"
         :default-active="targetCategory"
         class="side-bar"
@@ -57,7 +57,7 @@ export default {
       categories: [
         websiteConfig
       ],
-      targetCategory: websiteConfig.key,
+      targetCategory: '',
       selected: {
         url: '',
         key: ''
@@ -76,18 +76,23 @@ export default {
     }
   },
   methods: {
+    selectCategory (targetCategory) {
+      this.targetCategory = targetCategory
+      ipcRenderer.send('selectCategory', targetCategory)
+    },
     selectOption (key, url) {
       this.selected.key = key
       this.selected.url = url
-      ipcRenderer.send('select', key, url)
+      ipcRenderer.send('selectResource', key, url)
     }
   },
   mounted () {
-    ipcRenderer.on('selected', (e, key, url) => {
+    ipcRenderer.on('selected', (e, key = '', url = '', category = '') => {
       this.selected = {
         key,
         url
       }
+      this.targetCategory = category || this.categories[0].key
     })
   }
 }
