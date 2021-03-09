@@ -14,7 +14,6 @@ let win = null
  * @param {import('electron-store')} store
  */
 async function createControlBrowser (store) {
-  console.log('createContorlBrowser:', win, !win, !win || win.isDestroyed())
   if (!win || win.isDestroyed()) {
     win = await createBrowser()
     win.moveTop()

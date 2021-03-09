@@ -1,8 +1,7 @@
 import { screen } from 'electron'
 import createBrowser from '@/background/util/browser'
+import { OFFSET } from '@/configs/players'
 const isDevelopment = process.env.NODE_ENV !== 'production'
-
-const OFFSET = 8 // 偏移量，防止big-sur等的圆角问题
 
 function setUrl (win, url) {
   return win.webContents.send('setUrl', url)
