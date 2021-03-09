@@ -7,11 +7,11 @@
         :default-active="targetCategory"
         class="side-bar"
       >
-        <el-menu-item
-          :key="category.key"
-          :index="category.key"
-          v-for="category of categories"
-        >{{ category.label }}</el-menu-item>
+        <el-menu-item :key="category.key" :index="category.key" v-for="category of categories">
+          <el-tooltip class="item" effect="dark" :content="category.label" placement="right">
+            <div class="category-label">{{ category.label }}</div>
+          </el-tooltip>
+        </el-menu-item>
       </el-menu>
     </el-aside>
 
@@ -129,6 +129,13 @@ body,
   background: #ffffff;
 }
 
+.category-label {
+  width: 100%;
+  overflow: hidden;
+  word-break: keep-all;
+  text-overflow: ellipsis;
+}
+
 .option-container {
   width: 100%;
   height: 100%;
@@ -142,6 +149,7 @@ body,
   flex-grow: 0;
   height: 220px;
   position: relative;
+  margin: 8px;
 }
 
 .option.selected::after {
@@ -152,9 +160,5 @@ body,
   top: 0;
   bottom: 0;
   box-shadow: 0px 0px 3px #6a6da9 inset;
-}
-
-.option + .option {
-  margin-left: 20px;
 }
 </style>

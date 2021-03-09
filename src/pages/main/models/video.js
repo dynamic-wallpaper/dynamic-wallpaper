@@ -15,7 +15,7 @@ export async function getCategories () {
     value: videos.map(video => ({
       label: video.name,
       value: `${url}${video.url}`,
-      thumbnail: video.cover
+      thumbnail: `${url}${video.cover}`
     }))
   }))
 }
