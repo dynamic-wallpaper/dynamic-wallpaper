@@ -2,6 +2,8 @@ import { screen } from 'electron'
 import createBrowser from '@/background/util/browser'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
+const OFFSET = 8 // 偏移量，防止big-sur等的圆角问题
+
 function setUrl (win, url) {
   return win.webContents.send('setUrl', url)
 }
@@ -43,11 +45,15 @@ export default class Players {
     const { x, y } = workArea
     const { width, height } = workAreaSize
 
+    /**
+     * @type {Electron.BrowserWindowConstructorOptions}
+     */
     const winConfig = {
       width,
-      height,
+      height: height + OFFSET,
       x,
-      y,
+      y: y - OFFSET,
+      hasShadow: false,
       frame: false,
       transparent: true,
       enableLargerThanScreen: true,
