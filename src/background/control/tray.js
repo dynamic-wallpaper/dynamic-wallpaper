@@ -12,7 +12,7 @@ export default function (app, store, openControlBrowser) {
   tray = new Tray(`${__static}/icons/png/16x16.png`)
   const contextMenu = Menu.buildFromTemplate([
     {
-      label: '打开菜单',
+      label: '选择桌面',
       async click () {
         await openControlBrowser(store)
       }

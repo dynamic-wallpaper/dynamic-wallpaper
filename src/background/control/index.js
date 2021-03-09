@@ -18,7 +18,9 @@ async function createControlBrowser (store) {
     win = await createBrowser()
     win.moveTop()
     const selected = store.get('selected')
-    win.webContents.send('selected', selected.key, selected.url)
+    win.on('ready-to-show', () => {
+      win.webContents.send('selected', selected.key, selected.url)
+    })
   } else {
     win.show()
   }

@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import videoModel from './models/video'
 import websiteConfig from '@/configs/website'
 const renderers = require.context('./components', false, /\.vue/)
 const ipcRenderer = window.ipcRenderer
@@ -86,7 +87,14 @@ export default {
       ipcRenderer.send('selectResource', key, url)
     }
   },
-  mounted () {
+  async created () {
+    const categories = await videoModel.getCategories()
+    this.categories = [
+      ...categories,
+      ...this.categories
+    ]
+  },
+  async mounted () {
     ipcRenderer.on('selected', (e, key = '', url = '', category = '') => {
       this.selected = {
         key,
