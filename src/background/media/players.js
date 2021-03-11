@@ -73,28 +73,28 @@ export default class Players {
   }
 
   async createPlayers () {
-    if (this.isInit) {
-      return Promise.resolve()
+    if (!this.isInit) {
+      screen.on('display-added', (event, display) => {
+        this.createPlayer(display)
+      })
+
+      screen.on('display-removed', (event, display) => {
+        this.destoryPlayer(display)
+      })
+
+      screen.on('display-metrics-changed', (event, display) => {
+        this.destoryPlayer(display)
+        this.createPlayer(display)
+      })
+      this.isInit = true
     }
 
-    /**
-     * screen变动
-     */
-    screen.on('display-added', (event, display) => {
-      this.createPlayer(display)
-    })
-
-    screen.on('display-removed', (event, display) => {
-      this.destoryPlayer(display)
-    })
-
-    screen.on('display-metrics-changed', (event, display) => {
-      this.destoryPlayer(display)
-      this.createPlayer(display)
-    })
-    this.isInit = true
-
     const displays = screen.getAllDisplays()
+    for (const playerId of this.playerMap.keys()) {
+      const player = this.playerMap.get(playerId)
+      player.destroy()
+      this.playerMap.delete(playerId)
+    }
 
     // if (isDevelopment) {
     //   displays = [screen.getPrimaryDisplay()]
