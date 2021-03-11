@@ -7,8 +7,8 @@ export default async function (path = 'index.html', options = {}) {
 
   const { webPreferences = {} } = options
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1024,
+    height: 800,
     ...options,
     webPreferences: {
       ...webPreferences,

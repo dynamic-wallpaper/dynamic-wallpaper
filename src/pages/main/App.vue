@@ -145,7 +145,7 @@ body,
 }
 
 .option {
-  width: 200px;
+  width: 260px;
   flex-grow: 0;
   height: 220px;
   position: relative;
