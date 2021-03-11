@@ -24,6 +24,7 @@
     "ffmpeg-static": "^4.2.7",
     "fluent-ffmpeg": "^2.1.2",
     "flv.js": "^1.5.0",
+    "node-downloader-helper": "^1.0.17",
     "node-media-server": "^2.2.4",
     "utf-8-validate": "^5.0.4",
     "vue": "^2.6.11"
