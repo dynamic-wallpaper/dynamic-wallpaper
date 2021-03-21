@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import videoModel from './models/video'
+import videoModel from '@/models/video'
 import websiteConfig from '@/configs/website'
 const renderers = require.context('./components', false, /\.vue/)
 const ipcRenderer = window.ipcRenderer

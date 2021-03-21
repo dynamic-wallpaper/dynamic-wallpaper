@@ -73,8 +73,16 @@ export default class {
     }
   }
 
+  /**
+   * url文件
+   * @param {*} url
+   * @param {*} onProgress
+   * @param {*} options
+   * @returns
+   */
   downloadFile (url, onProgress, options) {
-    const dl = new DownloaderHelper('url', this.rootDir)
+    console.log(url)
+    const dl = new DownloaderHelper(url, this.rootDir)
     dl.start()
     if (onProgress && typeof onProgress === 'function') {
       dl.on('progress.500', onProgress)

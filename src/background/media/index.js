@@ -1,12 +1,16 @@
+/* eslint-disable no-unused-vars */
 /**
  * 视频服务，播放服务器
  */
 import Players from './players'
 import createMediaProtocol from './protocol'
-import 
+import FileUtil from '@/background/util/file'
+import videoModel from '@/models/video'
 import sdk from '@/background/util/sdk'
 
 let players = null
+
+const categoryMap = new Map()
 
 export const RTMP_PORT = 1983
 export const PORT = 9031
