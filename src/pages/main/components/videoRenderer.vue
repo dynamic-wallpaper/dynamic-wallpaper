@@ -16,7 +16,21 @@
         <p>{{ value.description }}</p>
       </el-popover>
       <div class="control-button">
-        <el-button :disabled="isSelected" type="text" size="mini" @click="select">设为壁纸</el-button>
+        <template v-if="isDownloaded">
+          <el-button :disabled="isSelected" type="text" size="mini" @click="select">设为壁纸</el-button>
+        </template>
+        <template v-else>
+          <el-progress
+            v-if="percentage !== 0"
+            :colors="colors"
+            type="circle"
+            :show-text="false"
+            width="20"
+            stroke-width="2"
+            :percentage="percentage"
+          ></el-progress>
+          <el-button v-else type="text" @click="downloadVideo">下载到本地</el-button>
+        </template>
       </div>
     </div>
   </div>
@@ -24,8 +38,34 @@
 
 <script>
 import renderer from './renderer'
+const { serverSDK } = window
 export default {
   extends: renderer,
-  name: 'videoRenderer'
+  name: 'videoRenderer',
+  data () {
+    return {
+      percentage: 0,
+      colors: [
+        { color: '#f56c6c', percentage: 20 },
+        { color: '#e6a23c', percentage: 40 },
+        { color: '#5cb87a', percentage: 60 },
+        { color: '#1989fa', percentage: 80 },
+        { color: '#6f7ad3', percentage: 100 }
+      ]
+    }
+  },
+  computed: {
+    isDownloaded ({ value }) {
+      return value.isDownloaded
+    }
+  },
+  methods: {
+    downloadVideo () {
+      serverSDK.post('download', {
+        category: this.category,
+        value: this.value
+      })
+    }
+  }
 }
 </script>

@@ -33,6 +33,9 @@ export default {
     value: {
       type: Object,
       required: true
+    },
+    category: {
+      type: String
     }
   },
   data () {
@@ -82,6 +85,7 @@ export default {
   display: flex;
   width: 100%;
   justify-content: flex-end;
+  align-items: center;
 }
 
 .control-description label {
