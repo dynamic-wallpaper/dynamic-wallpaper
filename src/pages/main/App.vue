@@ -20,12 +20,17 @@
       <el-main :key="targetCategory">
         <div class="option-container">
           <el-card
-            :class="{option: true, selected: selected.key === option.value}"
+            :class="{option: true}"
             body-style="padding: 0;height: 100%;"
             shadow="hover"
             v-for="(option, index) of options"
             :key="index"
           >
+            <!-- 选中标签 -->
+            <div v-if="selected.key === option.value" class="selected">
+              <img :src="selectedIcon" />
+            </div>
+            <!-- 渲染 -->
             <component :selected="selected" @select="selectOption" :is="renderer" :value="option" />
           </el-card>
         </div>
@@ -35,10 +40,10 @@
 </template>
 
 <script>
-import videoModel from '@/models/video'
 import websiteConfig from '@/configs/website'
+import selectedIcon from './assets/selected.png'
 const renderers = require.context('./components', false, /\.vue/)
-const ipcRenderer = window.ipcRenderer
+const { ipcRenderer, serverSDK } = window
 
 export default {
   name: 'App',
@@ -50,6 +55,7 @@ export default {
   },
   data () {
     return {
+      selectedIcon,
       sidebar: {
         backgroundColor: '#6a6da9',
         textColor: '#ffffff',
@@ -88,9 +94,9 @@ export default {
     }
   },
   async created () {
-    const categories = await videoModel.getCategories()
+    const { data } = await serverSDK.get('mediaCategories')
     this.categories = [
-      ...categories,
+      ...data,
       ...this.categories
     ]
   },
@@ -152,13 +158,16 @@ body,
   margin: 8px;
 }
 
-.option.selected::after {
-  content: "";
+.option .selected {
   position: absolute;
-  left: 0;
   right: 0;
   top: 0;
-  bottom: 0;
-  box-shadow: 0px 0px 3px #6a6da9 inset;
+  width: 20px;
+  height: 20px;
+}
+
+.option .selected img {
+  width: 100%;
+  height: 100%;
 }
 </style>

@@ -97,7 +97,7 @@ export default class {
    * 获取目录结构
    */
   get structure () {
-    function getStructure (dirPath = this.rootDir) {
+    function getStructure (dirPath) {
       return Object.fromEntries(fs.readdirSync(dirPath)
         .map(subPath => {
           const fullPath = path.join(dirPath, subPath)
@@ -105,7 +105,7 @@ export default class {
           return [subPath, isDir ? getStructure(fullPath) : fullPath]
         }))
     }
-    return getStructure()
+    return getStructure(this.rootDir)
   }
 
   /**
