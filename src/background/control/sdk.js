@@ -60,12 +60,12 @@ export default async function (context) {
             url
           })
         }
+        const fileName = path.basename(url)
         if (progress === 100) {
           /**
            * 计算md5
            */
           setImmediate(() => {
-            // const fileName = path.basename(url)
             // const fileMd5 = MD5(fileManager.getFile(fileName))
             // console.log('下载', filePath, fileManager.getFile(fileName), MD5(fileManager.getFile(fileName)), md5)
             // if (md5 === fileMd5) {
@@ -80,6 +80,11 @@ export default async function (context) {
             // }
           })
         } else if (progress === -1) {
+          new Notification({
+            title: '下载失败',
+            body: label
+          }).show()
+          fileManager.deleteFile(fileName)
           res.status(500).send(data)
         }
       })
