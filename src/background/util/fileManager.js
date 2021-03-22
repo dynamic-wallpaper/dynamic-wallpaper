@@ -7,10 +7,10 @@ import path from 'path'
 import { app } from 'electron'
 const { DownloaderHelper } = require('node-downloader-helper')
 
-const basePath = path.join(app.getPath('userData'), 'resource')
+export const BASE_PATH = path.join(app.getPath('userData'), 'resource')
 
-if (!fs.existsSync(basePath)) {
-  fs.mkdirSync(basePath)
+if (!fs.existsSync(BASE_PATH)) {
+  fs.mkdirSync(BASE_PATH)
 }
 
 export default class {
@@ -22,7 +22,7 @@ export default class {
     if (!directory) {
       throw new Error('directory 必须指定')
     }
-    this.rootDir = path.join(basePath, directory)
+    this.rootDir = path.join(BASE_PATH, directory)
     if (!fs.existsSync(this.rootDir)) {
       fs.mkdirSync(this.rootDir)
     }
@@ -85,6 +85,7 @@ export default class {
    * @returns
    */
   downloadFile (url, onProgress, options = {}) {
+    console.log(url)
     const dl = new DownloaderHelper(encodeURI(url), this.rootDir, {
       override: true,
       fileName: path.basename(url),
@@ -92,7 +93,7 @@ export default class {
     })
     dl.start()
     if (onProgress && typeof onProgress === 'function') {
-      dl.on('progress.100', onProgress)
+      dl.on('progress.throttled', onProgress)
       dl.on('end', () => onProgress({
         progress: 100
       }))

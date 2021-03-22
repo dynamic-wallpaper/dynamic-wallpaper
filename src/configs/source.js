@@ -6,17 +6,9 @@ export const SOURCE = {
   /**
      * 官方
      */
-  OFFICLE: 'dynamic-wallpaper',
-  /**
-     * GITHUB
-     */
-  GITHUB: 'gh',
-  /**
-     * JSDELIVR
-     */
-  JSDELIVR: 'jsdelivr'
+  OFFICLE: 'dynamic-wallpaper'
 }
 
-export const DEFAULT_SOURCE = SOURCE.JSDELIVR
+export const DEFAULT_SOURCE = SOURCE.OFFICLE
 
 export default SOURCE

@@ -2,7 +2,7 @@
  * 视频壁纸
  */
 import axios from 'axios'
-import SOURCE from '@/configs/source'
+import { DEFAULT_SOURCE } from '@/configs/source'
 import { VIDEO_WALLPAPER } from '@/configs/resource'
 
 /**
@@ -10,7 +10,7 @@ import { VIDEO_WALLPAPER } from '@/configs/resource'
  * @returns
  */
 export async function getCategories () {
-  const url = VIDEO_WALLPAPER[SOURCE.JSDELIVR]
+  const url = VIDEO_WALLPAPER[DEFAULT_SOURCE]
   const { data } = await axios.get(`${url}/index.json`)
   return data.map(({ name, videos }) => ({
     key: name,
@@ -18,7 +18,7 @@ export async function getCategories () {
     value: videos.map(video => ({
       value: video.url,
       label: video.name,
-      downloadUrl: `${url}${video.url}`,
+      downloadUrl: `${'https://media.githubusercontent.com/media/dynamic-wallpaper/video-wallpaper/main'}${video.url}`,
       thumbnail: `${url}${video.cover}`
     }))
   }))
