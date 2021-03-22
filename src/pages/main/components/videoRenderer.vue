@@ -48,6 +48,7 @@ export default {
     return {
       onMediaProgress (e, data) {
         if (data.url === vm.value.downloadUrl) {
+          this.downloading = true
           vm.percentage = data.progress
         }
       },
