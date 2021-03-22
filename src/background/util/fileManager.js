@@ -34,7 +34,7 @@ export default class {
    * @returns
    */
   getFullPath (filePath = '') {
-    return path.join(this.basePath, ...filePath.split('/'))
+    return path.join(this.rootDir, ...filePath.split('/'))
   }
 
   /**
@@ -93,8 +93,13 @@ export default class {
     dl.start()
     if (onProgress && typeof onProgress === 'function') {
       dl.on('progress.throttled', onProgress)
-      dl.on('end', () => onProgress({
-        progress: 100
+      dl.on('end', (data) => onProgress({
+        progress: 100,
+        ...data
+      }))
+      dl.on('error', (e) => onProgress({
+        progress: -1,
+        data: e
       }))
     }
     return dl
