@@ -3,19 +3,27 @@
  */
 import { ipcMain, Menu } from 'electron'
 import createBrowser from '@/background/util/browser'
+import initSdk from './sdk'
 import initTray from './tray'
 
 /**
+ * background上下文
+ */
+export const context = {
+  /**
  * @type {Electron.BrowserWindow}
  */
-let win = null
+  win: null
+}
 
 /**
  * @param {import('electron-store')} store
  */
 async function createControlBrowser (store) {
+  let win = context.win
   if (!win || win.isDestroyed()) {
     win = await createBrowser()
+    context.win = win
     win.moveTop()
     const selected = store.get('selected')
     win.on('ready-to-show', () => {
@@ -65,12 +73,19 @@ function initIpc (store, mediaService) {
  * @returns
  */
 export async function initControl (app, store, mediaService) {
-  if (win) {
+  if (context.win) {
     return
   }
   initApp(app, store)
   initIpc(store, mediaService)
+  /**
+   * 托盘+控制页
+   */
   initTray(app, store, createControlBrowser)
+  /**
+   * 和客户端的sdk
+   */
+  initSdk(context, app, store)
   await createControlBrowser(store)
 }
 

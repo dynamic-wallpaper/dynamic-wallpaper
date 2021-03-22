@@ -13,12 +13,12 @@ export async function getCategories () {
   const url = VIDEO_WALLPAPER[SOURCE.JSDELIVR]
   const { data } = await axios.get(`${url}/index.json`)
   return data.map(({ name, videos }) => ({
-    renderer: 'videoRenderer',
     key: name,
     label: name,
     value: videos.map(video => ({
+      value: video.url,
       label: video.name,
-      value: `${url}${video.url}`,
+      downloadUrl: `${url}${video.url}`,
       thumbnail: `${url}${video.cover}`
     }))
   }))
