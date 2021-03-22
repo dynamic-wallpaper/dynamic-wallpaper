@@ -2,9 +2,11 @@
  * 和客户端交互的部分
  */
 import { service as mediaService } from '@/background/media'
+import { MEDIA_PROTOCOL } from '@/configs/protocol'
 import sdk from '@/background/util/sdk'
 import FileManager from '@/background/util/fileManager'
 import videoModel from '@/models/video'
+import path from 'path'
 
 export default async function (context) {
   sdk.get('media/categories', async (req, res) => {
@@ -17,13 +19,21 @@ export default async function (context) {
       if (!categoryMap.has(category.key)) {
         categoryMap.set(category.key, new FileManager(category.key))
       }
-      const fileManager = categoryMap.get(category.key)
-      console.log('structure', fileManager.structure)
-    })
-    res.send(categories.map(category => {
       category.renderer = 'videoRenderer'
-      return category
-    }))
+      /**
+       * 分类管理器
+       */
+      const fileManager = categoryMap.get(category.key)
+      const { structure } = fileManager
+      /**
+       * 是否已下载完成
+       */
+      category.value.forEach(video => {
+        video.value = `${MEDIA_PROTOCOL}://${video.value}`
+        video.downloaded = path.basename(video.value) in structure
+      })
+    })
+    res.send(categories)
   })
 
   sdk.post('media/download', async (req, res) => {
