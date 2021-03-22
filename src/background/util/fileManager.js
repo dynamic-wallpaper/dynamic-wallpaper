@@ -87,20 +87,26 @@ export default class {
   downloadFile (url, onProgress, options = {}) {
     const dl = new DownloaderHelper(encodeURI(url), this.rootDir, {
       override: true,
-      fileName: path.basename(url),
+      fileName: `${path.basename(url)}.tmp`,
       ...options
     })
     dl.start()
     if (onProgress && typeof onProgress === 'function') {
       dl.on('progress.throttled', onProgress)
-      dl.on('end', (data) => onProgress({
-        progress: 100,
-        ...data
-      }))
-      dl.on('error', (e) => onProgress({
-        progress: -1,
-        data: e
-      }))
+      dl.on('end', (data) => {
+        const { filePath } = data
+        fs.renameSync(filePath, filePath.replace(/\.tmp$/, ''))
+        onProgress({
+          progress: 100
+        })
+      })
+      dl.on('error', (e) => {
+        fs.unlinkSync(dl.getDownloadPath())
+        onProgress({
+          progress: -1,
+          data: e
+        })
+      })
     }
     return dl
   }
