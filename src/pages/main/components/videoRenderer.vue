@@ -33,10 +33,10 @@
         </template>
         <template v-else>
           <el-progress
-            :colors="colors"
+            :color="colors"
             :percentage="percentage"
             :show-text="false"
-            :stroke-width="2"
+            :stroke-width="3"
             :width="20"
             type="circle"
             v-if="downloading"
@@ -80,7 +80,7 @@ export default {
   },
   computed: {
     isDownloaded ({ value }) {
-      return value.downloaded
+      return value.downloaded || this.percentage === 100
     }
   },
   methods: {
@@ -89,7 +89,8 @@ export default {
       try {
         await serverSDK.post('media/download', {
           category: this.category,
-          url: this.value.downloadUrl
+          url: this.value.downloadUrl,
+          md5: this.value.md5
         })
       } catch (e) {
 

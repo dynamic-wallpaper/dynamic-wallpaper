@@ -7,6 +7,8 @@ import sdk from '@/background/util/sdk'
 import FileManager from '@/background/util/fileManager'
 import videoModel from '@/models/video'
 import path from 'path'
+import fs from 'fs'
+import MD5 from 'md5'
 
 export default async function (context) {
   sdk.get('media/categories', async (req, res) => {
@@ -37,7 +39,7 @@ export default async function (context) {
   })
 
   sdk.post('media/download', async (req, res) => {
-    const { category, url } = req.body
+    const { category, url, md5 } = req.body
     const { categoryMap } = mediaService
     if (!categoryMap.has(category)) {
       res.status(404).send('无有效的频道管理器')
@@ -55,7 +57,18 @@ export default async function (context) {
           })
         }
         if (progress === 100) {
-          res.send('下载完成')
+          /**
+           * 计算md5
+           */
+          const fileName = path.basename(url)
+          const fileMd5 = MD5(fileManager.getFile(fileName))
+
+          if (md5 === fileMd5) {
+            res.send('下载完成')
+          } else {
+            fileManager.deleteFile(fileName)
+            res.status(500).send('下载失败')
+          }
         }
       })
     }
