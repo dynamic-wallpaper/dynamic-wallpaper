@@ -52,7 +52,7 @@ export default async function (context) {
        */
       const fileManager = categoryMap.get(category)
       fileManager.downloadFile(url, function ({ progress, filePath, data }) {
-        if (context.win) {
+        if (context.win && !context.win.isDestroyed()) {
           context.win.webContents.send('media:progress', {
             progress,
             category,
