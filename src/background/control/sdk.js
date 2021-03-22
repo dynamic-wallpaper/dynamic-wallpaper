@@ -32,7 +32,18 @@ export default async function (context) {
        */
       category.value.forEach(video => {
         video.value = `${MEDIA_PROTOCOL}://${video.value}`
-        video.downloaded = path.basename(video.value) in structure
+        const fileName = path.basename(video.value)
+        const isDownloaded = fileName in structure
+        /**
+         * 校验文件，正确的保留
+         */
+        if (isDownloaded) {
+          if (video.md5 !== MD5(fileManager.getFile(fileName))) {
+            fileManager.deleteFile(fileName)
+          } else {
+            video.isDownloaded = true
+          }
+        }
       })
     })
     res.send(categories)
