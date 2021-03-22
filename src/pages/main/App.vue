@@ -2,13 +2,22 @@
   <el-container id="app">
     <el-aside class="side-bar">
       <el-menu
-        @select="selectCategory"
-        v-bind="sidebar"
         :default-active="targetCategory"
+        @select="selectCategory"
         class="side-bar"
+        v-bind="sidebar"
       >
-        <el-menu-item :key="category.key" :index="category.key" v-for="category of categories">
-          <el-tooltip class="item" effect="dark" :content="category.label" placement="right">
+        <el-menu-item
+          :index="category.key"
+          :key="category.key"
+          v-for="category of categories"
+        >
+          <el-tooltip
+            :content="category.label"
+            class="item"
+            effect="dark"
+            placement="right"
+          >
             <div class="category-label">{{ category.label }}</div>
           </el-tooltip>
         </el-menu-item>
@@ -21,22 +30,25 @@
         <div class="option-container">
           <el-card
             :class="{option: true}"
+            :key="index"
             body-style="padding: 0;height: 100%;"
             shadow="hover"
             v-for="(option, index) of options"
-            :key="index"
           >
             <!-- 选中标签 -->
-            <div v-if="selected.key === option.value" class="selected">
+            <div
+              class="selected"
+              v-if="selected.key === option.value"
+            >
               <img :src="selectedIcon" />
             </div>
             <!-- 渲染 -->
             <component
-              :selected="selected"
               :category="targetCategory"
-              @select="selectOption"
               :is="renderer"
+              :selected="selected"
               :value="option"
+              @select="selectOption"
             />
           </el-card>
         </div>
@@ -100,7 +112,7 @@ export default {
     }
   },
   async created () {
-    const { data } = await serverSDK.get('mediaCategories')
+    const { data } = await serverSDK.get('media/categories')
     this.categories = [
       ...data,
       ...this.categories

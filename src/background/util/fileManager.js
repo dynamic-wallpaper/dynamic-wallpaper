@@ -2,12 +2,16 @@
 /**
  * 本地文件管理
  */
-import fs, { fstatSync } from 'fs'
+import fs from 'fs'
 import path from 'path'
 import { app } from 'electron'
 const { DownloaderHelper } = require('node-downloader-helper')
 
-const basePath = app.getPath('userData')
+const basePath = path.join(app.getPath('userData'), 'resource')
+
+if (!fs.existsSync(basePath)) {
+  fs.mkdirSync(basePath)
+}
 
 export default class {
   /**
@@ -61,7 +65,7 @@ export default class {
   deleteFile (filePath) {
     if (this.fileIsExist(filePath)) {
       const targetPath = this.getFullPath(filePath)
-      if (fstatSync(targetPath).isDirectory()) {
+      if (fs.statSync(targetPath).isDirectory()) {
         if (fs.readdirSync(targetPath).length !== 0) {
           throw new Error('无法直接删除文件夹')
         } else {
@@ -80,12 +84,15 @@ export default class {
    * @param {*} options
    * @returns
    */
-  downloadFile (url, onProgress, options) {
-    console.log(url)
-    const dl = new DownloaderHelper(url, this.rootDir)
+  downloadFile (url, onProgress, options = {}) {
+    const dl = new DownloaderHelper(encodeURI(url), this.rootDir, {
+      override: true,
+      fileName: path.basename(url),
+      ...options
+    })
     dl.start()
     if (onProgress && typeof onProgress === 'function') {
-      dl.on('progress.500', onProgress)
+      dl.on('progress.100', onProgress)
       dl.on('end', () => onProgress({
         progress: 100
       }))
@@ -101,7 +108,7 @@ export default class {
       return Object.fromEntries(fs.readdirSync(dirPath)
         .map(subPath => {
           const fullPath = path.join(dirPath, subPath)
-          const isDir = fs.fstatSync(fullPath).isDirectory()
+          const isDir = fs.statSync(fullPath).isDirectory()
           return [subPath, isDir ? getStructure(fullPath) : fullPath]
         }))
     }

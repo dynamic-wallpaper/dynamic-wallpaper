@@ -89,16 +89,16 @@ export default class Players {
       this.isInit = true
     }
 
-    const displays = screen.getAllDisplays()
+    let displays = screen.getAllDisplays()
     for (const playerId of this.playerMap.keys()) {
       const player = this.playerMap.get(playerId)
       player.destroy()
       this.playerMap.delete(playerId)
     }
 
-    // if (isDevelopment) {
-    //   displays = [screen.getPrimaryDisplay()]
-    // }
+    if (isDevelopment) {
+      displays = [screen.getPrimaryDisplay()]
+    }
 
     return Promise.all(displays.map(display => this.createPlayer(display)))
   }

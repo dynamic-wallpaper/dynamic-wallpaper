@@ -1,15 +1,22 @@
 <template>
   <div class="renderer-container">
-    <img class="thumbnail" frameborder="no" border="0" scrolling="no" :src="value.thumbnail" />
+    <img
+      :alt="value.thumbnail"
+      :src="value.thumbnail"
+      class="thumbnail"
+    />
     <div class="control-container">
       <el-popover
+        :title="value.label"
         class="control-description"
         placement="top"
-        :title="value.label"
-        width="300"
         trigger="hover"
+        width="300"
       >
-        <div slot="reference" class="control-description">
+        <div
+          class="control-description"
+          slot="reference"
+        >
           <label>{{ value.label }}</label>
           <div class="description">{{ value.description }}</div>
         </div>
@@ -17,19 +24,28 @@
       </el-popover>
       <div class="control-button">
         <template v-if="isDownloaded">
-          <el-button :disabled="isSelected" type="text" size="mini" @click="select">设为壁纸</el-button>
+          <el-button
+            :disabled="isSelected"
+            @click="select"
+            size="mini"
+            type="text"
+          >设为壁纸</el-button>
         </template>
         <template v-else>
           <el-progress
-            v-if="percentage !== 0"
             :colors="colors"
-            type="circle"
-            :show-text="false"
-            width="20"
-            stroke-width="2"
             :percentage="percentage"
+            :show-text="false"
+            :stroke-width="2"
+            :width="20"
+            type="circle"
+            v-if="percentage !== 0"
           ></el-progress>
-          <el-button v-else type="text" @click="downloadVideo">下载到本地</el-button>
+          <el-button
+            @click="downloadVideo"
+            type="text"
+            v-else
+          >下载到本地</el-button>
         </template>
       </div>
     </div>
@@ -38,12 +54,19 @@
 
 <script>
 import renderer from './renderer'
-const { serverSDK } = window
+const { serverSDK, ipcRenderer } = window
+
 export default {
   extends: renderer,
   name: 'videoRenderer',
   data () {
+    const vm = this
     return {
+      onMediaProgress (e, data) {
+        if (data.url === vm.value.downloadUrl) {
+          vm.percentage = data.progress
+        }
+      },
       percentage: 0,
       colors: [
         { color: '#f56c6c', percentage: 20 },
@@ -61,11 +84,17 @@ export default {
   },
   methods: {
     downloadVideo () {
-      serverSDK.post('download', {
+      serverSDK.post('media/download', {
         category: this.category,
-        value: this.value
+        url: this.value.downloadUrl
       })
     }
+  },
+  created () {
+    ipcRenderer.on('media:progress', this.onMediaProgress)
+  },
+  beforeDestroy () {
+    ipcRenderer.off('media:progress', this.onMediaProgress)
   }
 }
 </script>
