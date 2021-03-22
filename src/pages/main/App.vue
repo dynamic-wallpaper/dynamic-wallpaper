@@ -60,6 +60,7 @@
 <script>
 import websiteConfig from '@/configs/website'
 import selectedIcon from './assets/selected.png'
+import throttle from 'lodash/throttle'
 const renderers = require.context('./components', false, /\.vue/)
 const { ipcRenderer, serverSDK } = window
 
@@ -72,6 +73,7 @@ export default {
     }))
   },
   data () {
+    const vm = this
     return {
       selectedIcon,
       sidebar: {
@@ -79,17 +81,30 @@ export default {
         textColor: '#ffffff',
         activeTextColor: '#6a6da9'
       },
-      categories: [
-        websiteConfig
-      ],
       targetCategory: '',
       selected: {
         url: '',
         key: ''
-      }
+      },
+      websiteCategory: websiteConfig,
+      mediaCategories: [],
+      /**
+       * 刷新本地数据
+       */
+      refreshMediaCategory: throttle(function (e, { progress }) {
+        if (progress === 100) {
+          vm.getMediaCategories()
+        }
+      }, 500)
     }
   },
   computed: {
+    categories ({ websiteCategory, mediaCategories }) {
+      return [
+        ...mediaCategories,
+        websiteCategory
+      ]
+    },
     category ({ targetCategory, categories }) {
       return categories.find(item => item.key === targetCategory) || {}
     },
@@ -101,6 +116,10 @@ export default {
     }
   },
   methods: {
+    async getMediaCategories () {
+      const { data } = await serverSDK.get('media/categories')
+      this.mediaCategories = data
+    },
     selectCategory (targetCategory) {
       this.targetCategory = targetCategory
       ipcRenderer.send('selectCategory', targetCategory)
@@ -112,11 +131,8 @@ export default {
     }
   },
   async created () {
-    const { data } = await serverSDK.get('media/categories')
-    this.categories = [
-      ...data,
-      ...this.categories
-    ]
+    await this.getMediaCategories()
+    ipcRenderer.on('media:progress', this.refreshMediaCategory)
   },
   async mounted () {
     ipcRenderer.on('selected', (e, key = '', url = '', category = '') => {

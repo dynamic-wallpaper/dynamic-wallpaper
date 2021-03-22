@@ -85,7 +85,6 @@ export default class {
    * @returns
    */
   downloadFile (url, onProgress, options = {}) {
-    console.log(url)
     const dl = new DownloaderHelper(encodeURI(url), this.rootDir, {
       override: true,
       fileName: path.basename(url),
