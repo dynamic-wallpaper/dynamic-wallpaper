@@ -79,7 +79,7 @@ export default {
   },
   computed: {
     isDownloaded ({ value }) {
-      return value.isDownloaded
+      return value.downloaded
     }
   },
   methods: {
