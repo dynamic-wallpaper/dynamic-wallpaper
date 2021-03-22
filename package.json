@@ -22,7 +22,6 @@
     "electron-store": "^7.0.2",
     "element-ui": "^2.14.1",
     "express": "^4.17.1",
-    "ffmpeg-static": "^4.2.7",
     "fluent-ffmpeg": "^2.1.2",
     "flv.js": "^1.5.0",
     "ipc-express": "^0.3.1",
