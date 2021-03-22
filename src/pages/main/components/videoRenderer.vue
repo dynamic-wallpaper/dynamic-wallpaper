@@ -80,7 +80,7 @@ export default {
   },
   computed: {
     isDownloaded ({ value }) {
-      return value.downloaded || this.percentage === 100
+      return value.isDownloaded || this.percentage === 100
     }
   },
   methods: {
