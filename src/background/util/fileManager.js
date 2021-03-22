@@ -7,10 +7,31 @@ import path from 'path'
 import { app } from 'electron'
 const { DownloaderHelper } = require('node-downloader-helper')
 
+const DOWNLOAD_NUMBER = 10
 export const BASE_PATH = path.join(app.getPath('userData'), 'resource')
 
 if (!fs.existsSync(BASE_PATH)) {
   fs.mkdirSync(BASE_PATH)
+}
+
+/**
+ * 下载队列
+ */
+const downloadQueue = new Map()
+
+function startDownload () {
+  let downloadingNumber = 0
+  for (const dl of downloadQueue.values()) {
+    if (downloadingNumber >= DOWNLOAD_NUMBER) {
+      break
+    }
+
+    const { state } = dl
+    if (state === 'IDLE') {
+      dl.start()
+    }
+    downloadingNumber++
+  }
 }
 
 export default class {
@@ -85,12 +106,18 @@ export default class {
    * @returns
    */
   downloadFile (url, onProgress, options = {}) {
-    const dl = new DownloaderHelper(encodeURI(url), this.rootDir, {
-      override: true,
-      fileName: `${path.basename(url)}.tmp`,
-      ...options
-    })
-    dl.start()
+    const filename = path.basename(url)
+    const key = path.join(this.rootDir, filename)
+
+    if (!downloadQueue.has(key)) {
+      downloadQueue.set(key, new DownloaderHelper(encodeURI(url), this.rootDir, {
+        override: true,
+        fileName: `${filename}.tmp`,
+        ...options
+      }))
+    }
+
+    const dl = downloadQueue.get(key)
     if (onProgress && typeof onProgress === 'function') {
       dl.on('progress.throttled', onProgress)
       dl.on('end', (data) => {
@@ -99,6 +126,11 @@ export default class {
         onProgress({
           progress: 100
         })
+        // 开始新一轮的下载
+        if (downloadQueue.has(key)) {
+          downloadQueue.delete(key)
+        }
+        startDownload()
       })
       dl.on('error', (e) => {
         fs.unlinkSync(dl.getDownloadPath())
@@ -106,8 +138,16 @@ export default class {
           progress: -1,
           data: e
         })
+        // 开始新一轮的下载
+        if (downloadQueue.has(key)) {
+          downloadQueue.delete(key)
+        }
+        startDownload()
       })
     }
+
+    startDownload()
+
     return dl
   }
 
