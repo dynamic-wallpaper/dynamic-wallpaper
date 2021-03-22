@@ -18,6 +18,7 @@ export async function getCategories () {
     value: videos.map(video => ({
       value: video.url,
       label: video.name,
+      md5: video.md5,
       downloadUrl: `${'https://media.githubusercontent.com/media/dynamic-wallpaper/video-wallpaper/main'}${video.url}`,
       thumbnail: `${url}${video.cover}`
     }))
