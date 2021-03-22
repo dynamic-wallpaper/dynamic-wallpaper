@@ -39,7 +39,7 @@
             :stroke-width="2"
             :width="20"
             type="circle"
-            v-if="percentage !== 0"
+            v-if="downloading"
           ></el-progress>
           <el-button
             @click="downloadVideo"
@@ -67,6 +67,7 @@ export default {
           vm.percentage = data.progress
         }
       },
+      downloading: false,
       percentage: 0,
       colors: [
         { color: '#f56c6c', percentage: 20 },
@@ -83,11 +84,17 @@ export default {
     }
   },
   methods: {
-    downloadVideo () {
-      serverSDK.post('media/download', {
-        category: this.category,
-        url: this.value.downloadUrl
-      })
+    async downloadVideo () {
+      this.downloading = true
+      try {
+        await serverSDK.post('media/download', {
+          category: this.category,
+          url: this.value.downloadUrl
+        })
+      } catch (e) {
+
+      }
+      this.downloading = false
     }
   },
   created () {
