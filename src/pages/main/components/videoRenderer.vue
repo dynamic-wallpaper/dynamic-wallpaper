@@ -1,10 +1,6 @@
 <template>
   <div class="renderer-container">
-    <img
-      :alt="value.thumbnail"
-      :src="value.thumbnail"
-      class="thumbnail"
-    />
+    <img :alt="value.thumbnail" :src="value.thumbnail" class="thumbnail" />
     <div class="control-container">
       <el-popover
         :title="value.label"
@@ -13,10 +9,7 @@
         trigger="hover"
         width="300"
       >
-        <div
-          class="control-description"
-          slot="reference"
-        >
+        <div class="control-description" slot="reference">
           <label>{{ value.label }}</label>
           <div class="description">{{ value.description }}</div>
         </div>
@@ -24,12 +17,7 @@
       </el-popover>
       <div class="control-button">
         <template v-if="isDownloaded">
-          <el-button
-            :disabled="isSelected"
-            @click="select"
-            size="mini"
-            type="text"
-          >设为壁纸</el-button>
+          <el-button :disabled="isSelected" @click="select" size="mini" type="text">设为壁纸</el-button>
         </template>
         <template v-else>
           <el-progress
@@ -41,11 +29,7 @@
             type="circle"
             v-if="downloading"
           ></el-progress>
-          <el-button
-            @click="downloadVideo"
-            type="text"
-            v-else
-          >下载到本地</el-button>
+          <el-button @click="downloadVideo" type="text" v-else>下载到本地</el-button>
         </template>
       </div>
     </div>
@@ -90,6 +74,7 @@ export default {
         await serverSDK.post('media/download', {
           category: this.category,
           url: this.value.downloadUrl,
+          label: this.value.label,
           md5: this.value.md5
         })
       } catch (e) {
