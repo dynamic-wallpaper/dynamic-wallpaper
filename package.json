@@ -30,7 +30,8 @@
     "node-downloader-helper": "^1.0.17",
     "node-media-server": "^2.2.4",
     "utf-8-validate": "^5.0.4",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
