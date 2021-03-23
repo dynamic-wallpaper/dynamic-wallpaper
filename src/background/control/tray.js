@@ -2,7 +2,6 @@ import { Menu, Tray, dialog } from 'electron'
 import { service } from '@/background/media/index'
 import { MEDIA_PROTOCOL } from '@/configs/protocol'
 import path from 'path'
-const ex = process.execPath
 let tray = null
 const context = {
   store: null,
@@ -56,10 +55,13 @@ function buildContextMenu () {
       type: 'checkbox',
       checked: openAtLogin,
       click () {
+        const exeName = path.basename(process.execPath)
         app.setLoginItemSettings({
           openAtLogin: !openAtLogin,
-          path: ex,
-          args: []
+          path: process.execPath,
+          args: [
+            '--processStart', `"${exeName}"`
+          ]
         })
         store.set('openAtLogin', !openAtLogin)
         buildContextMenu()
