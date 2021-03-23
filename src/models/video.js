@@ -19,6 +19,7 @@ export async function getCategories () {
       value: video.url,
       label: video.name,
       md5: video.md5,
+      description: video.description,
       downloadUrl: `${'https://media.githubusercontent.com/media/dynamic-wallpaper/video-wallpaper/main'}${video.url}`,
       thumbnail: `${url}${video.cover}`
     }))
