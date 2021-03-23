@@ -1,7 +1,5 @@
 import { protocol } from 'electron'
 import { MEDIA_PROTOCOL } from '@/configs/protocol'
-import { BASE_PATH } from '@/background/util/fileManager'
-import path from 'path'
 import fs from 'fs'
 
 export const PROTOCOL = MEDIA_PROTOCOL
@@ -17,11 +15,10 @@ export function registerProtocol () {
       /**
        * 从保存的地方获取
        */
-      const filePath = path.join(BASE_PATH, decodedUrl)
-      if (fs.existsSync(filePath)) {
-        callback(filePath)
+      if (fs.existsSync(decodedUrl)) {
+        callback(decodedUrl)
       } else {
-        throw new Error('no such file' + filePath)
+        throw new Error('no such file' + decodedUrl)
       }
     } catch (error) {
       console.error('ERROR: registerLocalResourceProtocol: Could not get file path:', error)

@@ -29,6 +29,9 @@ const store = new Store({
     },
     openAtLogin: {
       type: 'boolean'
+    },
+    lastSelectFileDirPath: {
+      type: 'string'
     }
   },
   defaults: {
@@ -37,7 +40,8 @@ const store = new Store({
       key: '',
       category: ''
     },
-    openAtLogin: false
+    openAtLogin: false,
+    lastSelectFileDirPath: app.getPath('home')
   }
 })
 

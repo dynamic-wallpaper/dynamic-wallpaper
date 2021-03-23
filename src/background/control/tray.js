@@ -1,10 +1,17 @@
-const { Menu, Tray } = require('electron')
+import { Menu, Tray, dialog } from 'electron'
+import { service } from '@/background/media/index'
+import { MEDIA_PROTOCOL } from '@/configs/protocol'
+import path from 'path'
 const ex = process.execPath
 let tray = null
 const context = {
   store: null,
   openControlBrowser: null,
   app: null
+}
+
+const separator = {
+  type: 'separator'
 }
 
 /**
@@ -21,6 +28,31 @@ function buildContextMenu () {
       }
     },
     {
+      label: '选择本地资源',
+      async click () {
+        const { canceled, filePaths } = await dialog.showOpenDialog({
+          title: '选择本地资源文件',
+          defaultPath: store.get('lastSelectFileDirPath') || app.getPath('home'),
+          buttonLabel: '打开',
+          filters: [{ name: '视频', extensions: ['mp4'] }],
+          properties: ['openFile']
+        })
+        if (!canceled) {
+          const [filePath] = filePaths
+          store.set('lastSelectFileDirPath', path.dirname(filePath))
+          /**
+           * store更新
+           */
+          const resourceFilePath = `${MEDIA_PROTOCOL}://${filePath}`
+          store.set('selected.key', '')
+          store.set('selected.url', resourceFilePath)
+          console.log(resourceFilePath)
+          service.setUrl(resourceFilePath)
+        }
+      }
+    },
+    separator,
+    {
       label: '开机自启动',
       type: 'checkbox',
       checked: openAtLogin,
@@ -34,9 +66,7 @@ function buildContextMenu () {
         buildContextMenu()
       }
     },
-    {
-      type: 'separator'
-    },
+    separator,
     {
       label: '退出',
       click () {

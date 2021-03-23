@@ -4,7 +4,7 @@
 import { service as mediaService } from '@/background/media'
 import { MEDIA_PROTOCOL } from '@/configs/protocol'
 import sdk from '@/background/util/sdk'
-import FileManager from '@/background/util/fileManager'
+import FileManager, { BASE_PATH } from '@/background/util/fileManager'
 import videoModel from '@/models/video'
 import path from 'path'
 import { Notification } from 'electron'
@@ -27,11 +27,9 @@ export default async function (context) {
        */
       const fileManager = categoryMap.get(category.key)
       const { structure } = fileManager
-      /**
-       * 是否已下载完成
-       */
+
       category.value.forEach(video => {
-        video.value = `${MEDIA_PROTOCOL}://${video.value}`
+        video.value = `${MEDIA_PROTOCOL}://${path.join(BASE_PATH, video.value)}`
         const fileName = path.basename(video.value)
         /**
          * 校验文件，正确的保留
