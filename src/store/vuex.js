@@ -13,7 +13,15 @@ export default function (ipcRenderer) {
       }
     },
     plugins: [(store) => {
-      console.log(store, ipcRenderer)
+      ipcRenderer.send('vuex:init')
+      store.subscribe((mutation, state) => {
+        // 每次 mutation 之后调用
+        // mutation 的格式为 { type, payload }
+        console.log(mutation, state, ipcRenderer)
+      })
+      ipcRenderer.on('vuex:mutation', (e, a) => {
+        console.log(a)
+      })
     }]
   })
 }
