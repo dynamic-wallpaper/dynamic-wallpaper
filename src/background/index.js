@@ -26,6 +26,9 @@ const store = new Store({
           default: ''
         }
       }
+    },
+    openAtLogin: {
+      type: 'boolean'
     }
   },
   defaults: {
@@ -33,7 +36,8 @@ const store = new Store({
       url: '',
       key: '',
       category: ''
-    }
+    },
+    openAtLogin: false
   }
 })
 
