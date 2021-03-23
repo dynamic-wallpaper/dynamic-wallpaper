@@ -61,7 +61,7 @@
 import websiteConfig from '@/configs/website'
 import selectedIcon from './assets/selected.png'
 import throttle from 'lodash/throttle'
-const renderers = require.context('./components', false, /\.vue/)
+const renderers = require.context('./renderer', false, /\.vue/)
 const { ipcRenderer, serverSDK } = window
 
 export default {

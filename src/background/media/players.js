@@ -1,10 +1,11 @@
-import { screen } from 'electron'
+import { screen, ipcMain, BrowserWindow } from 'electron'
 import createBrowser from '@/background/util/browser'
 import { OFFSET } from '@/configs/players'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 function setUrl (win, url) {
-  return win.webContents.send('setUrl', url)
+  const webContents = win instanceof BrowserWindow ? win.webContents : win
+  return webContents.send('player:setUrl', url)
 }
 
 /**
@@ -99,6 +100,10 @@ export default class Players {
     if (isDevelopment) {
       displays = [screen.getPrimaryDisplay()]
     }
+
+    ipcMain.on('player:getUrl', (e) => {
+      setUrl(e.sender, this.url)
+    })
 
     return Promise.all(displays.map(display => this.createPlayer(display)))
   }
