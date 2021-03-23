@@ -46,7 +46,6 @@ function buildContextMenu () {
           const resourceFilePath = `${MEDIA_PROTOCOL}://${filePath}`
           store.set('selected.key', '')
           store.set('selected.url', resourceFilePath)
-          console.log(resourceFilePath)
           service.setUrl(resourceFilePath)
         }
       }
