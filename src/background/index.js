@@ -3,47 +3,10 @@ import './util/log'
 import { app, protocol, BrowserWindow } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
-import Store from 'electron-store'
 import createMediaService from './media'
 import createControlBrowser from './control'
+import store from '@/store'
 const isDevelopment = process.env.NODE_ENV !== 'production'
-
-const store = new Store({
-  schema: {
-    selected: {
-      type: 'object',
-      properties: {
-        key: {
-          type: 'string',
-          default: ''
-        },
-        url: {
-          type: 'string',
-          default: ''
-        },
-        category: {
-          type: 'string',
-          default: ''
-        }
-      }
-    },
-    openAtLogin: {
-      type: 'boolean'
-    },
-    lastSelectFileDirPath: {
-      type: 'string'
-    }
-  },
-  defaults: {
-    selected: {
-      url: '',
-      key: '',
-      category: ''
-    },
-    openAtLogin: false,
-    lastSelectFileDirPath: app.getPath('home')
-  }
-})
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
