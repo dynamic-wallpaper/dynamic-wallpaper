@@ -1,15 +1,13 @@
 <template>
   <div id="app">
-    <div class="empty" v-if="!renderer">出错啦</div>
+    <div
+      class="empty"
+      v-if="!renderer"
+    >出错啦</div>
     <component
       :is="renderer"
-      muted
       :src="url"
-      autoplay
-      loop
-      frameborder="no"
-      border="0"
-      scrolling="no"
+      class="renderer"
     />
   </div>
 </template>
@@ -17,18 +15,31 @@
 <script>
 import { MEDIA_PROTOCOL } from '../../configs/protocol'
 const ipcRenderer = window.ipcRenderer
+const renderers = require.context('./renderer', false, /\.vue/)
 
 const RENDER = {
-  [MEDIA_PROTOCOL]: 'video',
-  http: 'iframe',
-  https: 'iframe'
+  [MEDIA_PROTOCOL]: 'videoRenderer',
+  http: 'websiteRenderer',
+  https: 'websiteRenderer'
 }
 
 export default {
   name: 'App',
+  components: {
+    ...Object.fromEntries(renderers.keys().map(key => {
+      const component = renderers(key).default
+      return [component.name, component]
+    }))
+  },
   data () {
     return {
-      url: ''
+      url: '',
+      style: {
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0
+      }
     }
   },
   computed: {
@@ -37,11 +48,11 @@ export default {
       return RENDER[protocol]
     }
   },
-  components: {},
   created () {
-    ipcRenderer.on('setUrl', (e, url) => {
+    ipcRenderer.on('player:setUrl', (e, url) => {
       this.url = url
     })
+    ipcRenderer.send('player:getUrl')
   }
 }
 </script>
@@ -61,16 +72,11 @@ body,
   position: relative;
 }
 
-#app > iframe,
-#app > video {
+.renderer {
   min-width: 100%;
   min-height: 100%;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  margin: auto;
+  width: 100%;
+  height: 100%;
 }
 
 #app .empty {
