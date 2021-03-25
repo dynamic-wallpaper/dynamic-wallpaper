@@ -2,22 +2,13 @@
   <el-container id="app">
     <el-aside class="side-bar">
       <el-menu
-        :default-active="targetCategory"
+        :default-active="selected.category"
         @select="selectCategory"
         class="side-bar"
         v-bind="sidebar"
       >
-        <el-menu-item
-          :index="category.key"
-          :key="category.key"
-          v-for="category of categories"
-        >
-          <el-tooltip
-            :content="category.label"
-            class="item"
-            effect="dark"
-            placement="right"
-          >
+        <el-menu-item :index="category.key" :key="category.key" v-for="category of categories">
+          <el-tooltip :content="category.label" class="item" effect="dark" placement="right">
             <div class="category-label">{{ category.label }}</div>
           </el-tooltip>
         </el-menu-item>
@@ -26,7 +17,7 @@
 
     <el-container>
       <!-- <el-header></el-header> -->
-      <el-main :key="targetCategory">
+      <el-main :key="selected.category">
         <div class="option-container">
           <el-card
             :class="{option: true}"
@@ -36,15 +27,12 @@
             v-for="(option, index) of options"
           >
             <!-- 选中标签 -->
-            <div
-              class="selected"
-              v-if="selected.key === option.value"
-            >
+            <div class="selected" v-if="selected.key === option.value">
               <img :src="selectedIcon" />
             </div>
             <!-- 渲染 -->
             <component
-              :category="targetCategory"
+              :category="selected.category"
               :is="renderer"
               :selected="selected"
               :value="option"
@@ -81,8 +69,8 @@ export default {
         textColor: '#ffffff',
         activeTextColor: '#6a6da9'
       },
-      targetCategory: '',
       selected: {
+        category: '',
         url: '',
         key: ''
       },
@@ -105,8 +93,8 @@ export default {
         websiteCategory
       ]
     },
-    category ({ targetCategory, categories }) {
-      return categories.find(item => item.key === targetCategory) || {}
+    category ({ selected, categories }) {
+      return categories.find(item => item.key === selected.category) || {}
     },
     options ({ category }) {
       return category.value || []
@@ -121,7 +109,7 @@ export default {
       this.mediaCategories = data
     },
     selectCategory (targetCategory) {
-      this.targetCategory = targetCategory
+      this.selected.category = targetCategory
       ipcRenderer.send('selectCategory', targetCategory)
     },
     selectOption (key, url) {
@@ -138,9 +126,9 @@ export default {
     ipcRenderer.on('selected', (e, key = '', url = '', category = '') => {
       this.selected = {
         key,
-        url
+        url,
+        category: category || this.categories[0].key
       }
-      this.targetCategory = category || this.categories[0].key
     })
   }
 }

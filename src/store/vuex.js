@@ -37,7 +37,7 @@ export default function (ipcRenderer) {
        * 像后台推送变化
        */
       store.subscribe((mutation, state) => {
-        if (mutation.includes('vuex:sync')) {
+        if (mutation.type === 'vuex:sync') {
           return
         }
 
