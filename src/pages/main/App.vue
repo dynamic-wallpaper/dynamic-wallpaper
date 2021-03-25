@@ -69,11 +69,6 @@ export default {
         textColor: '#ffffff',
         activeTextColor: '#6a6da9'
       },
-      selected: {
-        category: '',
-        url: '',
-        key: ''
-      },
       websiteCategory: websiteConfig,
       mediaCategories: [],
       /**
@@ -101,6 +96,15 @@ export default {
     },
     renderer ({ category }) {
       return category.renderer || 'renderer'
+    },
+    selected: {
+      get ({ $store }) {
+        return $store.state.selected
+      },
+      set (selected) {
+        console.log('set', selected)
+        this.$store.commit('set:selected', selected)
+      }
     }
   },
   methods: {
@@ -108,9 +112,11 @@ export default {
       const { data } = await serverSDK.get('media/categories')
       this.mediaCategories = data
     },
-    selectCategory (targetCategory) {
-      this.selected.category = targetCategory
-      ipcRenderer.send('selectCategory', targetCategory)
+    selectCategory (category) {
+      this.selected = {
+        ...this.selected,
+        category
+      }
     },
     selectOption (key, url) {
       this.selected.key = key
@@ -121,15 +127,6 @@ export default {
   async created () {
     await this.getMediaCategories()
     ipcRenderer.on('media:progress', this.refreshMediaCategory)
-  },
-  async mounted () {
-    ipcRenderer.on('selected', (e, key = '', url = '', category = '') => {
-      this.selected = {
-        key,
-        url,
-        category: category || this.categories[0].key
-      }
-    })
   }
 }
 </script>

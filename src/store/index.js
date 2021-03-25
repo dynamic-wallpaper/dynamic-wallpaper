@@ -29,9 +29,31 @@ const store = new Store({
   }
 })
 
-store.onDidAnyChange((newValue, oldValue) => {
-  console.log('store change', newValue, oldValue)
-})
+/**
+ * electron-store变化的回调
+ * @param {Object} state
+ * @param {Electron.WebContents} [ignoreSender]
+ */
+const storeChangeHandler = function (state, ignoreSender) {
+  senderSet.forEach((sender) => {
+    if (!ignoreSender || sender.id !== ignoreSender.id) {
+      if (sender.isDestroyed()) {
+        senderSet.delete(sender)
+      } else {
+        sender.send(EVENT.SYNC, state)
+      }
+    }
+  })
+}
+
+const subscribeStoreChange = function () {
+  return store.onDidAnyChange((state) => {
+    storeChangeHandler(state)
+  })
+}
+
+// 解除监听
+let unsubscribeStoreChange = subscribeStoreChange()
 
 export default function () {
   /**
@@ -42,19 +64,14 @@ export default function () {
     sender.send(EVENT.SYNC, store.store)
   })
   ipcMain.on(EVENT.SYNC, ({ sender }, state) => {
-    store.store = state
     /**
-     * @type {Electron.WebContents}
+     * 如果是从页面开始进行同步的化，需要先让store停止监听，整体修改之后再进行监听
+     * @todo 有多窗口同时处罚的隐患
      */
-    senderSet.forEach((_sender) => {
-      if (_sender.id !== sender.id) {
-        if (_sender.isDestroyed()) {
-          senderSet.delete(_sender)
-        } else {
-          _sender.send(EVENT.SYNC, state)
-        }
-      }
-    })
+    unsubscribeStoreChange()
+    store.store = state
+    storeChangeHandler(state, sender)
+    unsubscribeStoreChange = subscribeStoreChange()
   })
   return store
 }
