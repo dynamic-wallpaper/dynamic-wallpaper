@@ -25,10 +25,6 @@ async function createControlBrowser (store) {
     win = await createBrowser()
     context.win = win
     win.moveTop()
-    const selected = store.get('selected')
-    win.on('ready-to-show', () => {
-      win.webContents.send('selected', selected.key, selected.url)
-    })
   } else {
     win.show()
   }
@@ -59,10 +55,6 @@ function initIpc (store, mediaService) {
     mediaService.setUrl(url)
     store.set('selected.key', key)
     store.set('selected.url', url)
-  })
-
-  ipcMain.on('selectCategory', (e, cateogry) => {
-    store.set('selected.category', cateogry)
   })
 }
 
