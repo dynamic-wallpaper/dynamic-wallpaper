@@ -1,26 +1,19 @@
 <template>
   <div id="app">
-    <div
-      class="empty"
-      v-if="!renderer"
-    >出错啦</div>
-    <component
-      :is="renderer"
-      :src="url"
-      class="renderer"
-    />
+    <component :is="renderer" :src="url" class="renderer" />
   </div>
 </template>
 
 <script>
-import { MEDIA_PROTOCOL } from '../../configs/protocol'
+import { MEDIA_PROTOCOL } from '@/configs/protocol'
 const ipcRenderer = window.ipcRenderer
 const renderers = require.context('./renderer', false, /\.vue/)
 
 const RENDER = {
   [MEDIA_PROTOCOL]: 'videoRenderer',
   http: 'websiteRenderer',
-  https: 'websiteRenderer'
+  https: 'websiteRenderer',
+  '': 'canvasRenderer'
 }
 
 export default {
@@ -50,7 +43,7 @@ export default {
   },
   created () {
     ipcRenderer.on('player:setUrl', (e, url) => {
-      this.url = url
+      this.url = url || ''
     })
     ipcRenderer.send('player:getUrl')
   }
