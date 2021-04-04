@@ -102,7 +102,6 @@ export default {
         return $store.state.selected
       },
       set (selected) {
-        console.log('set', selected)
         this.$store.commit('set:selected', selected)
       }
     }

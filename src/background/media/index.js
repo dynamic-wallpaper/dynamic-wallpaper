@@ -4,6 +4,7 @@
  */
 import Players from './players'
 import createMediaProtocol from './protocol'
+import mediaService from './mediaServer'
 
 let players = null
 
@@ -13,7 +14,9 @@ export function setUrl (url) {
   if (!players) {
     return
   }
-  players.setUrl(url)
+  mediaService.setCurrent(url)
+  players.setUrl('')
+  // players.setUrl(url)
 }
 
 /**
@@ -35,6 +38,7 @@ export default function (app, store) {
   const defaultUrl = store.get('selected').url
   createMediaProtocol()
   players = new Players()
+  mediaService.setPlayers(players)
   service.setUrl(defaultUrl)
 
   return service
