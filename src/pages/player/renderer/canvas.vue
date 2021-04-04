@@ -56,7 +56,7 @@ export default {
     }, 100),
     draw (base64) {
       const src = 'data:image/jpeg;base64,' + base64
-      const img = new Image()
+      let img = new Image()
       img.src = src
       img.onload = () => {
         const { drawImageArgs, screen } = this
@@ -70,6 +70,7 @@ export default {
         canvas.height = offsetHeight
 
         context.drawImage(img, ...drawImageArgs)
+        img = null
       }
     }
   },
