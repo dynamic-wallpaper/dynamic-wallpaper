@@ -5,6 +5,7 @@ import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 import createMediaService from './media'
 import createControlBrowser from './control'
+import createProxy from './control/proxy'
 import createStore from '@/store'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -44,6 +45,7 @@ app.on('ready', async () => {
     }
   }
   createProtocol('app')
+  createProxy()
 
   /**
    * 桌面背景

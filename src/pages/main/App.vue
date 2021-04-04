@@ -49,6 +49,7 @@
 import websiteConfig from '@/configs/website'
 import selectedIcon from './assets/selected.png'
 import throttle from 'lodash/throttle'
+import bilibiliModels from '@/models/bilibili'
 const renderers = require.context('./renderer', false, /\.vue/)
 const { ipcRenderer, serverSDK } = window
 
@@ -124,6 +125,8 @@ export default {
     }
   },
   async created () {
+    bilibiliModels.search('1')
+
     await this.getMediaCategories()
     ipcRenderer.on('media:progress', this.refreshMediaCategory)
   }

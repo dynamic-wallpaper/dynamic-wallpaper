@@ -5,7 +5,6 @@ import { service as mediaService } from '@/background/media'
 import { MEDIA_PROTOCOL } from '@/configs/protocol'
 import sdk from '@/background/util/sdk'
 import FileManager, { BASE_PATH } from '@/background/util/fileManager'
-import videoModel from '@/models/video'
 import path from 'path'
 import { Notification } from 'electron'
 // import MD5 from 'md5'
@@ -13,7 +12,7 @@ import { Notification } from 'electron'
 export default async function (context) {
   sdk.get('media/categories', async (req, res) => {
     const categoryMap = mediaService.categoryMap
-    const categories = await videoModel.getCategories()
+    const categories = []
     /**
          * 创建category对应的文件
          */
