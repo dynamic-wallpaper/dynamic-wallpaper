@@ -8,6 +8,11 @@ function setUrl (win, url) {
   return webContents.send('player:setUrl', url)
 }
 
+function sendFrame (win, frame) {
+  const webContents = win instanceof BrowserWindow ? win.webContents : win
+  return webContents.send('player:frame', frame)
+}
+
 /**
  * 播放器列表
  */
@@ -87,6 +92,11 @@ export default class Players {
         this.destoryPlayer(display)
         this.createPlayer(display)
       })
+
+      ipcMain.on('player:getUrl', (e) => {
+        setUrl(e.sender, this.url)
+      })
+
       this.isInit = true
     }
 
@@ -101,11 +111,17 @@ export default class Players {
       displays = [screen.getPrimaryDisplay()]
     }
 
-    ipcMain.on('player:getUrl', (e) => {
-      setUrl(e.sender, this.url)
-    })
-
     return Promise.all(displays.map(display => this.createPlayer(display)))
+  }
+
+  async sendFrame (frame) {
+    const { playerMap } = this
+    if (playerMap.size === 0) {
+      await this.createPlayers()
+    }
+    for (const win of playerMap.values()) {
+      sendFrame(win, frame)
+    }
   }
 
   async setUrl (url) {
