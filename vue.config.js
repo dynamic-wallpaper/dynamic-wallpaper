@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 module.exports = {
   pages: {
     index: 'src/pages/main/index.js',
@@ -9,21 +10,9 @@ module.exports = {
       preload: 'src/pages/preload.js',
       mainProcessFile: 'src/background/index.js',
       mainProcessWatch: ['src/background/**/*'],
-      chainWebpackMainProcess: (config) => {
-        config.plugin('define').tap(definitions => {
-          definitions[0] = {
-            ...definitions[0],
-            'process.env.FLUENTFFMPEG_COV': false
-          }
-          return definitions
-        })
-      },
       builderOptions: {
-        // eslint-disable-next-line no-template-curly-in-string
-        artifactName: '${productName}-${version}-${os}-${arch}.${ext}',
-        // extraFiles: [
-        //   './node_modules/ffmpeg-static/ffmpeg*'
-        // ],
+        artifactName: '${productName}-${version}-${platform}-${arch}.${ext}',
+        extraResources: ['./ffmpeg/${platform}-${arch}'],
         mac: {
           icon: './public/icons/mac/icon.icns',
           target: {
