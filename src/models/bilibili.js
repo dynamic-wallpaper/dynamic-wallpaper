@@ -1,20 +1,16 @@
 /**
  * b站接口
  */
-import requester from './requester'
-// const requesterInstance = requester.create({
-//   baseURL: 'https://api.bilibili.com',
-//   transformRequest (data) {
-//     console.log(data)
-//     return data
-//   }
-// })
+import axios from 'axios'
+const requester = axios.create({
+  baseURL: 'https://api.bilibili.com'
+})
 
 export default {
-  search (keyword = '') {
-    return requester.get('https://api.bilibili.com/x/web-interface/search/all/v2', {
+  getUserVideos (mid) {
+    return requester.get('/x/space/arc/search', {
       params: {
-        keyword: encodeURIComponent(keyword)
+        mid
       }
     })
   }

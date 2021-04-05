@@ -5,6 +5,7 @@
 import Players from './players'
 import createMediaProtocol from './protocol'
 import mediaService from './mediaServer'
+import { MEDIA_PROTOCOL } from '@/configs/protocol'
 
 let players = null
 
@@ -14,9 +15,18 @@ export function setUrl (url) {
   if (!players) {
     return
   }
-  mediaService.setCurrent(url)
-  players.setUrl('')
-  // players.setUrl(url)
+  const protocol = url.replace(/:\/\/.*/, '')
+  switch (protocol) {
+    case MEDIA_PROTOCOL: {
+      mediaService.setCurrent(url)
+      players.setUrl('')
+      break
+    }
+    default: {
+      mediaService.abort()
+      players.setUrl(url)
+    }
+  }
 }
 
 /**

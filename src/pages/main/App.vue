@@ -50,6 +50,7 @@ import websiteConfig from '@/configs/website'
 import selectedIcon from './assets/selected.png'
 import throttle from 'lodash/throttle'
 import bilibiliModels from '@/models/bilibili'
+import { UP } from '@/configs/bilibili'
 const renderers = require.context('./renderer', false, /\.vue/)
 const { ipcRenderer, serverSDK } = window
 
@@ -125,7 +126,8 @@ export default {
     }
   },
   async created () {
-    bilibiliModels.search('1')
+    const category = await bilibiliModels.getUserVideos(UP.鹿鸣)
+    console.log(category)
 
     await this.getMediaCategories()
     ipcRenderer.on('media:progress', this.refreshMediaCategory)
