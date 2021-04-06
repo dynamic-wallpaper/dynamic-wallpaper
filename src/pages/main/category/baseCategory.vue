@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-infinite-scroll="loadMore">
     <template v-if="list.length > 0">
       <template v-for="item of list">
         <slot :data="item" />
@@ -34,6 +34,9 @@ export default {
     return {
       list: [...defaultValue]
     }
+  },
+  methods: {
+    loadMore () {}
   }
 }
 </script>

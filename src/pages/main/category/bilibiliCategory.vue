@@ -1,16 +1,3 @@
-<template>
-  <div>
-    <template v-if="list.length > 0">
-      <template v-for="item of list">
-        <slot :data="item" />
-      </template>
-      <el-pagination :total="totalNumber" :current-page="pageNumer" :page-size="pageSize" layout></el-pagination>
-    </template>
-    <div v-else class="empty">
-      <em class="el-icon-box" />暂无内容,敬请期待
-    </div>
-  </div>
-</template>
 <script>
 /**
  * b站视频分类
@@ -22,9 +9,9 @@ export default {
   name: 'bilibiliCategoryRenderer',
   data () {
     return {
-      pageNumer: 1,
+      pageNumer: 0,
       pageSize: 30,
-      totalNumber: 0
+      totalNumber: 99999
     }
   },
   computed: {
@@ -34,6 +21,12 @@ export default {
     }
   },
   methods: {
+    loadMore () {
+      this.pageNumer++
+      if (this.pageNumer * this.pageNumer < this.totalNumber) {
+        this.fetchList(this.pageNumer)
+      }
+    },
     async fetchList (pageNum = 1) {
       const { data } = await bilibiliModels.getUserVideos(this.mid, pageNum)
       const { list, page } = data
@@ -41,17 +34,17 @@ export default {
       this.pageNumer = page.pn
 
       list.vlist.forEach(video => {
-        this.list.push({
-          thumbnail: `https:${video.pic}`,
-          label: video.title,
-          description: video.description,
-          downloadUrl: video.bvid
-        })
+        if (!this.list.find(item => item.id === video.bvid)) {
+          this.list.push({
+            id: video.bvid,
+            thumbnail: `https:${video.pic}`,
+            label: video.title,
+            description: video.description,
+            downloadUrl: video.bvid
+          })
+        }
       })
     }
-  },
-  mounted () {
-    this.fetchList()
   }
 }
 </script>
