@@ -7,11 +7,14 @@ const requester = axios.create({
 })
 
 export default {
-  getUserVideos (mid) {
+  getUserVideos (mid, pageNumber = 1) {
     return requester.get('/x/space/arc/search', {
       params: {
-        mid
+        mid,
+        pn: pageNumber,
+        ps: 30
       }
     })
+      .then(res => res.data)
   }
 }

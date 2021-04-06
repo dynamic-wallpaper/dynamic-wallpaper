@@ -17,17 +17,16 @@
 
     <el-container>
       <!-- <el-header></el-header> -->
-      <el-main :key="selected.category">
-        <div class="option-container">
+      <el-main :key="selected.category" v-if="category">
+        <component :is="categoryRenderer" :videos="category.value" class="option-container">
           <el-card
-            :class="{option: true}"
-            :key="index"
+            class="option"
             body-style="padding: 0;height: 100%;"
             shadow="hover"
-            v-for="(option, index) of options"
+            slot-scope="{data}"
           >
             <!-- 选中标签 -->
-            <div class="selected" v-if="selected.key === option.value">
+            <div class="selected" v-if="selected.key === data.value">
               <img :src="selectedIcon" />
             </div>
             <!-- 渲染 -->
@@ -35,11 +34,11 @@
               :category="selected.category"
               :is="renderer"
               :selected="selected"
-              :value="option"
+              :value="data"
               @select="selectOption"
             />
           </el-card>
-        </div>
+        </component>
       </el-main>
     </el-container>
   </el-container>
@@ -49,19 +48,26 @@
 import websiteConfig from '@/configs/website'
 import selectedIcon from './assets/selected.png'
 import throttle from 'lodash/throttle'
-import bilibiliModels from '@/models/bilibili'
-import { UP } from '@/configs/bilibili'
+// import { UP } from '@/configs/bilibili'
 const renderers = require.context('./renderer', false, /\.vue/)
+const categorys = require.context('./category', false, /\.vue/)
 const { ipcRenderer, serverSDK } = window
 
 export default {
   name: 'App',
-  components: {
-    ...Object.fromEntries(renderers.keys().map(key => {
+  components: Object.assign(
+    {},
+    // 选择器的渲染器
+    Object.fromEntries(renderers.keys().map(key => {
       const component = renderers(key).default
       return [component.name, component]
+    })),
+    // 分类加载器
+    Object.fromEntries(categorys.keys().map(key => {
+      const component = categorys(key).default
+      return [component.name, component]
     }))
-  },
+  ),
   data () {
     const vm = this
     return {
@@ -96,6 +102,9 @@ export default {
     options ({ category }) {
       return category.value || []
     },
+    categoryRenderer ({ category }) {
+      return category.categoryRenderer || 'baseCategoryRenderer'
+    },
     renderer ({ category }) {
       return category.renderer || 'renderer'
     },
@@ -126,10 +135,7 @@ export default {
     }
   },
   async created () {
-    const category = await bilibiliModels.getUserVideos(UP.鹿鸣)
-    console.log(category)
-
-    await this.getMediaCategories()
+    // await this.getMediaCategories()
     ipcRenderer.on('media:progress', this.refreshMediaCategory)
   }
 }
