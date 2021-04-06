@@ -141,6 +141,9 @@ export default {
       ipcRenderer.send('selectResource', key, url)
     }
   },
+  async destroyed () {
+    ipcRenderer.off('media:progress', this.refreshMediaCategory)
+  },
   async created () {
     // await this.getMediaCategories()
     ipcRenderer.on('media:progress', this.refreshMediaCategory)

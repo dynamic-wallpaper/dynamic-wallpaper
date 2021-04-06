@@ -1,6 +1,11 @@
 <template>
   <div class="renderer-container">
-    <img :alt="value.thumbnail" :src="value.thumbnail" class="thumbnail" />
+    <img
+      :alt="value.thumbnail"
+      :src="value.thumbnail"
+      class="thumbnail"
+      referrerpolicy="no-referrer"
+    />
     <div class="control-container">
       <el-popover
         :title="value.label"
