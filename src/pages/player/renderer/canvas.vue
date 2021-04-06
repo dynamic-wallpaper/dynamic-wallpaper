@@ -1,5 +1,5 @@
 <template>
-  <canvas style="width: 100%; height: 100%;" ref="canvas" />
+  <canvas ref="canvas" style="width: 100%; height: 100%;" />
 </template>
 
 <script>
@@ -55,6 +55,7 @@ export default {
       this.screen.offsetHeight = offsetHeight
     }, 100),
     draw (base64) {
+      // URL.createObjectURL(new Blob(arrayBuffer))
       const src = 'data:image/jpeg;base64,' + base64
       let img = new Image()
       img.src = src
@@ -71,6 +72,7 @@ export default {
 
         context.drawImage(img, ...drawImageArgs)
         img = null
+        // URL.revokeObjectURL()
       }
     }
   },

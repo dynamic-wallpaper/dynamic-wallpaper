@@ -22,7 +22,9 @@ export const context = {
 async function createControlBrowser (store) {
   let win = context.win
   if (!win || win.isDestroyed()) {
-    win = await createBrowser()
+    win = await createBrowser('index.html', {
+      webPreferences: { webSecurity: false }
+    })
     context.win = win
     win.moveTop()
   } else {
