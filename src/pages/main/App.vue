@@ -18,7 +18,7 @@
     <el-container>
       <!-- <el-header></el-header> -->
       <el-main :key="selected.category" v-if="category">
-        <component :is="categoryRenderer" :videos="category.value" class="option-container">
+        <component :is="categoryRenderer" :category="category" class="option-container">
           <el-card
             class="option"
             body-style="padding: 0;height: 100%;"
@@ -48,7 +48,7 @@
 import websiteConfig from '@/configs/website'
 import selectedIcon from './assets/selected.png'
 import throttle from 'lodash/throttle'
-// import { UP } from '@/configs/bilibili'
+import { UP } from '@/configs/bilibili'
 const renderers = require.context('./renderer', false, /\.vue/)
 const categorys = require.context('./category', false, /\.vue/)
 const { ipcRenderer, serverSDK } = window
@@ -92,6 +92,13 @@ export default {
   computed: {
     categories ({ websiteCategory, mediaCategories }) {
       return [
+        // b站的标签
+        ...Object.entries(UP).map(([label, mid]) => ({
+          label,
+          key: `bilibiliUp${mid}`,
+          renderer: 'videoRenderer',
+          categoryRenderer: 'bilibiliCategoryRenderer'
+        })),
         ...mediaCategories,
         websiteCategory
       ]
