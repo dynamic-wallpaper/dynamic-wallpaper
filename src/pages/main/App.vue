@@ -187,6 +187,7 @@ body,
 .option-container {
   width: 100%;
   height: 100%;
+  padding-bottom: 60px;
   overflow-y: auto;
   display: flex;
   flex-wrap: wrap;

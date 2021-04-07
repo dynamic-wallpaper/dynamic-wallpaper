@@ -104,7 +104,7 @@ export default {
   }
 
   &:hover {
-    height: 300px;
+    height: 320px;
 
     .control-description {
       label {
