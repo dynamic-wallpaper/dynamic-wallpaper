@@ -3,9 +3,10 @@
  * b站专用视频下载助手
  */
 import { PROTOCOL } from '@/configs/bilibili'
-import { protocol } from 'electron'
 
 const regexp = new RegExp(`^${PROTOCOL}:\/\/`)
+
+export const BILIBILI_PROTOCOL = PROTOCOL
 
 /**
  * 获取bvid
@@ -13,13 +14,7 @@ const regexp = new RegExp(`^${PROTOCOL}:\/\/`)
  * @returns
  */
 export const decodeUrl = function (sourceUrl = '') {
-  const bvid = sourceUrl.replace(regexp, '')
+  const bvid = sourceUrl.replace(regexp, '').replace('.mp4', '')
+  console.log(bvid)
   return bvid
-}
-
-export default function () {
-  protocol.registerStringProtocol(PROTOCOL, (request, callback) => {
-    const bvid = request
-    callback(bvid)
-  })
 }

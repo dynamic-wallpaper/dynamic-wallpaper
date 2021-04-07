@@ -41,7 +41,7 @@ export default {
             thumbnail: `https:${video.pic}`,
             label: video.title,
             description: video.description,
-            downloadUrl: `${PROTOCOL}://${video.bvid}`
+            downloadUrl: `${PROTOCOL}://${video.bvid}.mp4`
           })
         }
       })
