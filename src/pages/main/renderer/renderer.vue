@@ -58,7 +58,7 @@ export default {
 }
 
 .control-container {
-  padding: 4px;
+  padding: 8px;
   box-sizing: border-box;
   display: flex;
   width: 100%;

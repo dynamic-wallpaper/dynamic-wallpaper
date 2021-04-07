@@ -192,7 +192,7 @@ body,
 .option {
   width: 260px;
   flex-grow: 0;
-  height: 260px;
+  height: 268px;
   position: relative;
   margin: 8px;
 }
