@@ -107,6 +107,7 @@ export default class {
    */
   downloadFile (url, onProgress, options = {}) {
     const filename = path.basename(url)
+    console.log('111', filename)
     const key = path.join(this.rootDir, filename)
 
     if (!downloadQueue.has(key)) {
@@ -133,6 +134,7 @@ export default class {
         startDownload()
       })
       dl.on('error', (e) => {
+        console.log('error', e)
         fs.unlinkSync(dl.getDownloadPath())
         onProgress({
           progress: -1,

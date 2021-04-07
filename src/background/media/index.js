@@ -4,6 +4,7 @@
  */
 import Players from './players'
 import createMediaProtocol from './protocol'
+import createBilibiliProtocol from './bilibili'
 import mediaService from './mediaServer'
 import { MEDIA_PROTOCOL } from '@/configs/protocol'
 
@@ -46,7 +47,10 @@ export default function (app, store) {
     return false
   }
   const defaultUrl = store.get('selected').url
+  // 注册获取视频文件的protocol
   createMediaProtocol()
+  // 注册自动下载b站文件的protocol
+  createBilibiliProtocol()
   players = new Players()
   mediaService.setPlayers(players)
   service.setUrl(defaultUrl)

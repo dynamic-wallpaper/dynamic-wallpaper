@@ -4,6 +4,7 @@
  */
 import baseCategoryRenderer from './baseCategory'
 import bilibiliModels from '@/models/bilibili'
+import { PROTOCOL } from '@/configs/bilibili'
 export default {
   extends: baseCategoryRenderer,
   name: 'bilibiliCategoryRenderer',
@@ -40,7 +41,7 @@ export default {
             thumbnail: `https:${video.pic}`,
             label: video.title,
             description: video.description,
-            downloadUrl: video.bvid
+            downloadUrl: `${PROTOCOL}://${video.bvid}`
           })
         }
       })

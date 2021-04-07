@@ -75,7 +75,7 @@ export default {
           md5: this.value.md5
         })
       } catch (e) {
-
+        this.$message.error(e.data || '下载视频出错啦')
       }
       this.downloading = false
     }
