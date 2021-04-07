@@ -18,27 +18,30 @@
     <el-container>
       <!-- <el-header></el-header> -->
       <el-main :key="selected.category" v-if="category">
-        <component :is="categoryRenderer" :category="category" class="option-container">
-          <el-card
-            class="option"
-            body-style="padding: 0;height: 100%;"
-            shadow="hover"
-            slot-scope="{data}"
-          >
-            <!-- 选中标签 -->
-            <div class="selected" v-if="selected.key === data.value">
-              <img :src="selectedIcon" />
+        <div>
+          <component :is="categoryRenderer" :category="category" class="option-container">
+            <div slot-scope="{data}" class="option">
+              <el-card
+                class="option-card"
+                body-style="padding: 0;height: 100%; position:relative;"
+                shadow="hover"
+              >
+                <!-- 选中标签 -->
+                <div class="selected" v-if="selected.key === data.value">
+                  <img :src="selectedIcon" />
+                </div>
+                <!-- 渲染 -->
+                <component
+                  :category="selected.category"
+                  :is="renderer"
+                  :selected="selected"
+                  :value="data"
+                  @select="selectOption"
+                />
+              </el-card>
             </div>
-            <!-- 渲染 -->
-            <component
-              :category="selected.category"
-              :is="renderer"
-              :selected="selected"
-              :value="data"
-              @select="selectOption"
-            />
-          </el-card>
-        </component>
+          </component>
+        </div>
       </el-main>
     </el-container>
   </el-container>
@@ -151,7 +154,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 html,
 body,
 #app {
@@ -187,26 +190,31 @@ body,
   overflow-y: auto;
   display: flex;
   flex-wrap: wrap;
-}
 
-.option {
-  width: 260px;
-  flex-grow: 0;
-  height: 268px;
-  position: relative;
-  margin: 8px;
-}
+  .option {
+    width: 260px;
+    flex-grow: 0;
+    height: 268px;
+    position: relative;
+    margin: 8px;
 
-.option .selected {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 20px;
-  height: 20px;
-}
+    .option-card:hover {
+      position: absolute;
+      z-index: 2;
+    }
 
-.option .selected img {
-  width: 100%;
-  height: 100%;
+    .selected {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 20px;
+      height: 20px;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
 }
 </style>

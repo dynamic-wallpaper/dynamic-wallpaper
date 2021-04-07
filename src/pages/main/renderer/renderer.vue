@@ -45,63 +45,69 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .renderer-container {
   height: 100%;
   display: flex;
   flex-direction: column;
-}
-.thumbnail {
-  width: 100%;
-  height: 140px;
-  pointer-events: none;
-}
+  transition: height 0.1s linear;
 
-.control-container {
-  padding: 8px;
-  box-sizing: border-box;
-  display: flex;
-  width: 100%;
-  height: 100%;
-  flex-direction: column;
-}
+  &:hover {
+    height: 320px;
+  }
 
-.control-description {
-  flex: 1;
-  width: 100%;
-  outline: 0;
-}
+  .thumbnail {
+    width: 100%;
+    height: 140px;
+    pointer-events: none;
+  }
 
-.control-button {
-  display: flex;
-  width: 100%;
-  justify-content: flex-end;
-  align-items: center;
-}
+  .control-container {
+    padding: 8px;
+    box-sizing: border-box;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+  }
 
-.control-description label {
-  font-weight: 500;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-  /* autoprefixer: ignore next */
-  -webkit-box-orient: vertical;
-}
+  .control-description {
+    flex: 1;
+    width: 100%;
+    outline: 0;
 
-.control-description .description {
-  font-size: 14px;
-  line-height: 20px;
-  word-break: keep-all;
-  color: #aaaaaa;
-  overflow: hidden;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-  /* autoprefixer: ignore next */
-  -webkit-box-orient: vertical;
+    label {
+      font-weight: 500;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+      /* autoprefixer: ignore next */
+      -webkit-box-orient: vertical;
+    }
+
+    .description {
+      font-size: 14px;
+      line-height: 20px;
+      word-break: keep-all;
+      color: #aaaaaa;
+      overflow: hidden;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+      /* autoprefixer: ignore next */
+      -webkit-box-orient: vertical;
+    }
+  }
+
+  .control-button {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
+  }
 }
 </style>
