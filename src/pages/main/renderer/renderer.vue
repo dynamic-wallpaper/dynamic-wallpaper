@@ -52,10 +52,6 @@ export default {
   flex-direction: column;
   transition: height 0.1s linear;
 
-  &:hover {
-    height: 320px;
-  }
-
   .thumbnail {
     width: 100%;
     height: 140px;
@@ -78,7 +74,6 @@ export default {
 
     label {
       font-weight: 500;
-      overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
       -webkit-line-clamp: 2;
@@ -93,11 +88,9 @@ export default {
       word-break: keep-all;
       color: #aaaaaa;
       overflow: hidden;
-      overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
       -webkit-line-clamp: 2;
-      overflow: hidden;
       /* autoprefixer: ignore next */
       -webkit-box-orient: vertical;
     }
@@ -108,6 +101,28 @@ export default {
     width: 100%;
     justify-content: flex-end;
     align-items: center;
+  }
+
+  &:hover {
+    height: 300px;
+
+    .control-description {
+      label {
+        overflow: initial;
+        -webkit-line-clamp: initial;
+        // text-overflow: ellipsis;
+        // display: -webkit-box;
+        // -webkit-line-clamp: 2;
+        // overflow: hidden;
+        // /* autoprefixer: ignore next */
+        // -webkit-box-orient: vertical;
+      }
+
+      .description {
+        overflow: scroll;
+        -webkit-line-clamp: initial;
+      }
+    }
   }
 }
 </style>
