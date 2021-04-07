@@ -2,19 +2,10 @@
   <div class="renderer-container">
     <iframe class="thumbnail" frameborder="no" border="0" scrolling="no" :src="value.value" />
     <div class="control-container">
-      <el-popover
-        class="control-description"
-        placement="top"
-        :title="value.label"
-        width="300"
-        trigger="hover"
-      >
-        <div slot="reference" class="control-description">
-          <label>{{ value.label }}</label>
-          <div class="description">{{ value.description }}</div>
-        </div>
-        <p>{{ value.description }}</p>
-      </el-popover>
+      <div class="control-description">
+        <label>{{ value.label }}</label>
+        <div class="description">{{ value.description }}</div>
+      </div>
       <div class="control-button">
         <el-button :disabled="isSelected" type="text" size="mini" @click="select">设为壁纸</el-button>
       </div>
@@ -90,14 +81,27 @@ export default {
 
 .control-description label {
   font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
 }
 
 .control-description .description {
   font-size: 14px;
   line-height: 20px;
   word-break: keep-all;
-  text-overflow: ellipsis;
   color: #aaaaaa;
   overflow: hidden;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
 }
 </style>

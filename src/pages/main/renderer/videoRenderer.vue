@@ -7,19 +7,10 @@
       referrerpolicy="no-referrer"
     />
     <div class="control-container">
-      <el-popover
-        :title="value.label"
-        class="control-description"
-        placement="top"
-        trigger="hover"
-        width="300"
-      >
-        <div class="control-description" slot="reference">
-          <label>{{ value.label }}</label>
-          <div class="description">{{ value.description }}</div>
-        </div>
-        <p>{{ value.description }}</p>
-      </el-popover>
+      <div class="control-description">
+        <label>{{ value.label }}</label>
+        <div class="description">{{ value.description }}</div>
+      </div>
       <div class="control-button">
         <template v-if="isDownloaded">
           <el-button :disabled="isSelected" @click="select" size="mini" type="text">设为壁纸</el-button>
@@ -43,7 +34,7 @@
 
 <script>
 import renderer from './renderer'
-const { serverSDK, ipcRenderer } = window
+const { serverSDK } = window
 
 export default {
   extends: renderer,
@@ -88,12 +79,6 @@ export default {
       }
       this.downloading = false
     }
-  },
-  created () {
-    ipcRenderer.on('media:progress', this.onMediaProgress)
-  },
-  beforeDestroy () {
-    ipcRenderer.off('media:progress', this.onMediaProgress)
   }
 }
 </script>
