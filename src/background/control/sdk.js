@@ -6,7 +6,7 @@ import { MEDIA_PROTOCOL } from '@/configs/protocol'
 import sdk from '@/background/util/sdk'
 import FileManager, { BASE_PATH } from '@/background/util/fileManager'
 import path from 'path'
-import { Notification } from 'electron'
+import { Notification, session } from 'electron'
 // import MD5 from 'md5'
 
 /**
@@ -95,5 +95,22 @@ export default async function (context) {
         res.status(500).send(data)
       }
     })
+  })
+
+  sdk.get('cookie', async (req, res) => {
+    const url = req.body
+
+    try {
+      const cookies = await session.defaultSession.cookies.get({
+        url
+      })
+      const cookie = cookies
+        .map(({ name, value }) => `${name}=${value}`)
+        .join(';')
+      res.send(cookie)
+    } catch (e) {
+      console.error(e)
+      res.status(500).send('can not get cookie')
+    }
   })
 }

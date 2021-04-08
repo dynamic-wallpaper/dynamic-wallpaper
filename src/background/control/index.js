@@ -23,7 +23,10 @@ async function createControlBrowser (store) {
   let win = context.win
   if (!win || win.isDestroyed()) {
     win = await createBrowser('index.html', {
-      webPreferences: { webSecurity: false }
+      webPreferences: {
+        webSecurity: false,
+        webviewTag: true
+      }
     })
     context.win = win
     win.moveTop()

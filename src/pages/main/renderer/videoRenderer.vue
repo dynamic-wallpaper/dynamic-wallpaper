@@ -13,7 +13,13 @@
       </div>
       <div class="control-button">
         <template v-if="isDownloaded">
-          <el-button :disabled="isSelected" @click="select" size="mini" type="text">设为壁纸</el-button>
+          <el-button
+            :disabled="isSelected"
+            @click="select"
+            size="mini"
+            type="text"
+            >设为壁纸</el-button
+          >
         </template>
         <template v-else>
           <el-progress
@@ -25,7 +31,9 @@
             type="circle"
             v-if="downloading"
           ></el-progress>
-          <el-button @click="downloadVideo" type="text" v-else>下载到本地</el-button>
+          <el-button @click="downloadVideo" type="text" v-else
+            >下载到本地</el-button
+          >
         </template>
       </div>
     </div>

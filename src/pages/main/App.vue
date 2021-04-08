@@ -7,8 +7,17 @@
         class="side-bar"
         v-bind="sidebar"
       >
-        <el-menu-item :index="category.key" :key="category.key" v-for="category of categories">
-          <el-tooltip :content="category.label" class="item" effect="dark" placement="right">
+        <el-menu-item
+          :index="category.key"
+          :key="category.key"
+          v-for="category of categories"
+        >
+          <el-tooltip
+            :content="category.label"
+            class="item"
+            effect="dark"
+            placement="right"
+          >
             <div class="category-label">{{ category.label }}</div>
           </el-tooltip>
         </el-menu-item>
@@ -16,11 +25,17 @@
     </el-aside>
 
     <el-container>
-      <!-- <el-header></el-header> -->
-      <el-main :key="selected.category" v-if="category">
-        <div>
-          <component :is="categoryRenderer" :category="category" class="option-container">
-            <div slot-scope="{data}" class="option">
+      <el-header>
+        <control-header />
+      </el-header>
+      <el-main>
+        <div class="container" :key="selected.category" v-if="category">
+          <component
+            :is="categoryRenderer"
+            :category="category"
+            class="option-container"
+          >
+            <div slot-scope="{ data }" class="option">
               <el-card
                 class="option-card"
                 body-style="padding: 0;height: 100%; position:relative;"
@@ -43,6 +58,7 @@
           </component>
         </div>
       </el-main>
+      <!-- <el-footer></el-footer> -->
     </el-container>
   </el-container>
 </template>
@@ -52,6 +68,7 @@ import websiteConfig from '@/configs/website'
 import selectedIcon from './assets/selected.png'
 import throttle from 'lodash/throttle'
 import { UP } from '@/configs/bilibili'
+import ControlHeader from './ControlHeader'
 const renderers = require.context('./renderer', false, /\.vue/)
 const categorys = require.context('./category', false, /\.vue/)
 const { ipcRenderer, serverSDK } = window
@@ -59,17 +76,23 @@ const { ipcRenderer, serverSDK } = window
 export default {
   name: 'App',
   components: Object.assign(
-    {},
+    {
+      ControlHeader
+    },
     // 选择器的渲染器
-    Object.fromEntries(renderers.keys().map(key => {
-      const component = renderers(key).default
-      return [component.name, component]
-    })),
+    Object.fromEntries(
+      renderers.keys().map(key => {
+        const component = renderers(key).default
+        return [component.name, component]
+      })
+    ),
     // 分类加载器
-    Object.fromEntries(categorys.keys().map(key => {
-      const component = categorys(key).default
-      return [component.name, component]
-    }))
+    Object.fromEntries(
+      categorys.keys().map(key => {
+        const component = categorys(key).default
+        return [component.name, component]
+      })
+    )
   ),
   data () {
     const vm = this
@@ -144,6 +167,19 @@ export default {
       ipcRenderer.send('selectResource', key, url)
     }
   },
+  watch: {
+    categories (categories) {
+      const category = this.category
+      if (categories.length === 0) {
+        return 0
+      }
+      console.log(categories)
+      if (!category || !categorys.find(({ key }) => category.key === key)) {
+        const firstCategory = categorys[0]
+        this.selectCategory(firstCategory)
+      }
+    }
+  },
   async destroyed () {
     ipcRenderer.off('media:progress', this.refreshMediaCategory)
   },
@@ -175,6 +211,10 @@ body,
 
 .el-main {
   background: #ffffff;
+  .container {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .category-label {
@@ -191,6 +231,7 @@ body,
   overflow-y: auto;
   display: flex;
   flex-wrap: wrap;
+  box-sizing: border-box;
 
   .option {
     width: 260px;

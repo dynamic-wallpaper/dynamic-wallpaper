@@ -25,7 +25,8 @@ const store = new Store({
       category: ''
     },
     openAtLogin: false,
-    lastSelectFileDirPath: app.getPath('home')
+    lastSelectFileDirPath: app.getPath('home'),
+    cookie: ''
   }
 })
 
