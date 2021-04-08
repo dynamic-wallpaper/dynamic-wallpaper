@@ -16,7 +16,7 @@ export const EVENT = {
  */
 const senderSet = new Set()
 
-const store = new Store({
+export const store = new Store({
   schema,
   defaults: {
     selected: {

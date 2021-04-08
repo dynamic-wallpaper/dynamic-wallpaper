@@ -55,7 +55,7 @@ export default class Ffmpeg {
     this.events = new EventEmitter()
 
     this.onFrame = onFrame || function (frame) {
-      console.log(frame)
+      console.info(frame)
     }
   }
 

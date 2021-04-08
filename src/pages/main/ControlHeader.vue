@@ -3,18 +3,9 @@
     <!-- 循环 -->
 
     <!-- 登陆页面 -->
-    <el-popover
-      :width="cookie ? 200 : 500"
-      placement="bottom-end"
-      ref="popover"
-    >
+    <el-popover :width="cookie ? 200 : 500" placement="bottom-end" ref="popover">
       <!-- 未登录显示webview -->
-      <webview
-        ref="webview"
-        style="height: 600px;"
-        :src="src"
-        v-if="!cookie"
-      ></webview>
+      <webview ref="webview" style="height: 600px;" :src="src" v-if="!cookie"></webview>
       <div v-else>
         <el-popconfirm title="确定切换用户吗吗？" @confirm="logout">
           <el-button type="text" slot="reference">切换用户</el-button>
@@ -54,7 +45,7 @@ export default {
       async loginHandler () {
         const { data } = await serverSDK.get(
           'cookie',
-          'http://www.bilibili.com'
+          'https://www.bilibili.com'
         )
         vm.$refs.popover.doClose()
         vm.cookie = data

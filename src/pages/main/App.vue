@@ -7,17 +7,8 @@
         class="side-bar"
         v-bind="sidebar"
       >
-        <el-menu-item
-          :index="category.key"
-          :key="category.key"
-          v-for="category of categories"
-        >
-          <el-tooltip
-            :content="category.label"
-            class="item"
-            effect="dark"
-            placement="right"
-          >
+        <el-menu-item :index="category.key" :key="category.key" v-for="category of categories">
+          <el-tooltip :content="category.label" class="item" effect="dark" placement="right">
             <div class="category-label">{{ category.label }}</div>
           </el-tooltip>
         </el-menu-item>
@@ -30,11 +21,7 @@
       </el-header>
       <el-main>
         <div class="container" :key="selected.category" v-if="category">
-          <component
-            :is="categoryRenderer"
-            :category="category"
-            class="option-container"
-          >
+          <component :is="categoryRenderer" :category="category" class="option-container">
             <div slot-scope="{ data }" class="option">
               <el-card
                 class="option-card"
@@ -173,9 +160,8 @@ export default {
       if (categories.length === 0) {
         return 0
       }
-      console.log(categories)
-      if (!category || !categorys.find(({ key }) => category.key === key)) {
-        const firstCategory = categorys[0]
+      if (!category || !categories.find(({ key }) => category.key === key)) {
+        const firstCategory = categories[0]
         this.selectCategory(firstCategory)
       }
     }
@@ -198,6 +184,7 @@ body,
   height: 100%;
   overflow: hidden;
   margin: 0;
+  background: #ffffff;
 }
 
 .side-bar {

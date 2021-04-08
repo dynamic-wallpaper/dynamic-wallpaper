@@ -8,7 +8,7 @@ import { app } from 'electron'
 import { DownloaderHelper, DH_STATES } from 'node-downloader-helper'
 
 // 一些特殊下载方案的部分
-import { BILIBILI_PROTOCOL, decodeUrl as bilibiliDecodeUrl } from './bilibili'
+import bilibiliHelper from './bilibili'
 
 // 最大可同时下载数量
 const DOWNLOAD_NUMBER = 10
@@ -44,14 +44,18 @@ function startDownload () {
  * 获取正确的下载地址
  * @param {string} url
  */
-async function getRealDownloadUrl (url) {
+async function getDownloadConfig (url) {
   const protocol = url.replace(/:\/\/.*/, '')
   switch (protocol) {
-    case BILIBILI_PROTOCOL: {
-      return await bilibiliDecodeUrl(url)
+    case bilibiliHelper.BILIBILI_PROTOCOL: {
+      const downloadConfig = await bilibiliHelper.getDownloadConfig(url)
+      return downloadConfig
     }
     default: {
-      return decodeURI(url)
+      return {
+        headers: null,
+        url: decodeURI(url)
+      }
     }
   }
 }
@@ -133,10 +137,11 @@ export default class {
       const key = path.join(this.rootDir, filename)
 
       if (!downloadQueue.has(key)) {
-        const realDownloadUrl = await getRealDownloadUrl(url)
-        downloadQueue.set(key, new DownloaderHelper(realDownloadUrl, this.rootDir, {
+        const downloadConfig = await getDownloadConfig(url)
+        downloadQueue.set(key, new DownloaderHelper(downloadConfig.url, this.rootDir, {
           override: true,
           fileName: `${filename}.tmp`,
+          headers: downloadConfig.headers || {},
           ...options
         }))
       }
@@ -157,7 +162,7 @@ export default class {
           startDownload()
         })
         dl.on('error', (e) => {
-          console.log('error', e)
+          console.error('error', e)
           const downloadPath = dl.getDownloadPath()
           if (fs.existsSync(downloadPath)) {
             fs.unlinkSync(dl.getDownloadPath())

@@ -23,8 +23,7 @@ export const schema = {
     type: 'string'
   },
   cookie: {
-    type: 'string',
-    default: ''
+    type: 'string'
   }
 }
 
