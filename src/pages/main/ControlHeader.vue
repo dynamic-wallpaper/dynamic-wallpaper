@@ -3,7 +3,11 @@
     <!-- 循环 -->
 
     <!-- 登陆页面 -->
-    <el-popover width="500" placement="bottom-end" ref="popover">
+    <el-popover
+      :width="cookie ? 200 : 500"
+      placement="bottom-end"
+      ref="popover"
+    >
       <!-- 未登录显示webview -->
       <webview
         ref="webview"
@@ -11,14 +15,23 @@
         :src="src"
         v-if="!cookie"
       ></webview>
-      <div v-else>已登陆</div>
+      <div v-else>
+        <el-popconfirm title="确定切换用户吗吗？" @confirm="logout">
+          <el-button type="text" slot="reference">切换用户</el-button>
+        </el-popconfirm>
+      </div>
       <!-- 占位 -->
       <div class="control-item" slot="reference">
-        <el-avatar
-          size="small"
-          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-        ></el-avatar>
-        <span>用户名</span>
+        <div class="avatar">
+          <img
+            v-if="bilibiliUserInfo.avatar"
+            :src="bilibiliUserInfo.avatar"
+            referrerpolicy="no-referrer"
+            alt="avatar"
+          />
+          <em v-else class="el-icon-user-solid" />
+        </div>
+        <span class="username">{{ bilibiliUserInfo.userName || '登录' }}</span>
       </div>
     </el-popover>
   </div>
@@ -39,9 +52,12 @@ export default {
         userName: ''
       },
       async loginHandler () {
-        const cookie = await serverSDK.get('cookie', 'http://www.bilibili.com')
+        const { data } = await serverSDK.get(
+          'cookie',
+          'http://www.bilibili.com'
+        )
         vm.$refs.popover.doClose()
-        vm.cookie = cookie
+        vm.cookie = data
       }
     }
   },
@@ -55,6 +71,13 @@ export default {
       }
     }
   },
+  methods: {
+    logout () {
+      this.bilibiliUserInfo.avatar = ''
+      this.bilibiliUserInfo.userName = ''
+      this.cookie = ''
+    }
+  },
   watch: {
     cookie: {
       immediate: true,
@@ -66,8 +89,10 @@ export default {
           if (webview) {
             webview.removeEventListener('will-navigate', this.loginHandler)
           }
-          bilibiliModel.getMyInfo(cookie).then(data => {
-            console.log(data)
+          bilibiliModel.getMyInfo(cookie).then(({ data }) => {
+            const { name, face } = data
+            this.bilibiliUserInfo.avatar = face
+            this.bilibiliUserInfo.userName = name
           })
         } else {
           // 未登录，自动加载方法去监听cookie
@@ -100,6 +125,34 @@ export default {
     & + .control-item {
       margin-left: 8px;
     }
+  }
+
+  $avatar-size: 22px;
+
+  .avatar {
+    cursor: pointer;
+    border-radius: 100px;
+    overflow: hidden;
+    width: $avatar-size;
+    height: $avatar-size;
+    margin-right: 6px;
+    background: #909399;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+    em {
+      color: #ffffff;
+      font-size: 16px;
+    }
+  }
+
+  .username {
+    color: #606266;
+    font-size: 14px;
   }
 }
 </style>
