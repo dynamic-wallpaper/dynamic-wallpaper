@@ -1,13 +1,25 @@
 <template>
   <div class="renderer-container">
-    <iframe class="thumbnail" frameborder="no" border="0" scrolling="no" :src="value.value" />
+    <iframe
+      class="thumbnail"
+      frameborder="no"
+      border="0"
+      scrolling="no"
+      :src="value.value"
+    />
     <div class="control-container">
       <div class="control-description">
         <label>{{ value.label }}</label>
         <div class="description">{{ value.description }}</div>
       </div>
       <div class="control-button">
-        <el-button :disabled="isSelected" type="text" size="mini" @click="select">设为壁纸</el-button>
+        <el-button
+          :disabled="isSelected"
+          type="text"
+          size="mini"
+          @click="select"
+          >设为壁纸</el-button
+        >
       </div>
     </div>
   </div>
@@ -115,6 +127,7 @@ export default {
     .control-description {
       label {
         overflow: initial;
+        word-break: break-all;
         -webkit-line-clamp: initial;
       }
 
@@ -122,6 +135,7 @@ export default {
         flex: 1;
         height: 100%;
         overflow: scroll;
+        word-break: break-all;
         -webkit-line-clamp: initial;
       }
     }
