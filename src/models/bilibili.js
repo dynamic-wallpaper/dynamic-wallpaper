@@ -16,5 +16,19 @@ export default {
       }
     })
       .then(res => res.data)
+  },
+  /**
+   * 获取bvid，不过只会获取最后一p的
+   * @param {string} bvid
+   */
+  getCid (bvid) {
+    requester.get('/x/player/pagelist', {
+      params: {
+        bvid
+      }
+    })
+      .then(res => {
+        console.log(res.data)
+      })
   }
 }
