@@ -34,8 +34,8 @@ export function getCid (bvid) {
          * 获取分辨率
          * @todo 根据分辨率来获取最佳的那个p
          */
-      const last = data.pop()
-      return last.cid
+      const first = data[0]
+      return first.cid
     })
 }
 /**
