@@ -119,6 +119,9 @@ export default {
     width: 100%;
     justify-content: flex-end;
     align-items: center;
+    position: relative;
+    top: -30px;
+    z-index: 4;
   }
 
   &:hover {
