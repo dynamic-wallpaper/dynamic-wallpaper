@@ -16,5 +16,15 @@ export default {
       }
     })
       .then(res => res.data)
+  },
+  getDownloadInfo (bvid, cid, quality, headers) {
+    return requester.get('/x/player/playurl', {
+      headers,
+      params: {
+        bvid,
+        cid,
+        qn: quality
+      }
+    })
   }
 }
