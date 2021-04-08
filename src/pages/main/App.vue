@@ -25,7 +25,9 @@
     </el-aside>
 
     <el-container>
-      <el-header></el-header>
+      <el-header>
+        <control-header />
+      </el-header>
       <el-main>
         <div class="container" :key="selected.category" v-if="category">
           <component
@@ -56,7 +58,7 @@
           </component>
         </div>
       </el-main>
-      <el-footer></el-footer>
+      <!-- <el-footer></el-footer> -->
     </el-container>
   </el-container>
 </template>
@@ -66,6 +68,7 @@ import websiteConfig from '@/configs/website'
 import selectedIcon from './assets/selected.png'
 import throttle from 'lodash/throttle'
 import { UP } from '@/configs/bilibili'
+import ControlHeader from './ControlHeader'
 const renderers = require.context('./renderer', false, /\.vue/)
 const categorys = require.context('./category', false, /\.vue/)
 const { ipcRenderer, serverSDK } = window
@@ -73,7 +76,9 @@ const { ipcRenderer, serverSDK } = window
 export default {
   name: 'App',
   components: Object.assign(
-    {},
+    {
+      ControlHeader
+    },
     // 选择器的渲染器
     Object.fromEntries(
       renderers.keys().map(key => {
