@@ -2,6 +2,7 @@
  * b站接口
  */
 import axios from 'axios'
+import { getHeaders } from '@/configs/bilibili'
 const requester = axios.create({
   baseURL: 'https://api.bilibili.com'
 })
@@ -26,5 +27,12 @@ export default {
         qn: quality
       }
     })
+      .then(res => res.data)
+  },
+  getMyInfo (cookie) {
+    return requester.get('/x/space/myinfo', {
+      headers: getHeaders(cookie)
+    })
+      .then(res => res.data)
   }
 }

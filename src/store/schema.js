@@ -21,6 +21,10 @@ export const schema = {
   },
   lastSelectFileDirPath: {
     type: 'string'
+  },
+  cookie: {
+    type: 'string',
+    default: ''
   }
 }
 

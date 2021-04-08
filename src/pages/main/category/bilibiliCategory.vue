@@ -36,9 +36,12 @@ export default {
 
       list.vlist.forEach(video => {
         if (!this.list.find(item => item.id === video.bvid)) {
+          const thumbnail = video.pic.includes('http')
+            ? video.pic
+            : `https:${video.pic}`
           this.list.push({
             id: video.bvid,
-            thumbnail: `https:${video.pic}`,
+            thumbnail,
             label: video.title,
             description: video.description,
             downloadUrl: `${PROTOCOL}://${video.bvid}.mp4`
