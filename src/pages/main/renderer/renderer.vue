@@ -62,12 +62,16 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-  // transition: height 1s linear;
 
   .thumbnail {
+    background: #000000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     height: 140px;
     pointer-events: none;
+    overflow: hidden;
   }
 
   .control-container {
@@ -82,6 +86,7 @@ export default {
   }
 
   .control-description {
+    transition: height 0.1s linear;
     flex: 1;
     width: 100%;
     outline: 0;
@@ -119,17 +124,14 @@ export default {
     width: 100%;
     justify-content: flex-end;
     align-items: center;
-    position: relative;
-    top: -30px;
-    z-index: 4;
   }
 
   &:hover {
-    height: 330px;
-
     .control-description {
+      height: fit-content;
+      max-height: 230px;
       label {
-        overflow: initial;
+        overflow: visible;
         word-break: break-all;
         -webkit-line-clamp: initial;
       }
