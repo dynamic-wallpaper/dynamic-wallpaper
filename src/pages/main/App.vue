@@ -25,9 +25,9 @@
     </el-aside>
 
     <el-container>
-      <!-- <el-header></el-header> -->
-      <el-main :key="selected.category" v-if="category">
-        <div class="container">
+      <el-header></el-header>
+      <el-main>
+        <div class="container" :key="selected.category" v-if="category">
           <component
             :is="categoryRenderer"
             :category="category"
@@ -56,6 +56,7 @@
           </component>
         </div>
       </el-main>
+      <el-footer></el-footer>
     </el-container>
   </el-container>
 </template>
@@ -225,6 +226,7 @@ body,
   overflow-y: auto;
   display: flex;
   flex-wrap: wrap;
+  box-sizing: border-box;
 
   .option {
     width: 260px;

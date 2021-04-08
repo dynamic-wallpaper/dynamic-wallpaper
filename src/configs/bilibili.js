@@ -15,6 +15,8 @@ export const PROTOCOL = 'bilibili'
 
 export const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:56.0) Gecko/20100101 Firefox/56.0'
 
+export const LOGIN_URL = 'http://passport.bilibili.com/ajax/miniLogin/minilogin'
+
 export const headers = {
   'User-Agent': UA,
   Cookie: ''
