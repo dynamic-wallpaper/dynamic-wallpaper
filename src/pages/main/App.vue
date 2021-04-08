@@ -21,7 +21,12 @@
       </el-header>
       <el-main>
         <div class="container" :key="selected.category" v-if="category">
-          <component :is="categoryRenderer" :category="category" class="option-container">
+          <component
+            ref="option-container"
+            :is="categoryRenderer"
+            :category="category"
+            class="option-container"
+          >
             <div slot-scope="{ data }" class="option">
               <el-card
                 class="option-card"
@@ -34,6 +39,7 @@
                 </div>
                 <!-- 渲染 -->
                 <component
+                  ref="optionCard"
                   :category="selected.category"
                   :is="renderer"
                   :selected="selected"
@@ -51,6 +57,7 @@
 </template>
 
 <script>
+/* eslint-disable no-unused-vars */
 import websiteConfig from '@/configs/website'
 import selectedIcon from './assets/selected.png'
 import throttle from 'lodash/throttle'
@@ -93,13 +100,20 @@ export default {
       websiteCategory: websiteConfig,
       mediaCategories: [],
       /**
-       * 刷新本地数据
+       * 代理下发所有的更新事件
        */
-      refreshMediaCategory: throttle(function (e, { progress }) {
-        if (progress === 100) {
-          vm.getMediaCategories()
-        }
-      }, 500)
+      updateCategoryVideoProgress: throttle(function (e, data) {
+        /**
+         * 获取card列表，目前ref不可用
+         */
+        const container = vm.$refs['option-container']
+        const optionCards = container.$children.map(card => card.$children[0])
+        optionCards.forEach(item => {
+          if (item.onMediaProgress) {
+            item.onMediaProgress(e, data)
+          }
+        })
+      }, 200)
     }
   },
   computed: {
@@ -138,10 +152,6 @@ export default {
     }
   },
   methods: {
-    async getMediaCategories () {
-      const { data } = await serverSDK.get('media/categories')
-      this.mediaCategories = data
-    },
     selectCategory (category) {
       this.selected = {
         ...this.selected,
@@ -167,11 +177,10 @@ export default {
     }
   },
   async destroyed () {
-    ipcRenderer.off('media:progress', this.refreshMediaCategory)
+    ipcRenderer.off('media:progress', this.updateCategoryVideoProgress)
   },
   async created () {
-    // await this.getMediaCategories()
-    ipcRenderer.on('media:progress', this.refreshMediaCategory)
+    ipcRenderer.on('media:progress', this.updateCategoryVideoProgress)
   }
 }
 </script>

@@ -2,9 +2,8 @@
  * 和客户端交互的部分
  */
 import { service as mediaService } from '@/background/media'
-import { MEDIA_PROTOCOL } from '@/configs/protocol'
 import sdk from '@/background/util/sdk'
-import FileManager, { BASE_PATH } from '@/background/util/fileManager'
+import FileManager from '@/background/util/fileManager'
 import path from 'path'
 import { Notification, session } from 'electron'
 // import MD5 from 'md5'
@@ -14,33 +13,10 @@ import { Notification, session } from 'electron'
  * @param {*} context
  */
 export default async function (context) {
-  sdk.get('media/categories', async (req, res) => {
-    const categoryMap = mediaService.categoryMap
-    const categories = []
-    /**
-         * 创建category对应的文件
-         */
-    categories.forEach(category => {
-      if (!categoryMap.has(category.key)) {
-        categoryMap.set(category.key, new FileManager(category.key))
-      }
-      category.renderer = 'videoRenderer'
-      /**
-       * 分类管理器
-       */
-      const fileManager = categoryMap.get(category.key)
-      const { structure } = fileManager
-
-      category.value.forEach(video => {
-        video.value = `${MEDIA_PROTOCOL}://${path.join(BASE_PATH, video.value)}`
-        const fileName = path.basename(video.value)
-        /**
-         * 校验文件，正确的保留
-         */
-        video.isDownloaded = fileName in structure
-      })
-    })
-    res.send(categories)
+  sdk.get('category/:category', async (req, res) => {
+    const category = req.params.category
+    const fileManager = mediaService.getCategory(category)
+    res.send(fileManager.structure)
   })
 
   sdk.post('media/download', async (req, res) => {
