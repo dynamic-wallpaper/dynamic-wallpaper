@@ -57,7 +57,7 @@ export default class Ffmpeg {
       '-i',
       filePath,
       '-preset', // 超快解码
-      PRESET.medium,
+      PRESET.ultrafast,
       '-f', // 强制为图片输出
       'image2pipe',
       '-threads', // 多线程
