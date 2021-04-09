@@ -19,6 +19,19 @@ const STATUS = {
   STOP: 4
 }
 
+const PRESET = {
+  ultrafast: 'ultrafast',
+  superfast: 'superfast',
+  veryfast: 'veryfast',
+  faster: 'faster',
+  fast: 'fast',
+  medium: 'medium',
+  slow: 'slow',
+  slower: 'slower',
+  veryslow: 'veryslow',
+  placebo: 'placebo'
+}
+
 /**
  * 因为返回的data不完整，需要拼接
  */
@@ -44,7 +57,7 @@ export default class Ffmpeg {
       '-i',
       filePath,
       '-preset', // 超快解码
-      'ultrafast',
+      PRESET.medium,
       '-f', // 强制为图片输出
       'image2pipe',
       '-threads', // 多线程
