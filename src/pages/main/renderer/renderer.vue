@@ -72,6 +72,7 @@ export default {
     height: 160px;
     pointer-events: none;
     overflow: hidden;
+    flex-shrink: 0;
     & > * {
       min-width: 100%;
       width: 100%;
