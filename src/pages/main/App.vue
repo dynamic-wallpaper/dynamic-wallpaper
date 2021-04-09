@@ -265,11 +265,13 @@ body,
     }
 
     .option-card {
+      $scale: 1.05;
       width: 100%;
       min-height: 100%;
       box-sizing: border-box;
       height: 100%;
       &:hover {
+        transform: scale($scale);
         min-height: 100%;
         height: auto;
         position: absolute;
