@@ -17,7 +17,7 @@ export const decodeUrl = function (sourceUrl = '') {
     if (fs.existsSync(decodedUrl)) {
       return decodedUrl
     } else {
-      throw new Error('no such file' + decodedUrl)
+      throw new Error('no such file ' + decodedUrl)
     }
   } catch (error) {
     console.error('ERROR: registerLocalResourceProtocol: Could not get file path:', error)

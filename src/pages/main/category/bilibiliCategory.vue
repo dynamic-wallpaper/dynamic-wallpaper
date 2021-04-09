@@ -5,6 +5,10 @@
 import baseCategoryRenderer from './baseCategory'
 import bilibiliModels from '@/models/bilibili'
 import { PROTOCOL } from '@/configs/bilibili'
+import { MEDIA_PROTOCOL } from '@/configs/protocol'
+
+const { serverSDK } = window
+
 export default {
   extends: baseCategoryRenderer,
   name: 'bilibiliCategoryRenderer',
@@ -12,7 +16,8 @@ export default {
     return {
       pageNumer: 0,
       pageSize: 30,
-      totalNumber: 99999
+      totalNumber: 99999,
+      exitedVideo: {}
     }
   },
   computed: {
@@ -36,19 +41,29 @@ export default {
 
       list.vlist.forEach(video => {
         if (!this.list.find(item => item.id === video.bvid)) {
+          const videoKey = `${video.bvid}.mp4`
           const thumbnail = video.pic.includes('http')
             ? video.pic
             : `https:${video.pic}`
           this.list.push({
             id: video.bvid,
             thumbnail,
+            value: `${MEDIA_PROTOCOL}://${this.category.key}/${videoKey}`,
             label: video.title,
             description: video.description,
-            downloadUrl: `${PROTOCOL}://${video.bvid}.mp4`
+            downloadUrl: `${PROTOCOL}://${videoKey}`,
+            isDownloaded: videoKey in this.exitedVideo
           })
         }
       })
     }
+  },
+  created () {
+    serverSDK.get(`category/${this.category.key}`)
+      .then(res => res.data)
+      .then(exitedVideo => {
+        this.exitedVideo = exitedVideo
+      })
   }
 }
 </script>
