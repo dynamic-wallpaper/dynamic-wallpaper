@@ -12,14 +12,7 @@
           :key="category.key"
           v-for="category of categories"
         >
-          <el-tooltip
-            :content="category.label"
-            class="item"
-            effect="dark"
-            placement="right"
-          >
-            <div class="category-label">{{ category.label }}</div>
-          </el-tooltip>
+          <div class="category-label">{{ category.label }}</div>
         </el-menu-item>
       </el-menu>
     </el-aside>
@@ -45,7 +38,6 @@
               slot-scope="{ data }"
             >
               <el-card
-                body-style="padding: 0;height: 100%; position:relative;"
                 class="option-card"
                 shadow="hover"
               >
@@ -54,7 +46,10 @@
                   class="selected"
                   v-if="selected.key === data.value"
                 >
-                  <img :src="selectedIcon" />
+                  <img
+                    :src="selectedIcon"
+                    alt="selected"
+                  />
                 </div>
                 <!-- 渲染 -->
                 <component
@@ -205,6 +200,9 @@ export default {
 </script>
 
 <style lang="scss">
+$option-card-width: 260px;
+$option-card-height: 288px;
+
 html,
 body,
 #app {
@@ -242,22 +240,37 @@ body,
 .option-container {
   width: 100%;
   height: 100%;
-  padding-bottom: 60px;
+  padding-bottom: 200px;
   overflow-y: auto;
   display: flex;
   flex-wrap: wrap;
   box-sizing: border-box;
 
   .option {
-    width: 260px;
+    width: $option-card-width;
     flex-grow: 0;
-    height: 288px;
+    height: $option-card-height;
     position: relative;
     margin: 8px;
 
+    .el-card__body {
+      padding: 0;
+      height: 100%;
+      min-height: $option-card-height;
+      position: relative;
+      width: 100%;
+      overflow: visible;
+      display: flex;
+      flex-direction: column;
+    }
+
     .option-card {
+      width: 100%;
+      min-height: 100%;
+      box-sizing: border-box;
       height: 100%;
       &:hover {
+        min-height: 100%;
         height: auto;
         position: absolute;
         z-index: 2;
