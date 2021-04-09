@@ -7,8 +7,17 @@
         class="side-bar"
         v-bind="sidebar"
       >
-        <el-menu-item :index="category.key" :key="category.key" v-for="category of categories">
-          <el-tooltip :content="category.label" class="item" effect="dark" placement="right">
+        <el-menu-item
+          :index="category.key"
+          :key="category.key"
+          v-for="category of categories"
+        >
+          <el-tooltip
+            :content="category.label"
+            class="item"
+            effect="dark"
+            placement="right"
+          >
             <div class="category-label">{{ category.label }}</div>
           </el-tooltip>
         </el-menu-item>
@@ -20,31 +29,41 @@
         <control-header />
       </el-header>
       <el-main>
-        <div class="container" :key="selected.category" v-if="category">
+        <div
+          :key="selected.category"
+          class="container"
+          v-if="category"
+        >
           <component
-            ref="option-container"
-            :is="categoryRenderer"
             :category="category"
+            :is="categoryRenderer"
             class="option-container"
+            ref="option-container"
           >
-            <div slot-scope="{ data }" class="option">
+            <div
+              class="option"
+              slot-scope="{ data }"
+            >
               <el-card
-                class="option-card"
                 body-style="padding: 0;height: 100%; position:relative;"
+                class="option-card"
                 shadow="hover"
               >
                 <!-- 选中标签 -->
-                <div class="selected" v-if="selected.key === data.value">
+                <div
+                  class="selected"
+                  v-if="selected.key === data.value"
+                >
                   <img :src="selectedIcon" />
                 </div>
                 <!-- 渲染 -->
                 <component
-                  ref="optionCard"
                   :category="selected.category"
                   :is="renderer"
                   :selected="selected"
                   :value="data"
                   @select="selectOption"
+                  ref="optionCard"
                 />
               </el-card>
             </div>
@@ -236,9 +255,13 @@ body,
     position: relative;
     margin: 8px;
 
-    .option-card:hover {
-      position: absolute;
-      z-index: 2;
+    .option-card {
+      height: 100%;
+      &:hover {
+        height: auto;
+        position: absolute;
+        z-index: 2;
+      }
     }
 
     .selected {

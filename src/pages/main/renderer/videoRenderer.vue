@@ -1,11 +1,12 @@
 <template>
   <div class="renderer-container">
-    <img
-      :alt="value.thumbnail"
-      :src="value.thumbnail"
-      class="thumbnail"
-      referrerpolicy="no-referrer"
-    />
+    <div class="thumbnail">
+      <img
+        :alt="value.thumbnail"
+        :src="value.thumbnail"
+        referrerpolicy="no-referrer"
+      />
+    </div>
     <div class="control-container">
       <div class="control-description">
         <label>{{ value.label }}</label>
@@ -18,8 +19,7 @@
             @click="select"
             size="mini"
             type="text"
-            >设为壁纸</el-button
-          >
+          >设为壁纸</el-button>
         </template>
         <template v-else>
           <el-progress
@@ -31,9 +31,11 @@
             type="circle"
             v-if="downloading"
           ></el-progress>
-          <el-button @click="downloadVideo" type="text" v-else
-            >下载到本地</el-button
-          >
+          <el-button
+            @click="downloadVideo"
+            type="text"
+            v-else
+          >下载到本地</el-button>
         </template>
       </div>
     </div>

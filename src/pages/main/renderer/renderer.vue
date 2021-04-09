@@ -1,12 +1,13 @@
 <template>
   <div class="renderer-container">
-    <iframe
-      class="thumbnail"
-      frameborder="no"
-      border="0"
-      scrolling="no"
-      :src="value.value"
-    />
+    <div class="thumbnail">
+      <iframe
+        :src="value.value"
+        border="0"
+        frameborder="no"
+        scrolling="no"
+      />
+    </div>
     <div class="control-container">
       <div class="control-description">
         <label>{{ value.label }}</label>
@@ -15,11 +16,10 @@
       <div class="control-button">
         <el-button
           :disabled="isSelected"
-          type="text"
-          size="mini"
           @click="select"
-          >设为壁纸</el-button
-        >
+          size="mini"
+          type="text"
+        >设为壁纸</el-button>
       </div>
     </div>
   </div>
@@ -69,9 +69,14 @@ export default {
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 140px;
+    height: 160px;
     pointer-events: none;
     overflow: hidden;
+    & > * {
+      min-width: 100%;
+      width: 100%;
+      max-height: 100%;
+    }
   }
 
   .control-container {
