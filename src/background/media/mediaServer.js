@@ -24,7 +24,7 @@ const context = {
 const loadVideo = function (url) {
   const fileUrl = decodeUrl(url)
   const ffInstance = new Ffmpeg(fileUrl, function (data) {
-    const frame = data.toString('base64')
+    const frame = data
     sendToPlayers(frame)
   }, true)
   setTimeout(() => {
