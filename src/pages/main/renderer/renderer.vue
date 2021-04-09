@@ -62,6 +62,7 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+  flex: 1;
 
   .thumbnail {
     background: #000000;
@@ -81,6 +82,7 @@ export default {
   }
 
   .control-container {
+    flex: 1;
     padding: 8px;
     box-sizing: border-box;
     display: flex;
@@ -125,13 +127,6 @@ export default {
     }
   }
 
-  .control-button {
-    display: flex;
-    width: 100%;
-    justify-content: flex-end;
-    align-items: center;
-  }
-
   &:hover {
     .control-description {
       height: fit-content;
@@ -150,6 +145,13 @@ export default {
         -webkit-line-clamp: initial;
       }
     }
+  }
+
+  .control-button {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
   }
 }
 </style>
