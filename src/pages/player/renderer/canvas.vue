@@ -73,7 +73,7 @@ export default {
 
         context.drawImage(img, ...drawImageArgs)
         img = null
-        URL.revokeObjectURL(img)
+        URL.revokeObjectURL(src)
       }
     }
   },
