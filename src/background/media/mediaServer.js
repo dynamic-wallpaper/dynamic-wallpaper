@@ -24,8 +24,7 @@ const context = {
 const loadVideo = function (url) {
   const fileUrl = decodeUrl(url)
   const ffInstance = new Ffmpeg(fileUrl, function (data) {
-    const frame = data.toString('base64')
-    sendToPlayers(frame)
+    sendToPlayers(data)
   }, true)
   setTimeout(() => {
     ffInstance.play()
@@ -42,7 +41,6 @@ export function setCurrent (url) {
     }
     context.current = loadVideo(url)
   }
-  // instance.run()
 }
 export function setNext () {}
 
@@ -50,8 +48,19 @@ export function setPlayers (_players) {
   players = _players
 }
 
+export function abort () {
+  Object.keys(context).forEach(key => {
+    const instance = context[key]
+    if (instance) {
+      instance.abort()
+    }
+    context[key] = null
+  })
+}
+
 export default {
   setCurrent,
   setNext,
-  setPlayers
+  setPlayers,
+  abort
 }

@@ -3,7 +3,7 @@ import path from 'path'
 import EventEmitter from 'events'
 import { spawn } from 'child_process'
 
-const CPU_NUMBER = os.cpus().length
+const CPU_NUMBER = os.cpus().length || 8 // 获取当前cpu数量，m1无法获取，改为默认的8
 
 const SIG = {
   PAUSE: 'SIGSTOP',
@@ -17,6 +17,28 @@ const STATUS = {
   PAUSED: 2,
   END: 3,
   STOP: 4
+}
+
+const PRESET = {
+  ultrafast: 'ultrafast',
+  superfast: 'superfast',
+  veryfast: 'veryfast',
+  faster: 'faster',
+  fast: 'fast',
+  medium: 'medium',
+  slow: 'slow',
+  slower: 'slower',
+  veryslow: 'veryslow',
+  placebo: 'placebo'
+}
+
+const TUNE = {
+  film: 'film',
+  animation: 'animation',
+  grain: 'grain',
+  stillimage: 'stillimage',
+  fastdecode: 'fastdecode',
+  zerolatency: 'zerolatency'
 }
 
 /**
@@ -38,24 +60,25 @@ export default class Ffmpeg {
     this.loop = loop
     this.chunks = []
     this.commands = [
-      // '-vcodec',
-      // 'h264_videotoolbox', // 硬解
       '-re', // 未知
-      '-i',
-      filePath,
-      '-preset', // 超快解码
-      'ultrafast',
-      '-f', // 强制为图片输出
-      'image2pipe',
-      '-threads', // 多线程
-      CPU_NUMBER,
+      '-i', filePath, // 输入
+      '-vf', 'scale=2560*1440',
+      // '-c:v', 'h264_videotoolbox',
+      '-tune', TUNE.zerolatency,
+      '-preset', PRESET.medium, // 快速解码
+      '-f', 'image2pipe', // 强制为图片输出
+      '-threads', CPU_NUMBER, // 多线程
       'pipe:1'
     ]
+    console.log('----------------')
+    console.info('ffmpeg: ', 'ffmpeg', this.commands.map(item => ('' + item).replace(' ', '\\ ')).join(' '))
+    console.log('----------------')
+
     this.process = null
     this.events = new EventEmitter()
 
     this.onFrame = onFrame || function (frame) {
-      console.log(frame)
+      console.info(frame)
     }
   }
 

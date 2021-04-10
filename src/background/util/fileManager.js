@@ -5,9 +5,15 @@
 import fs from 'fs'
 import path from 'path'
 import { app } from 'electron'
-const { DownloaderHelper } = require('node-downloader-helper')
+import { DownloaderHelper, DH_STATES } from 'node-downloader-helper'
 
+// 一些特殊下载方案的部分
+import bilibiliHelper from './bilibili'
+
+// 最大可同时下载数量
 const DOWNLOAD_NUMBER = 10
+
+// 基础资源地址
 export const BASE_PATH = path.join(app.getPath('userData'), 'resource')
 
 if (!fs.existsSync(BASE_PATH)) {
@@ -27,10 +33,30 @@ function startDownload () {
     }
 
     const { state } = dl
-    if (state === 'IDLE') {
+    if (state === DH_STATES.IDLE) {
       dl.start()
     }
     downloadingNumber++
+  }
+}
+
+/**
+ * 获取正确的下载地址
+ * @param {string} url
+ */
+async function getDownloadConfig (url) {
+  const protocol = url.replace(/:\/\/.*/, '')
+  switch (protocol) {
+    case bilibiliHelper.BILIBILI_PROTOCOL: {
+      const downloadConfig = await bilibiliHelper.getDownloadConfig(url)
+      return downloadConfig
+    }
+    default: {
+      return {
+        headers: null,
+        url: decodeURI(url)
+      }
+    }
   }
 }
 
@@ -105,50 +131,63 @@ export default class {
    * @param {*} options
    * @returns
    */
-  downloadFile (url, onProgress, options = {}) {
-    const filename = path.basename(url)
-    const key = path.join(this.rootDir, filename)
+  async downloadFile (url, onProgress, options = {}) {
+    try {
+      const filename = path.basename(url)
+      const key = path.join(this.rootDir, filename)
 
-    if (!downloadQueue.has(key)) {
-      downloadQueue.set(key, new DownloaderHelper(encodeURI(url), this.rootDir, {
-        override: true,
-        fileName: `${filename}.tmp`,
-        ...options
-      }))
-    }
+      if (!downloadQueue.has(key)) {
+        const downloadConfig = await getDownloadConfig(url)
+        downloadQueue.set(key, new DownloaderHelper(downloadConfig.url, this.rootDir, {
+          override: true,
+          fileName: `${filename}.tmp`,
+          headers: downloadConfig.headers || {},
+          ...options
+        }))
+      }
 
-    const dl = downloadQueue.get(key)
-    if (onProgress && typeof onProgress === 'function') {
-      dl.on('progress.throttled', onProgress)
-      dl.on('end', (data) => {
-        const { filePath } = data
-        fs.renameSync(filePath, filePath.replace(/\.tmp$/, ''))
-        onProgress({
-          progress: 100
+      const dl = downloadQueue.get(key)
+      if (onProgress && typeof onProgress === 'function') {
+        dl.on('progress.throttled', onProgress)
+        dl.on('end', (data) => {
+          const { filePath } = data
+          fs.renameSync(filePath, filePath.replace(/\.tmp$/, ''))
+          onProgress({
+            progress: 100
+          })
+          // 开始新一轮的下载
+          if (downloadQueue.has(key)) {
+            downloadQueue.delete(key)
+          }
+          startDownload()
         })
-        // 开始新一轮的下载
-        if (downloadQueue.has(key)) {
-          downloadQueue.delete(key)
-        }
-        startDownload()
-      })
-      dl.on('error', (e) => {
-        fs.unlinkSync(dl.getDownloadPath())
-        onProgress({
-          progress: -1,
-          data: e
+        dl.on('error', (e) => {
+          console.error('error', e)
+          const downloadPath = dl.getDownloadPath()
+          if (fs.existsSync(downloadPath)) {
+            fs.unlinkSync(dl.getDownloadPath())
+          }
+          onProgress({
+            progress: -1,
+            data: e
+          })
+          // 开始新一轮的下载
+          if (downloadQueue.has(key)) {
+            downloadQueue.delete(key)
+          }
+          startDownload()
         })
-        // 开始新一轮的下载
-        if (downloadQueue.has(key)) {
-          downloadQueue.delete(key)
-        }
-        startDownload()
+      }
+
+      startDownload()
+
+      return dl
+    } catch (e) {
+      onProgress({
+        progress: -1,
+        data: e
       })
     }
-
-    startDownload()
-
-    return dl
   }
 
   /**

@@ -1,22 +1,29 @@
 <template>
   <div class="renderer-container">
-    <img :alt="value.thumbnail" :src="value.thumbnail" class="thumbnail" />
+    <div class="thumbnail">
+      <img :alt="value.thumbnail" :src="value.thumbnail" referrerpolicy="no-referrer" />
+    </div>
     <div class="control-container">
-      <el-popover
-        :title="value.label"
-        class="control-description"
-        placement="top"
-        trigger="hover"
-        width="300"
-      >
-        <div class="control-description" slot="reference">
-          <label>{{ value.label }}</label>
-          <div class="description">{{ value.description }}</div>
-        </div>
-        <p>{{ value.description }}</p>
-      </el-popover>
+      <div class="control-description">
+        <label>{{ value.label }}</label>
+        <div class="description">{{ value.description }}</div>
+      </div>
       <div class="control-button">
         <template v-if="isDownloaded">
+          <el-popconfirm
+            placement="top-start"
+            @confirm="deleteVideo"
+            style="flex: 1;"
+            title="确认移除该视频嘛"
+          >
+            <el-button
+              style
+              :disabled="isSelected"
+              slot="reference"
+              type="text"
+              icon="el-icon-delete"
+            />
+          </el-popconfirm>
           <el-button :disabled="isSelected" @click="select" size="mini" type="text">设为壁纸</el-button>
         </template>
         <template v-else>
@@ -38,7 +45,7 @@
 
 <script>
 import renderer from './renderer'
-const { serverSDK, ipcRenderer } = window
+const { serverSDK } = window
 
 export default {
   extends: renderer,
@@ -53,7 +60,7 @@ export default {
         }
       },
       downloading: false,
-      percentage: 0,
+      percentage: vm.isDownloaded ? 100 : 0,
       colors: [
         { color: '#f56c6c', percentage: 20 },
         { color: '#e6a23c', percentage: 40 },
@@ -64,8 +71,8 @@ export default {
     }
   },
   computed: {
-    isDownloaded ({ value }) {
-      return value.isDownloaded || this.percentage === 100
+    isDownloaded ({ percentage }) {
+      return percentage === 100
     }
   },
   methods: {
@@ -79,16 +86,25 @@ export default {
           md5: this.value.md5
         })
       } catch (e) {
-
+        console.error(e)
+        this.$message.error('下载视频出错啦')
       }
       this.downloading = false
+    },
+    deleteVideo () {
+      const { category, value } = this
+      const { id } = value
+      const deleteTargetFile = `${id}.mp4`
+      serverSDK.post('media/delete', {
+        category,
+        file: deleteTargetFile
+      })
+        .then(() => {
+          this.percentage = 0
+          this.downloading = false
+          this.$message.success('移除成功')
+        })
     }
-  },
-  created () {
-    ipcRenderer.on('media:progress', this.onMediaProgress)
-  },
-  beforeDestroy () {
-    ipcRenderer.off('media:progress', this.onMediaProgress)
   }
 }
 </script>

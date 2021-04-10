@@ -1,14 +1,12 @@
 <template>
-  <canvas
-    ref="canvas"
-    style="width: 100%; height: 100%;"
-  />
+  <canvas ref="canvas" style="width: 100%; height: 100%;" />
 </template>
 
 <script>
 import renderer from './renderer'
 import throttle from 'lodash/throttle'
 const ipcRenderer = window.ipcRenderer
+const URL = window.URL || window.webkitURL
 
 export default {
   extends: renderer,
@@ -57,10 +55,12 @@ export default {
       this.screen.offsetWidth = offsetWidth
       this.screen.offsetHeight = offsetHeight
     }, 100),
-    draw (base64) {
-      // URL.createObjectURL(new Blob(arrayBuffer))
-      const src = 'data:image/jpeg;base64,' + base64
-      const img = new Image()
+    draw (arrayBuffer) {
+      const blob = new Blob([arrayBuffer], { type: 'image/jpeg' })
+      const src = URL.createObjectURL(blob)
+      // const src = 'data:image/jpeg;base64,' + arrayBuffer
+
+      let img = new Image()
       img.src = src
       img.onload = () => {
         const { drawImageArgs, screen } = this
@@ -74,7 +74,8 @@ export default {
         canvas.height = offsetHeight
 
         context.drawImage(img, ...drawImageArgs)
-        // URL.revokeObjectURL()
+        img = null
+        URL.revokeObjectURL(src)
       }
     }
   },

@@ -5,6 +5,8 @@
 import Players from './players'
 import createMediaProtocol from './protocol'
 import mediaService from './mediaServer'
+import { MEDIA_PROTOCOL } from '@/configs/protocol'
+import FileManager from '../util/fileManager'
 
 let players = null
 
@@ -14,9 +16,18 @@ export function setUrl (url) {
   if (!players) {
     return
   }
-  mediaService.setCurrent(url)
-  players.setUrl('')
-  // players.setUrl(url)
+  const protocol = url.replace(/:\/\/.*/, '')
+  switch (protocol) {
+    case MEDIA_PROTOCOL: {
+      mediaService.setCurrent(url)
+      players.setUrl('')
+      break
+    }
+    default: {
+      mediaService.abort()
+      players.setUrl(url)
+    }
+  }
 }
 
 /**
@@ -24,7 +35,32 @@ export function setUrl (url) {
  */
 export const service = {
   categoryMap,
-  setUrl
+  setUrl,
+  /**
+   *
+   * @param {string} category
+   * @returns {FileManager}
+   */
+  getCategory (category) {
+    if (category) {
+      if (!categoryMap.has(category)) {
+        categoryMap.set(category, new FileManager(category))
+      }
+      return categoryMap.get(category)
+    }
+  },
+  setCategory (category, fileManager) {
+    return categoryMap.set(category, fileManager)
+  },
+  hasCategory (category) {
+    return categoryMap.has(category)
+  },
+  deleteCategory (category) {
+    if (category) {
+      return categoryMap.delete(category)
+    }
+    return 0
+  }
 }
 
 /**
@@ -36,6 +72,7 @@ export default function (app, store) {
     return false
   }
   const defaultUrl = store.get('selected').url
+  // 注册获取视频文件的protocol
   createMediaProtocol()
   players = new Players()
   mediaService.setPlayers(players)

@@ -16,7 +16,7 @@ export const EVENT = {
  */
 const senderSet = new Set()
 
-const store = new Store({
+export const store = new Store({
   schema,
   defaults: {
     selected: {
@@ -25,7 +25,8 @@ const store = new Store({
       category: ''
     },
     openAtLogin: false,
-    lastSelectFileDirPath: app.getPath('home')
+    lastSelectFileDirPath: app.getPath('home'),
+    cookie: ''
   }
 })
 
