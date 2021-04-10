@@ -13,8 +13,8 @@ module.exports = {
       builderOptions: {
         artifactName: '${productName}-${version}-${platform}-${arch}.${ext}',
         extraResources: ['./ffmpeg/${platform}-${arch}'],
+        afterSign: 'electron-builder-notarize',
         mac: {
-          afterSign: 'electron-builder-notarize',
           hardenedRuntime: true,
           icon: './public/icons/mac/icon.icns',
           target: {
