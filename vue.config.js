@@ -14,6 +14,8 @@ module.exports = {
         artifactName: '${productName}-${version}-${platform}-${arch}.${ext}',
         extraResources: ['./ffmpeg/${platform}-${arch}'],
         mac: {
+          afterSign: 'electron-builder-notarize',
+          hardenedRuntime: true,
           icon: './public/icons/mac/icon.icns',
           target: {
             arch: ['arm64', 'x64'],
