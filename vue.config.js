@@ -19,7 +19,7 @@ module.exports = {
           icon: './public/icons/mac/icon.icns',
           target: {
             arch: ['arm64', 'x64'],
-            target: 'dmg'
+            target: 'default'
           }
         }
       }
