@@ -62,7 +62,7 @@ export default class Ffmpeg {
     this.commands = [
       '-re', // 未知
       '-i', filePath, // 输入
-      // '-vf', 'scale=2560*1440',
+      '-vf', 'scale=2560*1440',
       // '-c:v', 'h264_videotoolbox',
       '-tune', TUNE.zerolatency,
       '-preset', PRESET.medium, // 快速解码

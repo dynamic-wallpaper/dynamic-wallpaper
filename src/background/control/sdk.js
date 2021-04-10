@@ -89,4 +89,15 @@ export default async function (context) {
       res.status(500).send('can not get cookie')
     }
   })
+
+  sdk.post('media/delete', async (req, res) => {
+    const { category, file } = req.body || {}
+    const fileManager = mediaService.getCategory(category)
+    if (fileManager.fileIsExist(file)) {
+      fileManager.deleteFile(file)
+      res.send('success')
+    } else {
+      res.statusCode(500).send('file not existed')
+    }
+  })
 }

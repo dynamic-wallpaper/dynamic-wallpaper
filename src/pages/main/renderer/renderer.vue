@@ -1,12 +1,7 @@
 <template>
   <div class="renderer-container">
     <div class="thumbnail">
-      <iframe
-        :src="value.value"
-        border="0"
-        frameborder="no"
-        scrolling="no"
-      />
+      <iframe :src="value.value" border="0" frameborder="no" scrolling="no" />
     </div>
     <div class="control-container">
       <div class="control-description">
@@ -14,12 +9,7 @@
         <div class="description">{{ value.description }}</div>
       </div>
       <div class="control-button">
-        <el-button
-          :disabled="isSelected"
-          @click="select"
-          size="mini"
-          type="text"
-        >设为壁纸</el-button>
+        <el-button :disabled="isSelected" @click="select" size="mini" type="text">设为壁纸</el-button>
       </div>
     </div>
   </div>
@@ -82,6 +72,7 @@ export default {
   }
 
   .control-container {
+    position: relative;
     flex: 1;
     padding: 8px;
     box-sizing: border-box;
@@ -90,7 +81,7 @@ export default {
     height: 100%;
     flex-direction: column;
     max-height: 100%;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .control-description {
@@ -148,10 +139,21 @@ export default {
   }
 
   .control-button {
+    // padding: 4px;
+    // box-sizing: border-box;
     display: flex;
     width: 100%;
     justify-content: flex-end;
     align-items: center;
+    position: absolute;
+    top: -26px;
+    left: 0;
+    padding: 0 4px;
+    box-sizing: border-box;
+    * {
+      color: #ffffff;
+      text-shadow: 0px 0px 3px #000000;
+    }
   }
 }
 </style>

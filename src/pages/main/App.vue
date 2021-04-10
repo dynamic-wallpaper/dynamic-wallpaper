@@ -7,11 +7,7 @@
         class="side-bar"
         v-bind="sidebar"
       >
-        <el-menu-item
-          :index="category.key"
-          :key="category.key"
-          v-for="category of categories"
-        >
+        <el-menu-item :index="category.key" :key="category.key" v-for="category of categories">
           <div class="category-label">{{ category.label }}</div>
         </el-menu-item>
       </el-menu>
@@ -22,34 +18,18 @@
         <control-header />
       </el-header>
       <el-main>
-        <div
-          :key="selected.category"
-          class="container"
-          v-if="category"
-        >
+        <div :key="selected.category" class="container" v-if="category">
           <component
             :category="category"
             :is="categoryRenderer"
             class="option-container"
             ref="option-container"
           >
-            <div
-              class="option"
-              slot-scope="{ data }"
-            >
-              <el-card
-                class="option-card"
-                shadow="hover"
-              >
+            <div class="option" slot-scope="{ data }">
+              <el-card class="option-card" shadow="hover">
                 <!-- 选中标签 -->
-                <div
-                  class="selected"
-                  v-if="selected.key === data.value"
-                >
-                  <img
-                    :src="selectedIcon"
-                    alt="selected"
-                  />
+                <div class="selected" v-if="selected.key === data.value">
+                  <img :src="selectedIcon" alt="selected" />
                 </div>
                 <!-- 渲染 -->
                 <component
@@ -201,7 +181,7 @@ export default {
 
 <style lang="scss">
 $option-card-width: 260px;
-$option-card-height: 288px;
+$option-card-height: 268px;
 
 html,
 body,
