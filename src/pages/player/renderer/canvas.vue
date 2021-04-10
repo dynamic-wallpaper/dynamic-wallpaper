@@ -58,6 +58,8 @@ export default {
     draw (arrayBuffer) {
       const blob = new Blob([arrayBuffer], { type: 'image/jpeg' })
       const src = URL.createObjectURL(blob)
+      // const src = 'data:image/jpeg;base64,' + arrayBuffer
+
       let img = new Image()
       img.src = src
       img.onload = () => {
