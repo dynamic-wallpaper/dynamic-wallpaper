@@ -101,6 +101,7 @@ export default {
       })
         .then(() => {
           this.percentage = 0
+          this.downloading = false
           this.$message.success('移除成功')
         })
     }

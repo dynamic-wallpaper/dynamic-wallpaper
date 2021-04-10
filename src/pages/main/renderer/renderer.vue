@@ -153,6 +153,13 @@ export default {
     * {
       color: #ffffff;
       text-shadow: 0px 0px 3px #000000;
+      &.is-disabled {
+        color: #c0c4cc;
+        &:hover,
+        &:focus {
+          color: #c0c4cc;
+        }
+      }
     }
   }
 }
