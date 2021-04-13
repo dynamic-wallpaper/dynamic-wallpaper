@@ -60,11 +60,12 @@ export default class Ffmpeg {
     this.loop = loop
     this.chunks = []
     this.commands = [
-      '-re', // 未知
+      '-re', // 实时输出
+      '-hwaccel', 'videotoolbox', // gpu加速
       '-i', filePath, // 输入
       '-vf', 'scale=2560*1440',
-      // '-c:v', 'h264_videotoolbox',
-      '-tune', TUNE.zerolatency,
+      '-b:v', '10000k',
+      '-tune', TUNE.animation,
       '-preset', PRESET.medium, // 快速解码
       '-f', 'image2pipe', // 强制为图片输出
       '-threads', CPU_NUMBER, // 多线程
