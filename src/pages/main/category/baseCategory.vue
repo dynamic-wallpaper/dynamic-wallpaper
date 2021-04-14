@@ -1,5 +1,9 @@
 <template>
-  <div v-infinite-scroll="loadMore">
+  <div
+    v-infinite-scroll="loadMore"
+    :infinite-scroll-immediate="infiniteScrollImmediate"
+    v-loading="isLoading"
+  >
     <template v-if="list.length > 0">
       <template v-for="item of list">
         <slot :data="item" />
@@ -32,6 +36,8 @@ export default {
   data () {
     const defaultValue = this.category.value || []
     return {
+      infiniteScrollImmediate: true,
+      isLoading: false,
       list: [...defaultValue]
     }
   },

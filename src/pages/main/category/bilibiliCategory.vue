@@ -14,6 +14,7 @@ export default {
   name: 'bilibiliCategoryRenderer',
   data () {
     return {
+      infiniteScrollImmediate: false,
       pageNumer: 0,
       pageSize: 30,
       totalNumber: 99999,
@@ -34,28 +35,34 @@ export default {
       }
     },
     async fetchList (pageNum = 1) {
-      const { data } = await bilibiliModels.getUserVideos(this.mid, pageNum)
-      const { list, page } = data
-      this.totalNumber = page.count
-      this.pageNumer = page.pn
+      this.isLoading = true
+      try {
+        const { data } = await bilibiliModels.getUserVideos(this.mid, pageNum)
+        const { list, page } = data
+        this.totalNumber = page.count
+        this.pageNumer = page.pn
 
-      list.vlist.forEach(video => {
-        if (!this.list.find(item => item.id === video.bvid)) {
-          const videoKey = `${video.bvid}.mp4`
-          const thumbnail = video.pic.includes('http')
-            ? video.pic
-            : `https:${video.pic}`
-          this.list.push({
-            id: video.bvid,
-            thumbnail,
-            value: `${MEDIA_PROTOCOL}://${this.category.key}/${videoKey}`,
-            label: video.title,
-            description: video.description,
-            downloadUrl: `${PROTOCOL}://${videoKey}`,
-            isDownloaded: videoKey in this.exitedVideo
-          })
-        }
-      })
+        list.vlist.forEach(video => {
+          if (!this.list.find(item => item.id === video.bvid)) {
+            const videoKey = `${video.bvid}.mp4`
+            const thumbnail = video.pic.includes('http')
+              ? video.pic
+              : `https:${video.pic}`
+            this.list.push({
+              id: video.bvid,
+              thumbnail,
+              value: `${MEDIA_PROTOCOL}://${this.category.key}/${videoKey}`,
+              label: video.title,
+              description: video.description,
+              downloadUrl: `${PROTOCOL}://${videoKey}`,
+              isDownloaded: videoKey in this.exitedVideo
+            })
+          }
+        })
+      } catch (e) {
+        this.$message.error('获取数据错误')
+      }
+      this.isLoading = false
     }
   },
   created () {
@@ -63,6 +70,9 @@ export default {
       .then(res => res.data)
       .then(exitedVideo => {
         this.exitedVideo = exitedVideo
+      })
+      .then(() => {
+        this.fetchList()
       })
   }
 }
