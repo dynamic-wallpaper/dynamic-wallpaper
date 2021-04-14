@@ -11,6 +11,7 @@ module.exports = {
       mainProcessFile: 'src/background/index.js',
       mainProcessWatch: ['src/background/**/*'],
       builderOptions: {
+        publish: ['github'],
         artifactName: '${productName}-${version}-${platform}-${arch}.${ext}',
         extraResources: ['./ffmpeg/${platform}-${arch}'],
         afterSign: 'electron-builder-notarize',

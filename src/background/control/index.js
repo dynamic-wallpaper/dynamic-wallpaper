@@ -5,6 +5,7 @@ import { ipcMain, Menu } from 'electron'
 import createBrowser from '@/background/util/browser'
 import initSdk from './sdk'
 import initTray from './tray'
+import autoUpdater from './autoUpdate'
 
 /**
  * background上下文
@@ -44,7 +45,9 @@ async function createControlBrowser (store) {
 function initApp (app, store) {
   // 隐藏dock和菜单
   Menu.setApplicationMenu(null)
-  app.dock.hide()
+  if (app.dock) {
+    app.dock.hide()
+  }
 
   // 控制窗口
   app.on('activate', async () => {
@@ -83,6 +86,10 @@ export async function initControl (app, store, mediaService) {
    * 和客户端的sdk
    */
   initSdk(context, app, store)
+
+  // 检查更新
+  autoUpdater()
+
   await createControlBrowser(store)
 }
 
