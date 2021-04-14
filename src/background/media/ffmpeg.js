@@ -3,8 +3,6 @@ import path from 'path'
 import EventEmitter from 'events'
 import { spawn } from 'child_process'
 
-const CPU_NUMBER = os.cpus().length || 8 // 获取当前cpu数量，m1无法获取，改为默认的8
-
 const SIG = {
   PAUSE: 'SIGSTOP',
   RESUME: 'SIGCONT'
@@ -32,14 +30,14 @@ const PRESET = {
   placebo: 'placebo'
 }
 
-const TUNE = {
-  film: 'film',
-  animation: 'animation',
-  grain: 'grain',
-  stillimage: 'stillimage',
-  fastdecode: 'fastdecode',
-  zerolatency: 'zerolatency'
-}
+// const TUNE = {
+//   film: 'film',
+//   animation: 'animation',
+//   grain: 'grain',
+//   stillimage: 'stillimage',
+//   fastdecode: 'fastdecode',
+//   zerolatency: 'zerolatency'
+// }
 
 /**
  * 因为返回的data不完整，需要拼接
@@ -63,16 +61,16 @@ export default class Ffmpeg {
       '-re', // 实时输出
       '-hwaccel', 'videotoolbox', // gpu加速
       '-i', filePath, // 输入
-      '-vf', 'scale=2560*1440',
+      // '-vf', 'scale=2560*1440',
       '-b:v', '10000k',
-      '-tune', TUNE.animation,
-      '-preset', PRESET.medium, // 快速解码
+      // '-tune', TUNE.animation,
+      '-preset', PRESET.ultrafast, // 快速解码
       '-f', 'image2pipe', // 强制为图片输出
-      '-threads', CPU_NUMBER, // 多线程
+      '-threads', 1, // 多线程
       'pipe:1'
     ]
-    console.log('----------------')
-    console.info('ffmpeg: ', 'ffmpeg', this.commands.map(item => ('' + item).replace(' ', '\\ ')).join(' '))
+    console.log('ffmpeg----------------')
+    console.info(ffmpegPath, this.commands.map(item => ('' + item).replace(' ', '\\ ')).join(' '))
     console.log('----------------')
 
     this.process = null
