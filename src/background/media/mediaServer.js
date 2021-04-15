@@ -22,7 +22,6 @@ const context = {
  * @returns {ffmpeg.FfmpegCommand}
  */
 const loadVideo = function (url) {
-  console.log(url)
   const fileUrl = decodeUrl(url)
   const ffInstance = new Ffmpeg(fileUrl, function (data) {
     sendToPlayers(data)

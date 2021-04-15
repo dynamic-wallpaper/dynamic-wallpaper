@@ -23,6 +23,11 @@ export function setUrl (url) {
       players.setUrl('')
       break
     }
+    case LOCOL_MEDIA_PROTOCOL: {
+      mediaService.setCurrent(url)
+      players.setUrl('')
+      break
+    }
     default: {
       mediaService.abort()
       players.setUrl(url)
