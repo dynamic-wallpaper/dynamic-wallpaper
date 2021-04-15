@@ -9,6 +9,7 @@ export default async function (path = 'index.html', options = {}) {
   const win = new BrowserWindow({
     width: 1024,
     height: 800,
+    show: false,
     ...options,
     webPreferences: {
       ...webPreferences,
@@ -23,5 +24,11 @@ export default async function (path = 'index.html', options = {}) {
   if (process.env.NODE_ENV === 'development') {
     win.webContents.openDevTools()
   }
+  
+  // 初始化后再显示
+  win.on('ready-to-show', function () {
+    win.show()
+  })
+  
   return win
 }
