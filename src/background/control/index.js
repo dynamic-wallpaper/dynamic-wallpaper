@@ -22,6 +22,7 @@ export const context = {
  */
 async function createControlBrowser (store) {
   let win = context.win
+  console.log(win && win.isDestroyed())
   if (!win || win.isDestroyed()) {
     win = await createBrowser('index.html', {
       webPreferences: {
@@ -31,12 +32,11 @@ async function createControlBrowser (store) {
     })
     context.win = win
     win.moveTop()
-    
-    win.onbeforeunload = (e) => {
-      e.returnValue = false // 相当于 `return false` ，但是不推荐使用
+
+    win.on('close', e => {
+      e.preventDefault()
       win.hide()
-    }
-    
+    })
   } else {
     win.show()
   }
