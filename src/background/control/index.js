@@ -22,7 +22,6 @@ export const context = {
  */
 async function createControlBrowser (store) {
   let win = context.win
-  console.log(win && win.isDestroyed())
   if (!win || win.isDestroyed()) {
     win = await createBrowser('index.html', {
       webPreferences: {

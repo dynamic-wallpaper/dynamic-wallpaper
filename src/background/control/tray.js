@@ -1,7 +1,9 @@
-import { Menu, Tray, dialog } from 'electron'
+import { Menu, Tray, dialog, app as electronApp, nativeImage } from 'electron'
 import { service } from '@/background/media/index'
 import { MEDIA_PROTOCOL } from '@/configs/protocol'
+import About from 'electron-about'
 import path from 'path'
+
 let tray = null
 const context = {
   store: null,
@@ -11,6 +13,16 @@ const context = {
 
 const separator = {
   type: 'separator'
+}
+
+const aboutMenu = {
+  ...About.makeMenuItem('MAC动态壁纸', {
+    icon: nativeImage.createFromPath(path.join(__static, 'icons', 'png', '32x32.png')).toDataURL(),
+    appName: '动态壁纸',
+    version: `Version ${electronApp.getVersion()}`,
+    copyright: '© mizuka.wu'
+  }),
+  label: '关于'
 }
 
 /**
@@ -67,6 +79,7 @@ function buildContextMenu () {
         buildContextMenu()
       }
     },
+    aboutMenu,
     separator,
     {
       label: '退出',
