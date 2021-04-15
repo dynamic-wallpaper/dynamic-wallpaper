@@ -16,8 +16,9 @@ const regexp = /(?<protocol>.*):\/\/(?<url>.*)/
 export const decodeUrl = function (sourceUrl = '') {
   const { protocol, url } = (regexp.exec(sourceUrl) || {}).groups || {}
   const basePath = protocol === MEDIA_PROTOCOL ? BASE_PATH : ''
+
   // Decode URL to prevent errors when loading filenames with UTF-8 chars or chars like "#"
-  const filePath = path.join(basePath, ...decodeURI(url).split('/'))
+  const filePath = path.join(basePath, decodeURI(url))
   try {
     /**
      * 从保存的地方获取
