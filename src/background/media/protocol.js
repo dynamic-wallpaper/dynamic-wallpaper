@@ -1,17 +1,23 @@
-import { protocol } from 'electron'
+import { protocol as protocolRegister } from 'electron'
 import { MEDIA_PROTOCOL } from '@/configs/protocol'
 import { BASE_PATH } from '@/background/util/fileManager'
 import path from 'path'
 import fs from 'fs'
 
-export const PROTOCOL = MEDIA_PROTOCOL
-// eslint-disable-next-line
-const regexp = new RegExp(`^${PROTOCOL}:\/\/`)
+const regexp = /(?<protocol>.*):\/\/(?<url>.*)/
 
+/**
+ * 解码url
+ * @param {string} sourceUrl
+ * @param {Regexp} regexp
+ * @param {string} basePath
+ * @returns {string}
+ */
 export const decodeUrl = function (sourceUrl = '') {
-  const url = sourceUrl.replace(regexp, '')
+  const { protocol, url } = (regexp.exec(sourceUrl) || {}).groups || {}
+  const basePath = protocol === MEDIA_PROTOCOL ? BASE_PATH : ''
   // Decode URL to prevent errors when loading filenames with UTF-8 chars or chars like "#"
-  const filePath = path.join(BASE_PATH, ...decodeURI(url).split('/'))
+  const filePath = path.join(basePath, ...decodeURI(url).split('/'))
   try {
     /**
      * 从保存的地方获取
@@ -27,10 +33,16 @@ export const decodeUrl = function (sourceUrl = '') {
   }
 }
 
-export function registerProtocol () {
-  protocol.registerFileProtocol(PROTOCOL,
+/**
+ * 注册文件路径
+ * @param {string} protocol
+ * @param {string} basePath
+ */
+export function registerProtocol (protocol) {
+  protocolRegister.registerFileProtocol(protocol,
     (request, callback) => {
-      callback(decodeUrl(request.url))
+      const url = decodeUrl(request.url)
+      callback(url)
     })
 }
 

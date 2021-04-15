@@ -3,7 +3,6 @@
  * b站接口
  */
 import axios from 'axios'
-import { getHeaders } from '@/configs/bilibili'
 const requester = axios.create({
   baseURL: 'https://api.bilibili.com'
 })
@@ -53,7 +52,7 @@ export function getDownloadInfo ({ bvid, cid, quality }, headers) {
     params: {
       bvid,
       cid,
-      fourk: 1, // 支持4k
+      fourk: 0, // 1为支持4k，解码似乎跟不上
       fnval: 16, // dash模式
       qn: quality
     }

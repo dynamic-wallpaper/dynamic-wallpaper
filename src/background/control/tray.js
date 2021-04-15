@@ -1,6 +1,6 @@
 import { Menu, Tray, dialog, app as electronApp, nativeImage } from 'electron'
 import { service } from '@/background/media/index'
-import { MEDIA_PROTOCOL } from '@/configs/protocol'
+import { LOCOL_MEDIA_PROTOCOL } from '@/configs/protocol'
 import About from 'electron-about'
 import path from 'path'
 
@@ -40,6 +40,7 @@ function buildContextMenu () {
     },
     {
       label: '选择本地资源',
+      disabled: true,
       async click () {
         const { canceled, filePaths } = await dialog.showOpenDialog({
           title: '选择本地资源文件',
@@ -54,7 +55,7 @@ function buildContextMenu () {
           /**
            * store更新
            */
-          const resourceFilePath = `${MEDIA_PROTOCOL}://${filePath}`
+          const resourceFilePath = `${LOCOL_MEDIA_PROTOCOL}://${filePath}`
           store.set('selected.key', '')
           store.set('selected.url', resourceFilePath)
           service.setUrl(resourceFilePath)
