@@ -120,10 +120,9 @@ export default class Players {
       await this.createPlayers()
     }
     for (const win of playerMap.values()) {
-      // if (win.isDestroyed()) {
-      // playerMap.delete(win.id)
-      //   continue
-      // }
+      if (win.isDestroyed()) {
+        continue
+      }
       sendFrame(win, frame)
     }
   }

@@ -24,6 +24,7 @@ async function createControlBrowser (store) {
   let win = context.win
   if (!win || win.isDestroyed()) {
     win = await createBrowser('index.html', {
+      show: false,
       webPreferences: {
         webSecurity: false,
         webviewTag: true
@@ -31,6 +32,11 @@ async function createControlBrowser (store) {
     })
     context.win = win
     win.moveTop()
+
+    // 初始化后再显示
+    win.on('ready-to-show', function () {
+      win.show()
+    })
 
     win.on('close', e => {
       e.preventDefault()
