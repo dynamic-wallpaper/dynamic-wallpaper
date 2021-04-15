@@ -31,6 +31,12 @@ async function createControlBrowser (store) {
     })
     context.win = win
     win.moveTop()
+    
+    win.onbeforeunload = (e) => {
+      e.returnValue = false // 相当于 `return false` ，但是不推荐使用
+      win.hide()
+    }
+    
   } else {
     win.show()
   }
