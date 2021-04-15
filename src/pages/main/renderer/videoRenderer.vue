@@ -60,7 +60,7 @@ export default {
         }
       },
       downloading: false,
-      percentage: vm.isDownloaded ? 100 : 0,
+      percentage: vm.value.isDownloaded ? 100 : 0,
       colors: [
         { color: '#f56c6c', percentage: 20 },
         { color: '#e6a23c', percentage: 40 },
