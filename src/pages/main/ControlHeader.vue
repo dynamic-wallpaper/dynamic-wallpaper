@@ -1,30 +1,37 @@
 <template>
   <div class="control-header">
-    <!-- 循环 -->
+    <div>
+      <!-- 订阅管理 -->
+      <div></div>
 
-    <!-- 登陆页面 -->
-    <el-popover :width="cookie ? 200 : 500" placement="bottom-end" ref="popover">
-      <!-- 未登录显示webview -->
-      <webview ref="webview" style="height: 600px;" :src="src" v-if="!cookie"></webview>
-      <div v-else>
-        <el-popconfirm title="确定切换用户吗吗？" @confirm="logout">
-          <el-button type="text" slot="reference">切换用户</el-button>
-        </el-popconfirm>
-      </div>
-      <!-- 占位 -->
-      <div class="control-item" slot="reference">
-        <div class="avatar">
-          <img
-            v-if="bilibiliUserInfo.avatar"
-            :src="bilibiliUserInfo.avatar"
-            referrerpolicy="no-referrer"
-            alt="avatar"
-          />
-          <em v-else class="el-icon-user-solid" />
+      <!-- 循环 -->
+    </div>
+
+    <div>
+      <!-- 登陆页面 -->
+      <el-popover :width="cookie ? 200 : 500" placement="bottom-end" ref="popover">
+        <!-- 未登录显示webview -->
+        <webview ref="webview" style="height: 600px;" :src="src" v-if="!cookie"></webview>
+        <div v-else>
+          <el-popconfirm title="确定切换用户吗吗？" @confirm="logout">
+            <el-button type="text" slot="reference">切换用户</el-button>
+          </el-popconfirm>
         </div>
-        <span class="username">{{ bilibiliUserInfo.userName || '登录' }}</span>
-      </div>
-    </el-popover>
+        <!-- 占位 -->
+        <div class="control-item" slot="reference">
+          <div class="avatar">
+            <img
+              v-if="bilibiliUserInfo.avatar"
+              :src="bilibiliUserInfo.avatar"
+              referrerpolicy="no-referrer"
+              alt="avatar"
+            />
+            <em v-else class="el-icon-user-solid" />
+          </div>
+          <span class="username">{{ bilibiliUserInfo.userName || '登录' }}</span>
+        </div>
+      </el-popover>
+    </div>
   </div>
 </template>
 
@@ -106,7 +113,7 @@ export default {
   padding: 4px 18px;
   border-bottom: 1px solid #eeeeee;
   box-sizing: border-box;
-  justify-content: flex-end;
+  justify-content: space-between;
 
   .control-item {
     display: flex;

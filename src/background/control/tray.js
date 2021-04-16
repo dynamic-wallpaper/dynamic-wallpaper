@@ -17,7 +17,7 @@ const separator = {
 
 const aboutMenu = {
   ...About.makeMenuItem('MAC动态壁纸', {
-    icon: nativeImage.createFromPath(path.join(__static, 'icons', 'png', '32x32.png')).toDataURL(),
+    icon: nativeImage.createFromPath(path.join(__static, 'icons', 'png', '512x512.png')).toDataURL(),
     appName: '动态壁纸',
     version: `Version ${electronApp.getVersion()}`,
     copyright: '© mizuka.wu'
