@@ -55,7 +55,7 @@ export default class Players {
      */
     const winConfig = {
       width,
-      height: height + OFFSET,
+      height: height + OFFSET * 2,
       x,
       y: y - OFFSET,
       hasShadow: false,
