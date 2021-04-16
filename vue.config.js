@@ -6,11 +6,11 @@ module.exports = {
   },
   pluginOptions: {
     electronBuilder: {
-      appId: 'top.mizuka.dynamicWallpaper',
       preload: 'src/pages/preload.js',
       mainProcessFile: 'src/background/index.js',
       mainProcessWatch: ['src/background/**/*'],
       builderOptions: {
+        appId: 'top.mizuka.dynamicWallpaper',
         publish: ['github'],
         artifactName: '${productName}-${version}-${platform}-${arch}.${ext}',
         extraResources: ['./ffmpeg/${platform}-${arch}'],
