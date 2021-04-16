@@ -136,6 +136,10 @@ export default {
         -webkit-line-clamp: initial;
       }
     }
+
+    .control-button {
+      background: rgba(0, 0, 0, 0.5);
+    }
   }
 
   .control-button {
@@ -146,7 +150,7 @@ export default {
     justify-content: flex-end;
     align-items: center;
     position: absolute;
-    top: -26px;
+    top: -28px;
     left: 0;
     padding: 0 4px;
     box-sizing: border-box;

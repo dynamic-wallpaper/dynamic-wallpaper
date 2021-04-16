@@ -30,15 +30,6 @@ const PRESET = {
   placebo: 'placebo'
 }
 
-// const TUNE = {
-//   film: 'film',
-//   animation: 'animation',
-//   grain: 'grain',
-//   stillimage: 'stillimage',
-//   fastdecode: 'fastdecode',
-//   zerolatency: 'zerolatency'
-// }
-
 /**
  * 因为返回的data不完整，需要拼接
  */
@@ -61,9 +52,9 @@ export default class Ffmpeg {
       '-re', // 实时输出
       '-hwaccel', 'videotoolbox', // gpu加速
       '-i', filePath, // 输入
-      // '-vf', 'scale=2560*1440',
-      '-b:v', '10000k',
-      // '-tune', TUNE.animation,
+      '-r', 30,
+      // '-crf', 0,
+      '-b:v', '100000k',
       '-preset', PRESET.ultrafast, // 快速解码
       '-f', 'image2pipe', // 强制为图片输出
       '-threads', 1, // 多线程
