@@ -23,6 +23,15 @@ export const context = {
 async function createControlBrowser (store) {
   let win = context.win
   if (!win || win.isDestroyed()) {
+    // 给win增加一个临时占位, 防止重复打开
+    context.win = {
+      isDestroyed () {
+        return false
+      },
+      show () {
+
+      }
+    }
     win = await createBrowser('index.html', {
       show: false,
       webPreferences: {
