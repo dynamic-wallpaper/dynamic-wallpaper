@@ -33,6 +33,7 @@
             :show-text="false"
             :stroke-width="3"
             :width="20"
+            style="padding: 4px;"
             type="circle"
             v-if="downloading"
           ></el-progress>
