@@ -1,5 +1,5 @@
 import { autoUpdater } from 'electron-updater'
-import { dialog } from 'electron'
+import { app, dialog } from 'electron'
 import logger from 'electron-log'
 
 autoUpdater.logger = logger
@@ -44,8 +44,12 @@ export default function () {
       .then(answer => {
         const buttonIndex = answer.response
 
-        // install and restart if answer is 0 "Sure!"
-        if (buttonIndex === 0) autoUpdater.quitAndInstall(false, true)
+        if (buttonIndex === 0) {
+          autoUpdater.quitAndInstall(false, true)
+          setTimeout(() => {
+            app.quit()
+          }, 500)
+        }
       })
       .catch(error => {
         console.error(error, 'error in update-downloaded')
