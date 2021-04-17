@@ -46,6 +46,7 @@ export default {
     return {
       src: LOGIN_URL,
       bilibiliUserInfo: {
+        mid: '',
         avatar: '',
         userName: ''
       },
@@ -79,7 +80,7 @@ export default {
   watch: {
     cookie: {
       immediate: true,
-      handler (cookie) {
+      async handler (cookie) {
         // 已登陆，自动获取最新用户名信息
         if (cookie) {
           // 移除webview
@@ -87,18 +88,22 @@ export default {
           if (webview) {
             webview.removeEventListener('will-navigate', this.loginHandler)
           }
-          bilibiliModel.getMyInfo(cookie).then(({ data }) => {
-            const { name, face } = data
-            this.bilibiliUserInfo.avatar = face
-            this.bilibiliUserInfo.userName = name
-          })
+          const { data } = await bilibiliModel.getMyInfo(cookie)
+          const { name, face, mid } = data
+          this.bilibiliUserInfo.mid = mid
+          this.bilibiliUserInfo.avatar = face
+          this.bilibiliUserInfo.userName = name
         } else {
+          this.bilibiliUserInfo.mid = ''
+          this.bilibiliUserInfo.avatar = ''
+          this.userName = ''
           // 未登录，自动加载方法去监听cookie
           this.$nextTick(() => {
             const webview = this.$refs.webview
             webview.addEventListener('will-navigate', this.loginHandler)
           })
         }
+        this.$emit('input', this.bilibiliUserInfo.mid)
       }
     }
   }

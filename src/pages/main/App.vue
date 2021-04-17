@@ -15,7 +15,7 @@
 
     <el-container>
       <el-header>
-        <control-header />
+        <control-header v-model="currentUserMid" />
       </el-header>
       <el-main>
         <div :key="selected.category" class="container" v-if="category">
@@ -85,6 +85,7 @@ export default {
   data () {
     const vm = this
     return {
+      currentUserMid: '', // 当前用户在b站的mid
       selectedIcon,
       sidebar: {
         backgroundColor: '#6a6da9',
@@ -92,7 +93,6 @@ export default {
         activeTextColor: '#6a6da9'
       },
       websiteCategory: websiteConfig,
-      mediaCategories: [],
       /**
        * 代理下发所有的更新事件
        */
@@ -111,8 +111,8 @@ export default {
     }
   },
   computed: {
-    categories ({ websiteCategory, mediaCategories }) {
-      return [
+    categories ({ websiteCategory, currentUserMid }) {
+      const categories = [
         // b站的标签
         ...Object.entries(UP).map(([label, mid]) => ({
           label,
@@ -120,9 +120,20 @@ export default {
           renderer: 'videoRenderer',
           categoryRenderer: 'bilibiliCategoryRenderer'
         })),
-        ...mediaCategories,
         websiteCategory
       ]
+
+      if (currentUserMid) {
+        categories.push({
+          label: '我的收藏',
+          mid: currentUserMid,
+          key: `bilibiliUser:${currentUserMid}`,
+          renderer: 'videoRenderer',
+          categoryRenderer: 'bilibiliMyFavCategoryRenderer'
+        })
+      }
+
+      return categories
     },
     category ({ selected, categories }) {
       return categories.find(item => item.key === selected.category) || {}

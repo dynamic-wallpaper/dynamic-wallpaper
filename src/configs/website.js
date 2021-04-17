@@ -1,5 +1,5 @@
 export default {
-  label: '网页',
+  label: '推荐网页',
   key: 'website',
   value: [
     {

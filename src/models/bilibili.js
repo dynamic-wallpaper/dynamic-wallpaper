@@ -7,6 +7,16 @@ const requester = axios.create({
   baseURL: 'https://api.bilibili.com'
 })
 
+requester.interceptors.response.use((response) => {
+  return response.data
+})
+
+/**
+ * 获取某个人的投稿视频
+ * @param {number} mid
+ * @param {number} pageNumber
+ * @returns
+ */
 export function getUserVideos (mid, pageNumber = 1) {
   return requester.get('/x/space/arc/search', {
     params: {
@@ -15,10 +25,11 @@ export function getUserVideos (mid, pageNumber = 1) {
       ps: 30
     }
   })
-    .then(res => res.data)
 }
+
 /**
  * 获取bvid，不过只会获取最后一p的
+ * @todo 获取宽比高大的那p
  * @param {string} bvid
  */
 export function getCid (bvid) {
@@ -27,7 +38,6 @@ export function getCid (bvid) {
       bvid
     }
   })
-    .then(res => res.data)
     .then(({ data }) => {
       /**
          * 获取分辨率
@@ -37,6 +47,7 @@ export function getCid (bvid) {
       return first.cid
     })
 }
+
 /**
  * 获取下载信息
  * @see https://github.com/SocialSisterYi/bilibili-API-collect/blob/master/video/videostream_url.md
@@ -57,7 +68,6 @@ export function getDownloadInfo ({ bvid, cid, quality }, headers) {
       qn: quality
     }
   })
-    .then(res => res.data)
     .then(({ data }) => {
       // 目前只下载视频不考虑音频
       const { dash } = data
@@ -69,6 +79,7 @@ export function getDownloadInfo ({ bvid, cid, quality }, headers) {
       }
     })
 }
+
 /**
  * 获取本人信息
  * @param {*} cookie
@@ -76,12 +87,27 @@ export function getDownloadInfo ({ bvid, cid, quality }, headers) {
  */
 export function getMyInfo () {
   return requester.get('/x/space/myinfo')
-    .then(res => res.data)
+}
+
+/**
+ * 获取用户创建的收藏夹
+ * @param {number} mid
+ * @returns
+ */
+export function getUserCreatedFavFolder (mid) {
+  return requester.get('/x/v3/fav/folder/created/list-all', {
+    params: {
+      up_mid: mid,
+      type: 2
+    }
+  })
+    .then(({ data }) => data.list)
 }
 
 export default {
   getUserVideos,
   getCid,
   getDownloadInfo,
-  getMyInfo
+  getMyInfo,
+  getUserCreatedFavFolder
 }
