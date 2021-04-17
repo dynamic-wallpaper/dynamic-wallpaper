@@ -131,7 +131,7 @@ export default {
       .description {
         flex: 1;
         height: 100%;
-        overflow: scroll;
+        overflow: auto;
         word-break: break-all;
         -webkit-line-clamp: initial;
       }
