@@ -21,6 +21,7 @@ export default {
       this.isLoading = true
       try {
         const { data } = await bilibiliModel.getFavResources(this.id, pageNum)
+        console.log(data)
         const { list, page } = data
         this.totalNumber = page.count
         this.pageNumer = page.pn

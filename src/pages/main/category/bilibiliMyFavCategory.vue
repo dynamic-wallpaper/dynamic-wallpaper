@@ -1,6 +1,6 @@
 <template>
   <el-tabs class="bilibili-my-fav-category" tab-position="left">
-    <el-tab-pane v-for="folder of folders" :key="folder.id" :label="folder.title">
+    <el-tab-pane lazy v-for="folder of folders" :key="folder.id" :label="folder.title">
       <bilibili-fav-folder-category v-bind="$props" :id="folder.id" />
     </el-tab-pane>
   </el-tabs>

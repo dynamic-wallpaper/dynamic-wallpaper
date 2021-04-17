@@ -6,6 +6,9 @@ autoUpdater.logger = logger
 autoUpdater.autoDownload = false
 
 export default function () {
+  if (process.env.NODE_ENV === 'development') {
+    return
+  }
   autoUpdater.checkForUpdates()
 
   // listen for update found
