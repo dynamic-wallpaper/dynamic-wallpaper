@@ -114,7 +114,8 @@ export function getFavResources (mid, pageNumber = 1) {
     params: {
       media_id: mid,
       pn: pageNumber,
-      ps: 10
+      ps: 10,
+      platform: 'web'
     }
   })
 }

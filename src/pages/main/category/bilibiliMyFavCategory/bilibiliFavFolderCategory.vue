@@ -2,7 +2,7 @@
 /**
  * 用户收藏夹内的视频，基本逻辑和外面的b站分类渲染一致，修改了调用接口和获取mid方案
  */
-/* eslint-disable no-unused-vars */
+/* eslint-disable camelcase */
 import bilibiliModel from '@/models/bilibili'
 import bilibiliCategory from '../bilibiliCategory'
 import { PROTOCOL } from '@/configs/bilibili'
@@ -22,28 +22,24 @@ export default {
       this.isLoading = true
       try {
         const { data } = await bilibiliModel.getFavResources(this.id, pageNum)
-        console.log(data)
-        // const { list, page } = data
-        // this.totalNumber = page.count
-        // this.pageNumer = page.pn
+        const { has_more, medias } = data
+        this.pageNumer = pageNum
+        this.infiniteScrollDisabled = !has_more
 
-        // list.vlist.forEach(video => {
-        //   if (!this.list.find(item => item.id === video.bvid)) {
-        //     const videoKey = `${video.bvid}.mp4`
-        //     const thumbnail = video.pic.includes('http')
-        //       ? video.pic
-        //       : `https:${video.pic}`
-        //     this.list.push({
-        //       id: video.bvid,
-        //       thumbnail,
-        //       value: `${MEDIA_PROTOCOL}://${this.category.key}/${videoKey}`,
-        //       label: video.title,
-        //       description: video.description,
-        //       downloadUrl: `${PROTOCOL}://${videoKey}`,
-        //       isDownloaded: videoKey in this.exitedVideo
-        //     })
-        //   }
-        // })
+        medias.forEach(video => {
+          const videoKey = `${video.bvid}.mp4`
+          const thumbnail = video.cover.includes('http')
+            ? video.cover
+            : `https:${video.cover}`
+          this.list.push({
+            id: video.bvid,
+            thumbnail,
+            value: `${MEDIA_PROTOCOL}://${this.category.key}/${videoKey}`,
+            description: video.intro,
+            downloadUrl: `${PROTOCOL}://${videoKey}`,
+            isDownloaded: videoKey in this.exitedVideo
+          })
+        })
       } catch (e) {
         console.error(e)
         this.$message.error('获取数据错误')
