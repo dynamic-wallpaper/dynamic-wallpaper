@@ -1,6 +1,8 @@
 <template>
-  <el-tabs tab-position="left">
-    <el-tab-pane v-for="folder of folders" :key="folder.id" :label="folder.title">hello</el-tab-pane>
+  <el-tabs class="bilibili-my-fav-category" tab-position="left">
+    <el-tab-pane v-for="folder of folders" :key="folder.id" :label="folder.title">
+      <bilibili-fav-folder-category v-bind="$props" :id="folder.id" />
+    </el-tab-pane>
   </el-tabs>
 </template>
 
@@ -10,10 +12,14 @@
  */
 import baseCategoryRenderer from './baseCategory'
 import bilibiliModel from '@/models/bilibili'
+import bilibiliFavFolderCategory from './bilibiliMyFavCategory/bilibiliFavFolderCategory'
 
 export default {
   extends: baseCategoryRenderer,
   name: 'bilibiliMyFavCategoryRenderer',
+  components: {
+    bilibiliFavFolderCategory
+  },
   data () {
     const { category } = this
     return {
@@ -37,3 +43,8 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.bilibili-my-fav-category {
+  height: 100%;
+}
+</style>

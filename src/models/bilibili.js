@@ -104,10 +104,26 @@ export function getUserCreatedFavFolder (mid) {
     .then(({ data }) => data.list)
 }
 
+/**
+ * 批量获取指定收藏id的内容
+ * @param {number} mid 目标收藏夹mlid（完整id）
+ * @returns
+ */
+export function getFavResources (mid, pageNumber = 1) {
+  return requester.get('/x/v3/fav/resource/list', {
+    params: {
+      media_id: mid,
+      pn: pageNumber,
+      ps: 10
+    }
+  })
+}
+
 export default {
   getUserVideos,
   getCid,
   getDownloadInfo,
   getMyInfo,
-  getUserCreatedFavFolder
+  getUserCreatedFavFolder,
+  getFavResources
 }
