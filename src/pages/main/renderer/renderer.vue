@@ -60,7 +60,7 @@ export default {
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 160px;
+    height: 148px;
     pointer-events: none;
     overflow: hidden;
     flex-shrink: 0;

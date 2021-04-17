@@ -1,7 +1,17 @@
 <template>
-  <el-tabs class="bilibili-my-fav-category" tab-position="left">
-    <el-tab-pane lazy v-for="folder of folders" :key="folder.id" :label="folder.title">
-      <bilibili-fav-folder-category v-bind="$props" :id="folder.id" />
+  <el-tabs class="bilibili-my-fav-category" v-if="folders.length > 0" tab-position="left">
+    <el-tab-pane
+      class="bilibili-my-fav-category"
+      lazy
+      v-for="folder of folders"
+      :key="folder.id"
+      :label="folder.title"
+    >
+      <bilibili-fav-folder-category v-bind="$props" :id="folder.id">
+        <template slot-scope="scope">
+          <slot v-bind="scope" />
+        </template>
+      </bilibili-fav-folder-category>
     </el-tab-pane>
   </el-tabs>
 </template>
@@ -46,5 +56,8 @@ export default {
 <style lang="scss" scoped>
 .bilibili-my-fav-category {
   height: 100%;
+  &::v-deep .el-tabs__content {
+    height: 100%;
+  }
 }
 </style>

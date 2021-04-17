@@ -50,16 +50,6 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-.option-container {
-  width: 100%;
-  height: 100%;
-  padding-bottom: 100px;
-  overflow-y: auto;
-  display: flex;
-  flex-wrap: wrap;
-  box-sizing: border-box;
-}
-
 .empty {
   width: 100%;
   height: 100%;

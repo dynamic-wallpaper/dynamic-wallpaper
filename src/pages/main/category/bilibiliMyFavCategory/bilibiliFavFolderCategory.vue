@@ -28,9 +28,7 @@ export default {
 
         medias.forEach(video => {
           const videoKey = `${video.bvid}.mp4`
-          const thumbnail = video.cover.includes('http')
-            ? video.cover
-            : `https:${video.cover}`
+          const thumbnail = video.cover.replace('http', 'https')
           this.list.push({
             id: video.bvid,
             thumbnail,

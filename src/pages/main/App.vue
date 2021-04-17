@@ -186,8 +186,8 @@ export default {
 </script>
 
 <style lang="scss">
-$option-card-width: 260px;
-$option-card-height: 268px;
+$option-card-width: 240px;
+$option-card-height: 260px;
 
 html,
 body,
@@ -197,6 +197,7 @@ body,
   overflow: hidden;
   margin: 0;
   background: #ffffff;
+  font-family: "Courier New", Courier, monospace;
 }
 
 .side-bar {
@@ -223,49 +224,59 @@ body,
   text-overflow: ellipsis;
 }
 
-.option {
-  width: $option-card-width;
-  flex-grow: 0;
-  height: $option-card-height;
-  position: relative;
-  margin: 8px;
+.option-container {
+  width: 100%;
+  height: 100%;
+  padding-bottom: 80px;
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  box-sizing: border-box;
 
-  .el-card__body {
-    padding: 0;
-    height: 100%;
-    min-height: $option-card-height;
+  .option {
+    width: $option-card-width;
+    flex-grow: 0;
+    height: $option-card-height;
     position: relative;
-    width: 100%;
-    overflow: visible;
-    display: flex;
-    flex-direction: column;
-  }
+    margin: 8px;
 
-  .option-card {
-    $scale: 1.05;
-    width: 100%;
-    min-height: 100%;
-    box-sizing: border-box;
-    height: 100%;
-    &:hover {
-      transform: scale($scale);
-      min-height: 100%;
-      height: auto;
-      position: absolute;
-      z-index: 2;
-    }
-  }
-
-  .selected {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 20px;
-    height: 20px;
-
-    img {
-      width: 100%;
+    .el-card__body {
+      padding: 0;
       height: 100%;
+      min-height: $option-card-height;
+      position: relative;
+      width: 100%;
+      overflow: visible;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .option-card {
+      $scale: 1.05;
+      width: 100%;
+      min-height: 100%;
+      box-sizing: border-box;
+      height: 100%;
+      &:hover {
+        transform: scale($scale);
+        min-height: 100%;
+        height: auto;
+        position: absolute;
+        z-index: 2;
+      }
+    }
+
+    .selected {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 20px;
+      height: 20px;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 }
