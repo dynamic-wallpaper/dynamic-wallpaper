@@ -19,12 +19,7 @@
       </el-header>
       <el-main>
         <div :key="selected.category" class="container" v-if="category">
-          <component
-            :category="category"
-            :is="categoryRenderer"
-            class="option-container"
-            ref="option-container"
-          >
+          <component :category="category" :is="categoryRenderer" ref="option-container">
             <div class="option" slot-scope="{ data }">
               <el-card class="option-card" shadow="hover">
                 <!-- 选中标签 -->
@@ -228,59 +223,49 @@ body,
   text-overflow: ellipsis;
 }
 
-.option-container {
-  width: 100%;
-  height: 100%;
-  padding-bottom: 200px;
-  overflow-y: auto;
-  display: flex;
-  flex-wrap: wrap;
-  box-sizing: border-box;
+.option {
+  width: $option-card-width;
+  flex-grow: 0;
+  height: $option-card-height;
+  position: relative;
+  margin: 8px;
 
-  .option {
-    width: $option-card-width;
-    flex-grow: 0;
-    height: $option-card-height;
+  .el-card__body {
+    padding: 0;
+    height: 100%;
+    min-height: $option-card-height;
     position: relative;
-    margin: 8px;
+    width: 100%;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+  }
 
-    .el-card__body {
-      padding: 0;
-      height: 100%;
-      min-height: $option-card-height;
-      position: relative;
-      width: 100%;
-      overflow: visible;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .option-card {
-      $scale: 1.05;
-      width: 100%;
+  .option-card {
+    $scale: 1.05;
+    width: 100%;
+    min-height: 100%;
+    box-sizing: border-box;
+    height: 100%;
+    &:hover {
+      transform: scale($scale);
       min-height: 100%;
-      box-sizing: border-box;
-      height: 100%;
-      &:hover {
-        transform: scale($scale);
-        min-height: 100%;
-        height: auto;
-        position: absolute;
-        z-index: 2;
-      }
-    }
-
-    .selected {
+      height: auto;
       position: absolute;
-      right: 0;
-      top: 0;
-      width: 20px;
-      height: 20px;
+      z-index: 2;
+    }
+  }
 
-      img {
-        width: 100%;
-        height: 100%;
-      }
+  .selected {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+
+    img {
+      width: 100%;
+      height: 100%;
     }
   }
 }

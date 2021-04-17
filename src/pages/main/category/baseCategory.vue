@@ -1,5 +1,6 @@
 <template>
   <div
+    class="option-container"
     v-infinite-scroll="loadMore"
     :infinite-scroll-immediate="infiniteScrollImmediate"
     v-loading="isLoading"
@@ -46,7 +47,17 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style scoped lang="scss">
+.option-container {
+  width: 100%;
+  height: 100%;
+  padding-bottom: 100px;
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+
 .empty {
   width: 100%;
   height: 100%;
@@ -56,9 +67,8 @@ export default {
   flex-direction: column;
   color: #303133;
   font-size: 18px;
-}
-
-.empty em {
-  font-size: 24px;
+  em {
+    font-size: 24px;
+  }
 }
 </style>
