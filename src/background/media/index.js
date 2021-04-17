@@ -5,7 +5,7 @@
 import Players from './players'
 import createMediaProtocol from './protocol'
 import mediaService from './mediaServer'
-import { MEDIA_PROTOCOL, LOCOL_MEDIA_PROTOCOL } from '@/configs/protocol'
+import { MEDIA_PROTOCOL, LOCOL_FILE_PROTOCOL } from '@/configs/protocol'
 import FileManager from '../util/fileManager'
 
 let players = null
@@ -23,7 +23,7 @@ export function setUrl (url) {
       players.setUrl('')
       break
     }
-    case LOCOL_MEDIA_PROTOCOL: {
+    case LOCOL_FILE_PROTOCOL: {
       mediaService.setCurrent(url)
       players.setUrl('')
       break
@@ -80,7 +80,7 @@ export default function (app, store) {
   // 注册获取视频文件的protocol
   createMediaProtocol(MEDIA_PROTOCOL)
   // 本地文件用的url
-  createMediaProtocol(LOCOL_MEDIA_PROTOCOL)
+  createMediaProtocol(LOCOL_FILE_PROTOCOL)
 
   players = new Players()
   mediaService.setPlayers(players)

@@ -1,6 +1,6 @@
 import { Menu, Tray, dialog, app as electronApp, nativeImage } from 'electron'
 import { service } from '@/background/media/index'
-import { LOCOL_MEDIA_PROTOCOL } from '@/configs/protocol'
+import { LOCOL_FILE_PROTOCOL } from '@/configs/protocol'
 import About from 'electron-about'
 import path from 'path'
 
@@ -55,7 +55,7 @@ function buildContextMenu () {
           /**
            * store更新
            */
-          const resourceFilePath = `${LOCOL_MEDIA_PROTOCOL}://${filePath}`
+          const resourceFilePath = `${LOCOL_FILE_PROTOCOL}://${filePath}`
           store.set('selected.key', '')
           store.set('selected.url', resourceFilePath)
           service.setUrl(resourceFilePath)

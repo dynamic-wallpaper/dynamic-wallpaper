@@ -3,11 +3,11 @@
  */
 export { PROTOCOL as BILIBILI_PROTOCOL } from './bilibili'
 export const MEDIA_PROTOCOL = 'video-wallpaper'
-export const LOCOL_MEDIA_PROTOCOL = 'locol-video'
+export const LOCOL_FILE_PROTOCOL = 'locol-file'
 export const PROXY_PROTOCOL = 'request'
 
 export default {
   MEDIA_PROTOCOL,
   PROXY_PROTOCOL,
-  LOCOL_MEDIA_PROTOCOL
+  LOCOL_FILE_PROTOCOL
 }
