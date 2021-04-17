@@ -59,6 +59,10 @@ export default {
             })
           }
         })
+        // 禁止滚动
+        if (this.list.length >= this.totalNumber) {
+          this.infiniteScrollDisabled = true
+        }
       } catch (e) {
         this.$message.error('获取数据错误')
       }

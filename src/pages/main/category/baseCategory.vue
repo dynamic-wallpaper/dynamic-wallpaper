@@ -2,6 +2,7 @@
   <div
     class="option-container"
     v-infinite-scroll="loadMore"
+    :infinite-scroll-disabled="infiniteScrollDisabled"
     :infinite-scroll-immediate="infiniteScrollImmediate"
     v-loading="isLoading"
   >
@@ -38,6 +39,7 @@ export default {
     const defaultValue = this.category.value || []
     return {
       infiniteScrollImmediate: true,
+      infiniteScrollDisabled: false,
       isLoading: false,
       list: [...defaultValue]
     }
