@@ -28,6 +28,7 @@
                 </div>
                 <!-- 渲染 -->
                 <component
+                  :eventBus="eventBus"
                   :category="selected.category"
                   :is="renderer"
                   :selected="selected"
@@ -51,10 +52,12 @@ import websiteConfig from '@/configs/website'
 import selectedIcon from './assets/selected.png'
 import throttle from 'lodash/throttle'
 import { UP } from '@/configs/bilibili'
+import { PROGRESS_UPDATE } from '@/configs/event'
 import ControlHeader from './ControlHeader'
+import Vue from 'vue'
 const renderers = require.context('./renderer', false, /\.vue/)
 const categorys = require.context('./category', false, /\.vue/)
-const { ipcRenderer, serverSDK } = window
+const { ipcRenderer } = window
 
 export default {
   name: 'App',
@@ -80,6 +83,7 @@ export default {
   data () {
     const vm = this
     return {
+      eventBus: new Vue(),
       currentUserMid: '', // 当前用户在b站的mid
       selectedIcon,
       sidebar: {
@@ -92,16 +96,7 @@ export default {
        * 代理下发所有的更新事件
        */
       updateCategoryVideoProgress: throttle(function (e, data) {
-        /**
-         * 获取card列表，目前ref不可用
-         */
-        const container = vm.$refs['option-container']
-        const optionCards = container.$children.map(card => card.$children[0])
-        optionCards.forEach(item => {
-          if (item.onMediaProgress) {
-            item.onMediaProgress(e, data)
-          }
-        })
+        vm.eventBus.$emit(PROGRESS_UPDATE, e, data)
       }, 200)
     }
   },

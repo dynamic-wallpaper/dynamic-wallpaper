@@ -27,16 +27,18 @@ export default {
         this.infiniteScrollDisabled = !has_more
 
         medias.forEach(video => {
-          const videoKey = `${video.bvid}.mp4`
-          const thumbnail = video.cover.replace('http', 'https')
-          this.list.push({
-            id: video.bvid,
-            thumbnail,
-            value: `${MEDIA_PROTOCOL}://${this.category.key}/${videoKey}`,
-            description: video.intro,
-            downloadUrl: `${PROTOCOL}://${videoKey}`,
-            isDownloaded: videoKey in this.exitedVideo
-          })
+          if (!this.list.find(item => item.id === video.bvid)) {
+            const videoKey = `${video.bvid}.mp4`
+            const thumbnail = video.cover.replace('http', 'https')
+            this.list.push({
+              id: video.bvid,
+              thumbnail,
+              value: `${MEDIA_PROTOCOL}://${this.category.key}/${videoKey}`,
+              description: video.intro,
+              downloadUrl: `${PROTOCOL}://${videoKey}`,
+              isDownloaded: videoKey in this.exitedVideo
+            })
+          }
         })
       } catch (e) {
         console.error(e)

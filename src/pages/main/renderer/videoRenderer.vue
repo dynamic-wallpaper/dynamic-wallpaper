@@ -46,6 +46,7 @@
 
 <script>
 import renderer from './renderer'
+import { PROGRESS_UPDATE } from '@/configs/event'
 const { serverSDK } = window
 
 export default {
@@ -105,6 +106,18 @@ export default {
           this.downloading = false
           this.$message.success('移除成功')
         })
+    }
+  },
+
+  mounted () {
+    if (this.eventBus) {
+      this.eventBus.$on(PROGRESS_UPDATE, this.onMediaProgress)
+    }
+  },
+
+  beforeDestroy () {
+    if (this.eventBus) {
+      this.eventBus.$off(PROGRESS_UPDATE, this.onMediaProgress)
     }
   }
 }

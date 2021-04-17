@@ -29,6 +29,9 @@ export default {
     },
     category: {
       type: String
+    },
+    eventBus: {
+      type: Object
     }
   },
   data () {
